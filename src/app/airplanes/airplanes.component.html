@@ -1,0 +1,20 @@
+<h2>Airplanes</h2>
+
+<div>
+    <label id="new-airplane">Airplane model: </label>
+    <input for="new-airplane" #airplaneModel />
+
+    <!-- (click) passes input value to add() and then clears the input -->
+    <button class="add-button" (click)="add(airplaneModel.value); airplaneModel.value=''">
+        Add airplane
+    </button>
+</div>
+
+<ul class="airplanes">
+    <li *ngFor="let airplane of airplanes">
+        <a routerLink="/detail/{{airplane.id}}">
+            <span class="badge">{{airplane.id}}</span> {{airplane.model}}
+        </a>
+        <button class="delete" title="delete airplane" (click)="delete(airplane)">x</button>
+    </li>
+</ul>
