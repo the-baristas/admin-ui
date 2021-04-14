@@ -21,19 +21,25 @@ export class AirplanesComponent implements OnInit {
             .subscribe(airplanes => this.airplanes = airplanes);
     }
 
-    add(model: string): void {
+    add(model: string, firstClassSeatsMax: string, businessClassSeatsMax: string, economyClassSeatsMax: string): void {
         model = model.trim();
-        if (!model) {
+        if (!(model && firstClassSeatsMax && businessClassSeatsMax && economyClassSeatsMax)) {
             return;
         }
-        this.airplaneService.addAirplane({ model } as Airplane)
+        const airplane = {
+            model,
+            firstClassSeatsMax: parseInt(firstClassSeatsMax),
+            businessClassSeatsMax: parseInt(businessClassSeatsMax),
+            economyClassSeatsMax: parseInt(economyClassSeatsMax)
+        };
+        this.airplaneService.addAirplane(airplane as Airplane)
             .subscribe(airplane => {
                 this.airplanes.push(airplane);
             });
     }
 
     delete(airplane: Airplane): void {
-        this.airplanes = this.airplanes.filter(h => h !== airplane);
+        this.airplanes = this.airplanes.filter(a => a !== airplane);
         this.airplaneService.deleteAirplane(airplane.id).subscribe();
     }
 }

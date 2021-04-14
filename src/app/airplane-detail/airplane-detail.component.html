@@ -1,0 +1,17 @@
+<div *ngIf="airplane">
+  <h2>{{airplane.model | uppercase}} Details</h2>
+  <div><span>id: </span>{{airplane.id}}</div>
+  <div>
+    <label for="airplane-model">Airplane model: </label>
+    <input id="airplane-model" [(ngModel)]="airplane.model" placeholder="model"/>
+    <label for="airplane-first-class-seats-max">Max First Class Seats: </label>
+    <input id="airplane-first-class-seats-max" [(ngModel)]="airplane.firstClassSeatsMax" placeholder=""/>
+    <label for="airplane-business-class-seats-max">Max Business Class Seats: </label>
+    <input id="airplane-business-class-seats-max" [(ngModel)]="airplane.businessClassSeatsMax" placeholder=""/>
+    <label for="airplane-economy-class-seats-max">Max Economy Class Seats: </label>
+    <input id="airplane-economy-class-seats-max" [(ngModel)]="airplane.economyClassSeatsMax" placeholder=""/>
+  </div>
+  <button (click)="goBack()">go back</button>
+  <button (click)="save()">save</button>
+</div>
+

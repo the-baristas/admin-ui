@@ -1,0 +1,12 @@
+<div id="search-component">
+    <label for="search-box">Airplane Search</label>
+    <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+
+    <ul class="search-result">
+        <li *ngFor="let airplane of airplanes$ | async">
+            <a routerLink="/detail/{{airplane.id}}">
+                {{airplane.model}}
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,11 +1,18 @@
 <h2>Airplanes</h2>
 
 <div>
-    <label id="new-airplane">Airplane model: </label>
+    <label id="new-airplane">Model: </label>
     <input for="new-airplane" #airplaneModel />
+    <label id="new-airplane">Max First Class Seats: </label>
+    <input for="new-airplane" #airplaneFirstClassSeatsMax />
+    <label id="new-airplane">Max Business Class Seats: </label>
+    <input for="new-airplane" #airplaneBusinessClassSeatsMax />
+    <label id="new-airplane">Max Economy Class Seats: </label>
+    <input for="new-airplane" #airplaneEconomyClassSeatsMax />
 
     <!-- (click) passes input value to add() and then clears the input -->
-    <button class="add-button" (click)="add(airplaneModel.value); airplaneModel.value=''">
+    <button class="add-button"
+        (click)="add(airplaneModel.value, airplaneFirstClassSeatsMax.value, airplaneBusinessClassSeatsMax.value, airplaneEconomyClassSeatsMax.value); airplaneModel.value=''">
         Add airplane
     </button>
 </div>
