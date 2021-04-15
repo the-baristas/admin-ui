@@ -1,12 +1,11 @@
 <div id="search-component">
     <label for="search-box">Airplane Search</label>
-    <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+    <input #searchBox id="search-box" autocomplete="off" (input)="search(searchBox.value)" />
 
     <ul class="search-result">
-        <li *ngFor="let airplane of airplanes$ | async">
-            <a routerLink="/detail/{{airplane.id}}">
-                {{airplane.model}}
-            </a>
+        <li #listItem *ngFor="let airplane of airplanes$ | async" (click)="updateSearchBox(searchBox, listItem, airplane)">
+            {{airplane.id}} - {{airplane.model}}
         </li>
     </ul>
+    <button (click)="goToDetails()">Search</button>
 </div>
