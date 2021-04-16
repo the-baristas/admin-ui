@@ -2,7 +2,7 @@
 <app-airplane-search></app-airplane-search>
 
 <ul class="airplanes">
-    <li *ngFor="let airplane of airplanes">
+    <li *ngFor="let airplane of foundAirplanes">
         <a routerLink="/detail/{{airplane.id}}">
             <span class="badge">{{airplane.id}}</span> {{airplane.model}}
         </a>
@@ -23,7 +23,7 @@
 
     <!-- (click) passes input value to add() and then clears the input -->
     <button class="add-button"
-        (click)="add(airplaneModel.value, airplaneFirstClassSeatsMax.value, airplaneBusinessClassSeatsMax.value, airplaneEconomyClassSeatsMax.value); airplaneModel.value=''">
+        (click)="addAirplane(airplaneModel, airplaneFirstClassSeatsMax, airplaneBusinessClassSeatsMax, airplaneEconomyClassSeatsMax)">
         Add airplane
     </button>
 </div>

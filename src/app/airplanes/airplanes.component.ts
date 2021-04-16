@@ -8,17 +8,19 @@ import { AirplaneService } from '../airplane.service';
     styleUrls: ['./airplanes.component.css']
 })
 export class AirplanesComponent implements OnInit {
-    airplanes!: Airplane[];
+    foundAirplanes: Airplane[] = [];
 
     constructor(private airplaneService: AirplaneService) { }
 
     ngOnInit(): void {
-        this.getAirplanes();
     }
 
-    getAirplanes(): void {
-        this.airplaneService.getAirplanes()
-            .subscribe(airplanes => this.airplanes = airplanes);
+    addAirplane(model: HTMLInputElement, firstClassSeatsMax: HTMLInputElement, businessClassSeatsMax: HTMLInputElement, economyClassSeatsMax: HTMLInputElement): void {
+        this.add(model.value, firstClassSeatsMax.value, businessClassSeatsMax.value, economyClassSeatsMax.value)
+        model.value = '';
+        firstClassSeatsMax.value = '';
+        businessClassSeatsMax.value = '';
+        economyClassSeatsMax.value = '';
     }
 
     add(model: string, firstClassSeatsMax: string, businessClassSeatsMax: string, economyClassSeatsMax: string): void {
@@ -34,12 +36,12 @@ export class AirplanesComponent implements OnInit {
         };
         this.airplaneService.addAirplane(airplane as Airplane)
             .subscribe(airplane => {
-                this.airplanes.push(airplane);
+                this.foundAirplanes.push(airplane);
             });
     }
 
     delete(airplane: Airplane): void {
-        this.airplanes = this.airplanes.filter(a => a !== airplane);
+        this.foundAirplanes = this.foundAirplanes.filter(a => a !== airplane);
         this.airplaneService.deleteAirplane(airplane.id).subscribe();
     }
 }

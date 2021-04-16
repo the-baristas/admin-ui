@@ -2,10 +2,19 @@
     <label for="search-box">Airplane Search</label>
     <input #searchBox id="search-box" autocomplete="off" (input)="search(searchBox.value)" />
 
-    <ul class="search-result">
-        <li #listItem *ngFor="let airplane of airplanes$ | async" (click)="updateSearchBox(searchBox, listItem, airplane)">
-            {{airplane.id}} - {{airplane.model}}
+    <ul class="suggestions">
+        <li #listItem *ngFor="let airplane of airplanes$ | async" (click)="updateSearchBox(searchBox, airplane)">
+            {{airplane.model}}
         </li>
     </ul>
-    <button (click)="goToDetails()">Search</button>
+    <button (click)="showResults()">Search</button>
 </div>
+
+<ul class="airplanes">
+    <li *ngFor="let airplane of foundAirplanes">
+        <a routerLink="/detail/{{airplane.id}}">
+            <span class="badge">{{airplane.id}}</span> {{airplane.model}}
+        </a>
+        <button class="delete" title="delete airplane" (click)="delete(airplane)">x</button>
+    </li>
+</ul>
