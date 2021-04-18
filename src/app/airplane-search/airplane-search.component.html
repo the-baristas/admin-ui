@@ -11,10 +11,11 @@
 </div>
 
 <ul class="airplanes">
-    <li *ngFor="let airplane of foundAirplanes">
+    <li *ngFor="let airplane of foundAirplanes | slice: (page - 1) * pageSize : page * pageSize">
         <a routerLink="/detail/{{airplane.id}}">
             <span class="badge">{{airplane.id}}</span> {{airplane.model}}
         </a>
         <button class="delete" title="delete airplane" (click)="delete(airplane)">x</button>
     </li>
 </ul>
+<ngb-pagination [collectionSize]="foundAirplanes.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>

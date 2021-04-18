@@ -13,10 +13,11 @@ import { AirplaneService } from '../airplane.service';
     styleUrls: ['./airplane-search.component.css']
 })
 export class AirplaneSearchComponent implements OnInit {
-    @Output() notify = new EventEmitter<string>();
     airplanes$!: Observable<Airplane[]>;
     selectedAirplane!: Airplane;
     foundAirplanes: Airplane[] = [];
+    page: number = 1;
+    pageSize: number = 10;
 
     private searchTerms = new Subject<string>();
 
@@ -47,6 +48,9 @@ export class AirplaneSearchComponent implements OnInit {
     ngOnInit(): void {
         this.initializeAirplanes$();
         this.selectedAirplane = {} as Airplane;
+        // Show some airplanes at the start before a search is done.
+        this.airplaneService.getAirplanes()
+            .subscribe(airplanes => this.foundAirplanes = airplanes.slice(0, 10));
     }
 
     initializeAirplanes$(): void {
