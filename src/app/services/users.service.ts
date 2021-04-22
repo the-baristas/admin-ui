@@ -3,18 +3,19 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../entities/user';
 import { LoginService } from './login.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  private serverUrl = 'http://localhost:8081/users';
+  
+  private serverUrl = environment.apiUrl + "/users";  ;
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
   public getAllUsers() {
-
     return this.http.get<User[]>(`${this.serverUrl}`, { headers: this.loginService.getHeadersWithToken()} );
   }
 

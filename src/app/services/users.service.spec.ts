@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { User } from '../entities/user';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Data } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -61,20 +62,17 @@ describe('UsersService', () => {
   });
 
 
-  describe('UsersService', () => {
-
     it('get all users returns mock user data', () => {
       service.getAllUsers().subscribe((data) => {
         expect(data).toEqual([userData])
       }
       )
-    
 
-    let mockRequest = httpTestingController.expectOne('http://localhost:8081/users');
+    let apiUrl = environment.apiUrl + "/users";  
+    let mockRequest = httpTestingController.expectOne(apiUrl);
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
     mockRequest.flush([userData]);
     });
-  });
 
   });

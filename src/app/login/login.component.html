@@ -12,10 +12,10 @@
           <label for="floatingInput">Username</label>
           <input type="text" class="form-control" formControlName="username" placeholder="Username">
           <span *ngIf="loginFormControls.username.touched && loginFormControls.username.errors?.required" class="text-danger">
-            <p>Please enter a username</p>
+            <b>Please enter a username</b>
           </span>
           <span *ngIf="loginFormControls.username.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 45 characters</p>
+            <b>Please enter less than 45 characters</b>
           </span>
         </div>
 
@@ -23,10 +23,10 @@
           <label for="floatingPassword">Password</label>
           <input type="password" class="form-control" formControlName="password" placeholder="Password">
           <span *ngIf="loginFormControls.password.touched && loginFormControls.password.errors?.required" class="text-danger">
-            <p>Please enter a password</p>
+            <b>Please enter a password</b>
           </span>
           <span *ngIf="loginFormControls.password.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 45 characters</p>
+            <b>Please enter less than 45 characters</b>
           </span>
         </div>
 

@@ -61,10 +61,10 @@
                  class="form-control"
                  formControlName="givenName" />
           <span *ngIf="updateUserFormControls.givenName.touched && updateUserFormControls.givenName.errors?.required" class="text-danger">
-            <p>Please enter a valid name</p>
+            <b>Please enter a valid name</b>
           </span>
           <span *ngIf="updateUserFormControls.givenName.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 45 characters</p>
+            <b>Please enter less than 45 characters</b>
           </span>
 
           <label for="familyName">Last Name</label>
@@ -72,10 +72,10 @@
                  class="form-control"
                  formControlName="familyName" />
           <span *ngIf="updateUserFormControls.familyName.touched && updateUserFormControls.familyName.errors?.required" class="text-danger">
-            <p>Please enter a valid name</p>
+            <b>Please enter a valid name</b>
           </span>
           <span *ngIf="updateUserFormControls.familyName.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 45 characters</p>
+            <b>Please enter less than 45 characters</b>
           </span>
 
           <label for="username">Username</label>
@@ -83,10 +83,10 @@
                  class="form-control"
                  formControlName="username" />
           <span *ngIf="updateUserFormControls.username.touched && updateUserFormControls.username.errors?.required" class="text-danger">
-            <p>Please enter a valid username</p>
+            <b>Please enter a valid username</b>
           </span>
           <span *ngIf="updateUserFormControls.username.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 45 characters</p>
+            <b>Please enter less than 45 characters</b>
           </span>
 
           <label for="email">Email</label>
@@ -94,10 +94,10 @@
                  class="form-control"
                  formControlName="email" />
           <span *ngIf="updateUserFormControls.email.touched && ( updateUserFormControls.email.errors?.required || updateUserFormControls.email.errors?.email)" class="text-danger">
-            <p>Please enter a valid email</p>
+            <b>Please enter a valid email</b>
           </span>
           <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
-            <p>Please enter less than 50 characters</p>
+            <b>Please enter less than 50 characters</b>
           </span>
 
           <label for="phone">Phone Number</label>
@@ -105,10 +105,10 @@
                  class="form-control"
                  formControlName="phone" />
           <span *ngIf="updateUserFormControls.phone.touched && updateUserFormControls.phone.errors?.required" class="text-danger">
-            <p>Please enter a 10 digit number</p>
+            <b>Please enter a 10 digit number</b>
           </span>
           <span *ngIf="updateUserFormControls.phone.errors?.maxlength" class="text-danger">
-            <p>Please enter a 10 digit number</p>
+            <b>Please enter a 10 digit number</b>
           </span>
 
         </div>

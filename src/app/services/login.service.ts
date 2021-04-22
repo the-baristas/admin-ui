@@ -1,21 +1,26 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators'
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private serverUrl = 'http://localhost:8081/login';
+  private serverUrl = environment.apiUrl + '/login';
+
+  private previousPage: string = '/home';
 
   constructor(private http: HttpClient) { }
 
   public login(username: string, password: string) {
 
-    let response = this.http.post<String>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' });
+    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(tap(response => {
+      console.log(response.headers.keys());
+    }));
 
-    return response;
   }
 
   public getToken() {
@@ -42,6 +47,14 @@ export class LoginService {
 
   public logout() {
     localStorage.removeItem('utopia_token');
+  }
+
+  public setPreviousPage(page: string) {
+    this.previousPage = page;
+  }
+
+  public getPreviousPage(): string {
+    return this.previousPage;
   }
 
 }

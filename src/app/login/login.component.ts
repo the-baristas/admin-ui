@@ -26,9 +26,10 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
         (response: any) => {
+          console.log(response);
           this.jwtToken = response.headers.get("Authorization")
           this.loginService.setSession(this.jwtToken);
-          this.router.navigate(['/home']);
+          this.router.navigate([this.loginService.getPreviousPage()]);
         },
         (error: HttpErrorResponse) => {
           alert("Incorrect username and/or password.")
