@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators'
-import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators'
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,9 +17,16 @@ export class LoginService {
 
   public login(username: string, password: string) {
 
-    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(tap(response => {
-      console.log(response.headers.keys());
-    }));
+    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 403 || error.status === 400)
+          return throwError('Invalid username and/or password');
+        else
+          return throwError('There was some sort of problem while trying to establish a connection. Please try again later.');
+      }
+      )
+
+    );
 
   }
 

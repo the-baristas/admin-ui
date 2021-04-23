@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { HeaderComponent } from './header.component';
@@ -27,7 +28,8 @@ describe('HeaderComponent', () => {
   });
 
   it('should render "Logout" button', () => {
-    let compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('button').textContent).toContain('Logout');
+    let button: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+    expect(button.textContent).toContain('Logout');
   });
+
 });

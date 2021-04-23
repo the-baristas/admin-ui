@@ -25,8 +25,7 @@ export class LoginComponent implements OnInit {
   public login() {
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
-        (response: any) => {
-          console.log(response);
+        (response: any) => {     
           this.jwtToken = response.headers.get("Authorization")
           this.loginService.setSession(this.jwtToken);
           this.router.navigate([this.loginService.getPreviousPage()]);
