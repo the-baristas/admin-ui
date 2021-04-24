@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body class="text-center">
+  <div class="container-sm border">
+    <main class="form-signin">
+      <form [formGroup]="loginForm" (submit)="login()">
+        <h1 class="h3 mb-3 fw-normal">Please sign in with your admin credentials</h1>
+
+        <div class="form-floating">
+          <label for="floatingInput">Username</label>
+          <input type="text" class="form-control" formControlName="username" placeholder="Username">
+          <span *ngIf="loginFormControls.username.touched && loginFormControls.username.errors?.required" class="text-danger">
+            <b>Please enter a username</b>
+          </span>
+          <span *ngIf="loginFormControls.username.errors?.maxlength" class="text-danger">
+            <b>Please enter less than 45 characters</b>
+          </span>
+        </div>
+
+        <div class="form-floating">
+          <label for="floatingPassword">Password</label>
+          <input type="password" class="form-control" formControlName="password" placeholder="Password">
+          <span *ngIf="loginFormControls.password.touched && loginFormControls.password.errors?.required" class="text-danger">
+            <b>Please enter a password</b>
+          </span>
+          <span *ngIf="loginFormControls.password.errors?.maxlength" class="text-danger">
+            <b>Please enter less than 45 characters</b>
+          </span>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+      </form>
+    </main>
+  </div>
+
+
+
+</body>
+</html>
