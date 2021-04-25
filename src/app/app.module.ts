@@ -12,26 +12,27 @@ import { LoginComponent } from './login/login.component';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        AirplanesComponent,
-        AirplaneDetailComponent,
-        MessagesComponent,
-        AirplaneSearchComponent,
-        LoginComponent,
-        LayoutComponent,
-        HomeComponent
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        NgbModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    AirplanesComponent,
+    AirplaneDetailComponent,
+    MessagesComponent,
+    AirplaneSearchComponent,
+    LoginComponent,
+    LayoutComponent,
+    HomeComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgbModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

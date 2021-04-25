@@ -1,21 +1,54 @@
 <div id="search-component">
     <label for="search-box">Airplane Search</label>
-    <input #searchBox id="search-box" autocomplete="off" (input)="search(searchBox.value)" />
+    <input
+        #searchBox
+        id="search-box"
+        autocomplete="off"
+        (input)="search(searchBox.value)"
+    />
 
     <ul class="suggestions">
-        <li #listItem *ngFor="let airplane of airplanes$ | async" (click)="updateSearchBox(searchBox, airplane)">
-            {{airplane.model}}
+        <li
+            #listItem
+            *ngFor="let airplane of airplanes$ | async"
+            (click)="updateSearchBox(searchBox, airplane)"
+        >
+            {{ airplane.model }}
         </li>
     </ul>
     <button (click)="showResults()">Search</button>
 </div>
 
-<ul class="airplanes">
-    <li *ngFor="let airplane of foundAirplanes | slice: (page - 1) * pageSize : page * pageSize">
-        <a routerLink="/detail/{{airplane.id}}">
-            <span class="badge">{{airplane.id}}</span> {{airplane.model}}
-        </a>
-        <button class="delete" title="delete airplane" (click)="delete(airplane)">x</button>
-    </li>
-</ul>
-<ngb-pagination [collectionSize]="foundAirplanes.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Max First Class Seats</th>
+            <th scope="col">Max Business Class Seats</th>
+            <th scope="col">Max Economy Class Seats</th>
+            <th scope="col">Model</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="
+                let airplane of foundAirplanes
+                    | slice: (page - 1) * pageSize:page * pageSize
+            "
+        >
+            <td>{{ airplane.id }}</td>
+            <td>{{ airplane.firstClassSeatsMax }}</td>
+            <td>{{ airplane.businessClassSeatsMax }}</td>
+            <td>{{ airplane.economyClassSeatsMax }}</td>
+            <td>{{ airplane.model }}</td>
+            <td><button class="btn btn-primary">Edit</button></td>
+            <td><button class="btn btn-primary">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<ngb-pagination
+    [collectionSize]="foundAirplanes.length"
+    [(page)]="page"
+    [pageSize]="pageSize"
+></ngb-pagination>

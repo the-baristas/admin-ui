@@ -1,15 +1,30 @@
 <div *ngIf="airplane">
-    <h2>{{airplane.model | uppercase}} Details</h2>
-    <div><span>id: </span>{{airplane.id}}</div>
+    <h2>{{ airplane.model | uppercase }} Details</h2>
+    <div><span>id: </span>{{ airplane.id }}</div>
     <div>
         <label for="airplane-model">Airplane model: </label>
         <input id="airplane-model" [(ngModel)]="airplane.model" />
-        <label for="airplane-first-class-seats-max">Max First Class Seats: </label>
-        <input id="airplane-first-class-seats-max" [(ngModel)]="airplane.firstClassSeatsMax" />
-        <label for="airplane-business-class-seats-max">Max Business Class Seats: </label>
-        <input id="airplane-business-class-seats-max" [(ngModel)]="airplane.businessClassSeatsMax" />
-        <label for="airplane-economy-class-seats-max">Max Economy Class Seats: </label>
-        <input id="airplane-economy-class-seats-max" [(ngModel)]="airplane.economyClassSeatsMax" />
+        <label for="airplane-first-class-seats-max"
+            >Max First Class Seats:
+        </label>
+        <input
+            id="airplane-first-class-seats-max"
+            [(ngModel)]="airplane.firstClassSeatsMax"
+        />
+        <label for="airplane-business-class-seats-max"
+            >Max Business Class Seats:
+        </label>
+        <input
+            id="airplane-business-class-seats-max"
+            [(ngModel)]="airplane.businessClassSeatsMax"
+        />
+        <label for="airplane-economy-class-seats-max"
+            >Max Economy Class Seats:
+        </label>
+        <input
+            id="airplane-economy-class-seats-max"
+            [(ngModel)]="airplane.economyClassSeatsMax"
+        />
     </div>
     <button (click)="goBack()">Go back</button>
     <button (click)="save()">Save</button>

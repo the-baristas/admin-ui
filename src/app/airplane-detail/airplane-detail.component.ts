@@ -24,7 +24,7 @@ export class AirplaneDetailComponent implements OnInit {
 
     getAirplane(): void {
         const id = parseInt(this.route.snapshot.paramMap.get('id')!);
-        this.airplaneService.getAirplane(id)
+        this.airplaneService.getAirplaneById(id)
             .subscribe(airplane => this.airplane = airplane);
     }
 

@@ -1,15 +1,6 @@
 <h2>Airplanes</h2>
 <app-airplane-search></app-airplane-search>
 
-<ul class="airplanes">
-    <li *ngFor="let airplane of foundAirplanes">
-        <a routerLink="/detail/{{airplane.id}}">
-            <span class="badge">{{airplane.id}}</span> {{airplane.model}}
-        </a>
-        <button class="delete" title="delete airplane" (click)="delete(airplane)">x</button>
-    </li>
-</ul>
-
 <h3>Add Airplane</h3>
 <div>
     <label id="new-airplane">Model: </label>
