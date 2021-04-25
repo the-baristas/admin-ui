@@ -1,20 +1,36 @@
 <h2>Airplanes</h2>
+
 <app-airplane-search></app-airplane-search>
 
-<h3>Add Airplane</h3>
-<div>
-    <label id="new-airplane">Model: </label>
-    <input for="new-airplane" #airplaneModel />
-    <label id="new-airplane">Max First Class Seats: </label>
-    <input for="new-airplane" #airplaneFirstClassSeatsMax />
-    <label id="new-airplane">Max Business Class Seats: </label>
-    <input for="new-airplane" #airplaneBusinessClassSeatsMax />
-    <label id="new-airplane">Max Economy Class Seats: </label>
-    <input for="new-airplane" #airplaneEconomyClassSeatsMax />
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Create New</button>
 
-    <!-- (click) passes input value to add() and then clears the input -->
-    <button class="add-button"
-        (click)="addAirplane(airplaneModel, airplaneFirstClassSeatsMax, airplaneBusinessClassSeatsMax, airplaneEconomyClassSeatsMax)">
-        Add airplane
-    </button>
-</div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Add Airplane</h4>
+    </div>
+    <div class="modal-body">
+        <label id="new-airplane">Max First Class Seats: </label>
+        <input for="new-airplane" #airplaneFirstClassSeatsMax />
+        <label id="new-airplane">Max Business Class Seats: </label>
+        <input for="new-airplane" #airplaneBusinessClassSeatsMax />
+        <label id="new-airplane">Max Economy Class Seats: </label>
+        <input for="new-airplane" #airplaneEconomyClassSeatsMax />
+        <label id="new-airplane">Model: </label>
+        <input for="new-airplane" #airplaneModel />
+
+        <!-- (click) passes input value to add() and then clears the input -->
+        <button
+            class="add-button"
+            (click)="
+                addAirplane(
+                    airplaneModel,
+                    airplaneFirstClassSeatsMax,
+                    airplaneBusinessClassSeatsMax,
+                    airplaneEconomyClassSeatsMax
+                )
+            "
+        >
+            Add airplane
+        </button>
+    </div>
+</ng-template>

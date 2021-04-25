@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
 import { AirplaneService } from '../airplane.service';
 
@@ -9,10 +10,18 @@ import { AirplaneService } from '../airplane.service';
 })
 export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
+    closeResult: String = '';
 
-    constructor(private airplaneService: AirplaneService) {}
+    constructor(
+        private airplaneService: AirplaneService,
+        private modalService: NgbModal
+    ) {}
 
     ngOnInit(): void {}
+
+    open(content: any): void {
+        this.modalService.open(content, { centered: true });
+    }
 
     addAirplane(
         model: HTMLInputElement,
