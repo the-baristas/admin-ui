@@ -10,6 +10,8 @@ import { AirplaneService } from '../airplane.service';
 })
 export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
+    page: number = 1;
+    pageSize: number = 10;
     closeResult: String = '';
 
     constructor(
@@ -17,7 +19,23 @@ export class AirplanesComponent implements OnInit {
         private modalService: NgbModal
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        // Show some airplanes at the start before a search is done.
+        this.airplaneService
+            .getAirplanes()
+            .subscribe(
+                (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
+            );
+    }
+
+    delete(airplane: Airplane): void {
+        this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
+        this.airplaneService.deleteAirplane(airplane.id).subscribe();
+    }
+
+    updateFoundAirplanes(airplanes: Airplane[]): void {
+        this.foundAirplanes = airplanes;
+    }
 
     open(content: any): void {
         this.modalService.open(content, { centered: true });

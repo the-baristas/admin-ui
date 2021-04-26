@@ -18,37 +18,3 @@
     </ul>
     <button (click)="showResults()">Search</button>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Max First Class Seats</th>
-            <th scope="col">Max Business Class Seats</th>
-            <th scope="col">Max Economy Class Seats</th>
-            <th scope="col">Model</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr
-            *ngFor="
-                let airplane of foundAirplanes
-                    | slice: (page - 1) * pageSize:page * pageSize
-            "
-        >
-            <td>{{ airplane.id }}</td>
-            <td>{{ airplane.firstClassSeatsMax }}</td>
-            <td>{{ airplane.businessClassSeatsMax }}</td>
-            <td>{{ airplane.economyClassSeatsMax }}</td>
-            <td>{{ airplane.model }}</td>
-            <td><button class="btn btn-primary">Edit</button></td>
-            <td><button class="btn btn-primary">Delete</button></td>
-        </tr>
-    </tbody>
-</table>
-
-<ngb-pagination
-    [collectionSize]="foundAirplanes.length"
-    [(page)]="page"
-    [pageSize]="pageSize"
-></ngb-pagination>

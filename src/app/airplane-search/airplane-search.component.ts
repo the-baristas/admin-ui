@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import {
@@ -18,9 +18,9 @@ import { AirplaneService } from '../airplane.service';
 export class AirplaneSearchComponent implements OnInit {
     airplanes$!: Observable<Airplane[]>;
     selectedAirplane!: Airplane;
-    foundAirplanes: Airplane[] = [];
     page: number = 1;
     pageSize: number = 10;
+    @Output() resultsEvent: EventEmitter<Airplane[]> = new EventEmitter();
 
     private searchTerms = new Subject<string>();
 
@@ -41,28 +41,29 @@ export class AirplaneSearchComponent implements OnInit {
         this.initializeAirplanes$();
     }
 
-    delete(airplane: Airplane): void {
-        this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
-        this.airplaneService.deleteAirplane(airplane.id).subscribe();
-    }
+    // delete(airplane: Airplane): void {
+    //     this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
+    //     this.airplaneService.deleteAirplane(airplane.id).subscribe();
+    // }
 
     showResults(): void {
         this.airplaneService
             .searchAirplanes(this.selectedAirplane.model)
-            .subscribe(
-                (airplanes: Airplane[]) => (this.foundAirplanes = airplanes)
-            );
+            .subscribe((airplanes: Airplane[]) => {
+                // this.foundAirplanes = airplanes;
+                this.resultsEvent.emit(airplanes);
+            });
     }
 
     ngOnInit(): void {
         this.initializeAirplanes$();
         this.selectedAirplane = {} as Airplane;
-        // Show some airplanes at the start before a search is done.
-        this.airplaneService
-            .getAirplanes()
-            .subscribe(
-                (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
-            );
+        // // Show some airplanes at the start before a search is done.
+        // this.airplaneService
+        //     .getAirplanes()
+        //     .subscribe(
+        //         (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
+        //     );
     }
 
     initializeAirplanes$(): void {

@@ -1,9 +1,48 @@
-<h2>Airplanes</h2>
+<!-- <h2>Airplanes</h2> -->
 
-<app-airplane-search></app-airplane-search>
+<app-airplane-search
+    (resultsEvent)="updateFoundAirplanes($event)"
+></app-airplane-search>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Create New</button>
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">
+    Create New
+</button>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Max First Class Seats</th>
+            <th scope="col">Max Business Class Seats</th>
+            <th scope="col">Max Economy Class Seats</th>
+            <th scope="col">Model</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="
+                let airplane of foundAirplanes
+                    | slice: (page - 1) * pageSize:page * pageSize
+            "
+        >
+            <td>{{ airplane.id }}</td>
+            <td>{{ airplane.firstClassSeatsMax }}</td>
+            <td>{{ airplane.businessClassSeatsMax }}</td>
+            <td>{{ airplane.economyClassSeatsMax }}</td>
+            <td>{{ airplane.model }}</td>
+            <td><button class="btn btn-primary">Edit</button></td>
+            <td><button class="btn btn-primary" (click)="delete(airplane)">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<ngb-pagination
+    [collectionSize]="foundAirplanes.length"
+    [(page)]="page"
+    [pageSize]="pageSize"
+></ngb-pagination>
+
+<!-- TODO: Move modal to a component. -->
 <ng-template #content let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Add Airplane</h4>
