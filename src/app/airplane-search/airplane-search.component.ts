@@ -50,7 +50,6 @@ export class AirplaneSearchComponent implements OnInit {
         this.airplaneService
             .searchAirplanes(this.selectedAirplane.model)
             .subscribe((airplanes: Airplane[]) => {
-                // this.foundAirplanes = airplanes;
                 this.resultsEvent.emit(airplanes);
             });
     }
@@ -58,12 +57,6 @@ export class AirplaneSearchComponent implements OnInit {
     ngOnInit(): void {
         this.initializeAirplanes$();
         this.selectedAirplane = {} as Airplane;
-        // // Show some airplanes at the start before a search is done.
-        // this.airplaneService
-        //     .getAirplanes()
-        //     .subscribe(
-        //         (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
-        //     );
     }
 
     initializeAirplanes$(): void {

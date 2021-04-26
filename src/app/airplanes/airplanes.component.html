@@ -4,6 +4,7 @@
     (resultsEvent)="updateFoundAirplanes($event)"
 ></app-airplane-search>
 
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="openModal()"> -->
 <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
     Create New
 </button>
@@ -31,7 +32,11 @@
             <td>{{ airplane.economyClassSeatsMax }}</td>
             <td>{{ airplane.model }}</td>
             <td><button class="btn btn-primary">Edit</button></td>
-            <td><button class="btn btn-primary" (click)="delete(airplane)">Delete</button></td>
+            <td>
+                <button class="btn btn-primary" (click)="delete(airplane)">
+                    Delete
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
@@ -42,24 +47,68 @@
     [pageSize]="pageSize"
 ></ngb-pagination>
 
-<!-- TODO: Move modal to a component. -->
+<!-- <ng-template #content
+    ><app-airplane-add-modal
+        (addEvent)="addToFoundAirplanes($event)"
+    ></app-airplane-add-modal
+></ng-template> -->
+
 <ng-template #content let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Add Airplane</h4>
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
-        <label id="new-airplane">Max First Class Seats: </label>
-        <input for="new-airplane" #airplaneFirstClassSeatsMax />
-        <label id="new-airplane">Max Business Class Seats: </label>
-        <input for="new-airplane" #airplaneBusinessClassSeatsMax />
-        <label id="new-airplane">Max Economy Class Seats: </label>
-        <input for="new-airplane" #airplaneEconomyClassSeatsMax />
-        <label id="new-airplane">Model: </label>
-        <input for="new-airplane" #airplaneModel />
+        <form [formGroup]="addingForm">
+            <label for="first-class-seats-max">Max First Class Seats: </label>
+            <input
+                type="number"
+                id="first-class-seats-max"
+                formControlName="firstClassSeatsMax"
+                #airplaneFirstClassSeatsMax
+            />
+            <label for="business-class-seats-max"
+                >Max Business Class Seats:
+            </label>
+            <input
+                type="number"
+                id="business-class-seats-max"
+                formControlName="businessClassSeatsMax"
+                #airplaneBusinessClassSeatsMax
+            />
+            <label for="economy-class-seats-max"
+                >Max Economy Class Seats:
+            </label>
+            <input
+                type="number"
+                id="economy-class-seats-max"
+                formControlName="economyClassSeatsMax"
+                #airplaneEconomyClassSeatsMax
+            />
+            <label for="model">Model: </label>
+            <input type="text" id="model" #airplaneModel />
+        </form>
+    </div>
 
+    <div class="modal-footer">
+        <button
+            type="button"
+            class="btn btn-light"
+            (click)="modal.close('Close click')"
+        >
+            Cancel
+        </button>
         <!-- (click) passes input value to add() and then clears the input -->
         <button
-            class="add-button"
+            type="button"
+            class="btn btn-light"
             (click)="
                 addAirplane(
                     airplaneModel,
@@ -69,7 +118,7 @@
                 )
             "
         >
-            Add airplane
+            Add
         </button>
     </div>
 </ng-template>

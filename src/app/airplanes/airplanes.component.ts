@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
+import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneService } from '../airplane.service';
 
 @Component({
@@ -12,7 +14,15 @@ export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
     page: number = 1;
     pageSize: number = 10;
-    closeResult: String = '';
+    addingForm: FormGroup = new FormGroup(
+        {
+            firstClassSeatsMax: new FormControl(''),
+            businessClassSeatsMax: new FormControl(''),
+            economyClassSeatsMax: new FormControl(''),
+            model: new FormControl(''),
+        },
+        [Validators.required]
+    );
 
     constructor(
         private airplaneService: AirplaneService,
@@ -28,13 +38,21 @@ export class AirplanesComponent implements OnInit {
             );
     }
 
+    addToFoundAirplanes(airplane: Airplane): void {
+        this.foundAirplanes.push(airplane);
+    }
+
+    updateFoundAirplanes(airplanes: Airplane[]): void {
+        this.foundAirplanes = airplanes;
+    }
+
     delete(airplane: Airplane): void {
         this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
         this.airplaneService.deleteAirplane(airplane.id).subscribe();
     }
 
-    updateFoundAirplanes(airplanes: Airplane[]): void {
-        this.foundAirplanes = airplanes;
+    openModal(): void {
+        this.modalService.open(AirplaneAddModalComponent, { centered: true });
     }
 
     open(content: any): void {
@@ -88,9 +106,4 @@ export class AirplanesComponent implements OnInit {
                 this.foundAirplanes.push(airplane);
             });
     }
-
-    // delete(airplane: Airplane): void {
-    //     this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
-    //     this.airplaneService.deleteAirplane(airplane.id).subscribe();
-    // }
 }

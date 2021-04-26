@@ -13,6 +13,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorHandlerService } from './http-error-handler.service';
+import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
+import { ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
     AirplaneSearchComponent,
     LoginComponent,
     LayoutComponent,
-    HomeComponent
+    HomeComponent,
+    AirplaneAddModalComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
