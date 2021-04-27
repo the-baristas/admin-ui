@@ -11,10 +11,9 @@
         <li
             #listItem
             *ngFor="let airplane of airplanes$ | async"
-            (click)="updateSearchBox(searchBox, airplane)"
+            (click)="updateSearchBox(searchBox, airplane); showResults()"
         >
             {{ airplane.model }}
         </li>
     </ul>
-    <button (click)="showResults()">Search</button>
 </div>
