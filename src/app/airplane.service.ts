@@ -25,8 +25,7 @@ export class AirplaneService {
 
     constructor(
         private httpClient: HttpClient,
-        private messageService: MessageService,
-        // httpErrorHandlerService: HttpErrorHandlerService
+        private messageService: MessageService // httpErrorHandlerService: HttpErrorHandlerService
     ) {
         // this.handleError = httpErrorHandlerService.createHandleError(
         //     'AirplaneService'
@@ -37,7 +36,9 @@ export class AirplaneService {
         return this.httpClient
             .get<Airplane[]>(environment.apiUrl + this.airplaneServicePath)
             .pipe(
-                tap((_) => this.log('fetched airplanes')),
+                tap(() =>
+                    this.messageService.add('Successfully found airplanes.')
+                ),
                 catchError(this.handleError<Airplane[]>('getAirplanes', []))
             );
     }
@@ -48,10 +49,10 @@ export class AirplaneService {
             environment.apiUrl + this.airplaneServicePath
         }/?id=${id}`;
         return this.httpClient.get<Airplane[]>(url).pipe(
-            map((airplanes) => airplanes[0]), // returns a {0|1} element array
-            tap((a) => {
-                const outcome = a ? `fetched` : `did not find`;
-                this.log(`${outcome} airplane id=${id}`);
+            map((airplanes: Airplane[]) => airplanes[0]), // returns a {0|1} element array
+            tap((a: Airplane) => {
+                const outcome = a ? `Found` : `Did not find`;
+                this.messageService.add(`${outcome} airplane with id=${id}`);
             }),
             catchError(this.handleError<Airplane>(`getAirplane id=${id}`))
         );
@@ -61,7 +62,7 @@ export class AirplaneService {
     getAirplaneById(id: number): Observable<Airplane> {
         const url = `${environment.apiUrl + this.airplaneServicePath}/${id}`;
         return this.httpClient.get<Airplane>(url).pipe(
-            tap((_) => this.log(`fetched airplane id=${id}`)),
+            tap(() => this.messageService.add(`fetched airplane id=${id}`)),
             catchError(this.handleError<Airplane>(`getAirplane id=${id}`))
         );
     }
@@ -81,8 +82,12 @@ export class AirplaneService {
             .pipe(
                 tap((x) =>
                     x.length
-                        ? this.log(`found airplanes matching "${term}"`)
-                        : this.log(`no airplanes matching "${term}"`)
+                        ? this.messageService.add(
+                              `Found airplanes matching "${term}".`
+                          )
+                        : this.messageService.add(
+                              `No airplanes matching "${term}".`
+                          )
                 ),
                 catchError(this.handleError<Airplane[]>('searchAirplanes', []))
             );
@@ -97,7 +102,9 @@ export class AirplaneService {
             )
             .pipe(
                 tap((newAirplane: Airplane) =>
-                this.log(`added airplane with id=${newAirplane.id}`)
+                    this.messageService.add(
+                        `Successfully added. Airplane id=${newAirplane.id}`
+                    )
                 ),
                 catchError(this.handleError<Airplane>('addAirplane', airplane))
             );
@@ -107,7 +114,11 @@ export class AirplaneService {
         const url = `${environment.apiUrl + this.airplaneServicePath}/${id}`;
 
         return this.httpClient.delete<Airplane>(url, httpOptions).pipe(
-            tap((_) => this.log(`deleted airplane id=${id}`)),
+            tap((_) =>
+                this.messageService.add(
+                    `Successfully deleted! Airplane id=${id}`
+                )
+            ),
             catchError(this.handleError<Airplane>('deleteAirplane'))
         );
     }
@@ -121,7 +132,11 @@ export class AirplaneService {
                 httpOptions
             )
             .pipe(
-                tap((_) => this.log(`updated airplane id=${airplane.id}`)),
+                tap(() =>
+                    this.messageService.add(
+                        `Successfully updated! Airplane id=${airplane.id}`
+                    )
+                ),
                 catchError(this.handleError<any>('updateAirplane', airplane))
             );
     }
@@ -132,10 +147,7 @@ export class AirplaneService {
      * @param operation - name of the operation that failed
      * @param result - optional value to return as the observable result
      */
-    private handleError<T>(
-        operation = 'operation',
-        result = {} as T
-    ) {
+    private handleError<T>(operation = 'operation', result = {} as T) {
         return (error: HttpErrorResponse): Observable<T> => {
             // TODO: send the error to remote logging infrastructure
             console.error(error);
@@ -153,10 +165,5 @@ export class AirplaneService {
             // Let the app keep running by returning a safe result.
             return of(result as T);
         };
-    }
-
-    /** Log a AirplaneService message with the MessageService */
-    private log(message: string) {
-        this.messageService.add(`AirplaneService: ${message}`);
     }
 }
