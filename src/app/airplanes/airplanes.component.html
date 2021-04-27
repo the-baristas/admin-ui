@@ -1,10 +1,8 @@
-<!-- <h2>Airplanes</h2> -->
-
 <app-airplane-search
     (resultsEvent)="replaceFoundAirplanes($event)"
 ></app-airplane-search>
 
-<button class="btn btn-lg btn-outline-primary" (click)="openAddModal()">
+<button class="btn btn-lg btn-primary" id="create-new-button" (click)="openAddModal()">
     Create New
 </button>
 
