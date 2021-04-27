@@ -1,11 +1,13 @@
 <!-- <h2>Airplanes</h2> -->
 
 <app-airplane-search
-    (resultsEvent)="updateFoundAirplanes($event)"
+    (resultsEvent)="replaceFoundAirplanes($event)"
 ></app-airplane-search>
 
-<!-- <button class="btn btn-lg btn-outline-primary" (click)="openModal()"> -->
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">
+<button
+    class="btn btn-lg btn-outline-primary"
+    (click)="open(addingModalTemplate)"
+>
     Create New
 </button>
 
@@ -31,8 +33,18 @@
             <td>{{ airplane.businessClassSeatsMax }}</td>
             <td>{{ airplane.economyClassSeatsMax }}</td>
             <td>{{ airplane.model }}</td>
-            <td><button class="btn btn-primary">Edit</button></td>
             <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="
+                        updateEditingForm(airplane); open(editingModalTemplate)
+                    "
+                >
+                    Edit
+                </button>
+            </td>
+            <td>
+                <!-- TODO: Add dialog box for confirmation. -->
                 <button class="btn btn-primary" (click)="delete(airplane)">
                     Delete
                 </button>
@@ -47,20 +59,19 @@
     [pageSize]="pageSize"
 ></ngb-pagination>
 
-<!-- <ng-template #content
-    ><app-airplane-add-modal
-        (addEvent)="addToFoundAirplanes($event)"
-    ></app-airplane-add-modal
-></ng-template> -->
+<!-- <ng-template #content>
+    <app-airplane-add-modal (addEvent)="addToFoundAirplanes($event)">
+    </app-airplane-add-modal>
+</ng-template> -->
 
-<ng-template #content let-modal>
+<ng-template #addingModalTemplate let-addingModal>
     <div class="modal-header">
         <h4 class="modal-title">Add Airplane</h4>
         <button
             type="button"
             class="close"
             aria-label="Close"
-            (click)="modal.dismiss('Cross click')"
+            (click)="addingModal.dismiss('Times sign click')"
         >
             <span aria-hidden="true">&times;</span>
         </button>
@@ -72,7 +83,7 @@
                 type="number"
                 id="first-class-seats-max"
                 formControlName="firstClassSeatsMax"
-                #airplaneFirstClassSeatsMax
+                #firstClassSeatsMax
             />
             <label for="business-class-seats-max"
                 >Max Business Class Seats:
@@ -81,7 +92,7 @@
                 type="number"
                 id="business-class-seats-max"
                 formControlName="businessClassSeatsMax"
-                #airplaneBusinessClassSeatsMax
+                #businessClassSeatsMax
             />
             <label for="economy-class-seats-max"
                 >Max Economy Class Seats:
@@ -90,10 +101,10 @@
                 type="number"
                 id="economy-class-seats-max"
                 formControlName="economyClassSeatsMax"
-                #airplaneEconomyClassSeatsMax
+                #economyClassSeatsMax
             />
             <label for="model">Model: </label>
-            <input type="text" id="model" #airplaneModel />
+            <input type="text" id="model" #model />
         </form>
     </div>
 
@@ -101,7 +112,7 @@
         <button
             type="button"
             class="btn btn-light"
-            (click)="modal.close('Close click')"
+            (click)="addingModal.close('Close click')"
         >
             Cancel
         </button>
@@ -111,14 +122,69 @@
             class="btn btn-light"
             (click)="
                 addAirplane(
-                    airplaneModel,
-                    airplaneFirstClassSeatsMax,
-                    airplaneBusinessClassSeatsMax,
-                    airplaneEconomyClassSeatsMax
+                    model.value,
+                    firstClassSeatsMax.value,
+                    businessClassSeatsMax.value,
+                    economyClassSeatsMax.value
                 )
             "
         >
             Add
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #editingModalTemplate let-editingModal>
+    <div class="modal-header">
+        <h4 class="modal-title">Edit</h4>
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="editingModal.dismiss('Times sign click')"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editingForm">
+            <label for="first-class-seats-max">Max First Class Seats: </label>
+            <input
+                type="number"
+                id="first-class-seats-max"
+                formControlName="firstClassSeatsMax"
+            />
+            <label for="business-class-seats-max"
+                >Max Business Class Seats:
+            </label>
+            <input
+                type="number"
+                id="business-class-seats-max"
+                formControlName="businessClassSeatsMax"
+            />
+            <label for="economy-class-seats-max"
+                >Max Economy Class Seats:
+            </label>
+            <input
+                type="number"
+                id="economy-class-seats-max"
+                formControlName="economyClassSeatsMax"
+            />
+            <label for="model">Model: </label>
+            <input type="text" id="model" formControlName="model" />
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button
+            type="button"
+            class="btn btn-light"
+            (click)="editingModal.close('Close click')"
+        >
+            Cancel
+        </button>
+        <button type="button" class="btn btn-light" (click)="save()">
+            Save
         </button>
     </div>
 </ng-template>

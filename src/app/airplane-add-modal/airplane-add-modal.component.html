@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add Airplane</h4>
+</div>
+<div class="modal-body">
+    <label for="first-class-seats-max">Max First Class Seats: </label>
+    <input id="first-class-seats-max" #airplaneFirstClassSeatsMax />
+    <label for="new-airplane">Max Business Class Seats: </label>
+    <input id="new-airplane" #airplaneBusinessClassSeatsMax />
+    <label for="new-airplane">Max Economy Class Seats: </label>
+    <input id="new-airplane" #airplaneEconomyClassSeatsMax />
+    <label for="new-airplane">Model: </label>
+    <input id="new-airplane" #airplaneModel />
+</div>
+
+<!-- (click) passes input value to add() and then clears the input -->
+<div class="modal-footer">
+    <button
+        class="add-button"
+        (click)="
+            addAirplane(
+                airplaneModel,
+                airplaneFirstClassSeatsMax,
+                airplaneBusinessClassSeatsMax,
+                airplaneEconomyClassSeatsMax
+            )
+        "
+    >
+        Add airplane
+    </button>
+</div>

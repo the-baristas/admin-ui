@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
-import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneService } from '../airplane.service';
 
 @Component({
@@ -15,6 +14,16 @@ export class AirplanesComponent implements OnInit {
     page: number = 1;
     pageSize: number = 10;
     addingForm: FormGroup = new FormGroup(
+        {
+            firstClassSeatsMax: new FormControl(''),
+            businessClassSeatsMax: new FormControl(''),
+            economyClassSeatsMax: new FormControl(''),
+            model: new FormControl(''),
+        },
+        [Validators.required]
+    );
+    selectedAirplane: Airplane = {} as Airplane;
+    editingForm: FormGroup = new FormGroup(
         {
             firstClassSeatsMax: new FormControl(''),
             businessClassSeatsMax: new FormControl(''),
@@ -36,52 +45,85 @@ export class AirplanesComponent implements OnInit {
             .subscribe(
                 (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
             );
+
+        this.editingForm.valueChanges.subscribe((airplane: Airplane) => {
+            this.selectedAirplane.firstClassSeatsMax =
+                airplane.firstClassSeatsMax;
+            this.selectedAirplane.businessClassSeatsMax =
+                airplane.businessClassSeatsMax;
+            this.selectedAirplane.economyClassSeatsMax =
+                airplane.economyClassSeatsMax;
+            this.selectedAirplane.model = airplane.model;
+        });
+    }
+
+    save(): void {
+        this.airplaneService
+            .updateAirplane(this.selectedAirplane)
+            .subscribe((updatedAirplane: Airplane) => {
+                const updatedAirplaneIndex = this.foundAirplanes.findIndex(
+                    (a: Airplane) => a.id === updatedAirplane.id
+                );
+                this.foundAirplanes[updatedAirplaneIndex] = updatedAirplane;
+                this.modalService.dismissAll('Save click');
+            });
+    }
+
+    updateEditingForm(airplane: Airplane): void {
+        this.editingForm.setValue({
+            firstClassSeatsMax: airplane.firstClassSeatsMax,
+            businessClassSeatsMax: airplane.businessClassSeatsMax,
+            economyClassSeatsMax: airplane.economyClassSeatsMax,
+            model: airplane.model,
+        });
+        this.selectedAirplane.id = airplane.id;
     }
 
     addToFoundAirplanes(airplane: Airplane): void {
         this.foundAirplanes.push(airplane);
     }
 
-    updateFoundAirplanes(airplanes: Airplane[]): void {
+    replaceFoundAirplanes(airplanes: Airplane[]): void {
         this.foundAirplanes = airplanes;
     }
 
     delete(airplane: Airplane): void {
-        this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
+        this.foundAirplanes = this.foundAirplanes.filter(
+            (a: Airplane) => a !== airplane
+        );
         this.airplaneService.deleteAirplane(airplane.id).subscribe();
     }
 
-    openModal(): void {
-        this.modalService.open(AirplaneAddModalComponent, { centered: true });
-    }
+    // openModal(): void {
+    //     this.modalService.open(AirplaneAddModalComponent, { centered: true });
+    // }
 
     open(content: any): void {
         this.modalService.open(content, { centered: true });
     }
 
+    /**
+     * Adds an airplane given input values.
+     */
     addAirplane(
-        model: HTMLInputElement,
-        firstClassSeatsMax: HTMLInputElement,
-        businessClassSeatsMax: HTMLInputElement,
-        economyClassSeatsMax: HTMLInputElement
-    ): void {
-        this.add(
-            model.value,
-            firstClassSeatsMax.value,
-            businessClassSeatsMax.value,
-            economyClassSeatsMax.value
-        );
-        model.value = '';
-        firstClassSeatsMax.value = '';
-        businessClassSeatsMax.value = '';
-        economyClassSeatsMax.value = '';
-    }
-
-    add(
         model: string,
         firstClassSeatsMax: string,
         businessClassSeatsMax: string,
         economyClassSeatsMax: string
+    ): void {
+        this.add(
+            model,
+            parseInt(firstClassSeatsMax),
+            parseInt(businessClassSeatsMax),
+            parseInt(economyClassSeatsMax)
+        );
+    }
+
+    add(
+        model: string,
+        firstClassSeatsMax: number,
+        businessClassSeatsMax: number,
+        economyClassSeatsMax: number
     ): void {
         model = model.trim();
         if (
@@ -96,14 +138,15 @@ export class AirplanesComponent implements OnInit {
         }
         const airplane = {
             model,
-            firstClassSeatsMax: parseInt(firstClassSeatsMax),
-            businessClassSeatsMax: parseInt(businessClassSeatsMax),
-            economyClassSeatsMax: parseInt(economyClassSeatsMax),
+            firstClassSeatsMax,
+            businessClassSeatsMax,
+            economyClassSeatsMax,
         };
         this.airplaneService
             .addAirplane(airplane as Airplane)
             .subscribe((airplane) => {
                 this.foundAirplanes.push(airplane);
+                this.modalService.dismissAll('Add click');
             });
     }
 }

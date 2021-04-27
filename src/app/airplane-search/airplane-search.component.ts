@@ -17,7 +17,7 @@ import { AirplaneService } from '../airplane.service';
 })
 export class AirplaneSearchComponent implements OnInit {
     airplanes$!: Observable<Airplane[]>;
-    selectedAirplane!: Airplane;
+    selectedAirplane: Airplane = {} as Airplane;
     page: number = 1;
     pageSize: number = 10;
     @Output() resultsEvent: EventEmitter<Airplane[]> = new EventEmitter();
@@ -28,6 +28,10 @@ export class AirplaneSearchComponent implements OnInit {
         private airplaneService: AirplaneService,
         private router: Router
     ) {}
+
+    ngOnInit(): void {
+        this.initializeAirplanes$();
+    }
 
     // Push a search term into the observable stream.
     search(term: string): void {
@@ -41,22 +45,12 @@ export class AirplaneSearchComponent implements OnInit {
         this.initializeAirplanes$();
     }
 
-    // delete(airplane: Airplane): void {
-    //     this.foundAirplanes = this.foundAirplanes.filter((a) => a !== airplane);
-    //     this.airplaneService.deleteAirplane(airplane.id).subscribe();
-    // }
-
     showResults(): void {
         this.airplaneService
             .searchAirplanes(this.selectedAirplane.model)
             .subscribe((airplanes: Airplane[]) => {
                 this.resultsEvent.emit(airplanes);
             });
-    }
-
-    ngOnInit(): void {
-        this.initializeAirplanes$();
-        this.selectedAirplane = {} as Airplane;
     }
 
     initializeAirplanes$(): void {
