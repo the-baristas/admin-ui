@@ -6,7 +6,7 @@
 
 <button
     class="btn btn-lg btn-outline-primary"
-    (click)="open(addingModalTemplate)"
+    (click)="openAddModal()"
 >
     Create New
 </button>
@@ -58,81 +58,6 @@
     [(page)]="page"
     [pageSize]="pageSize"
 ></ngb-pagination>
-
-<!-- <ng-template #content>
-    <app-airplane-add-modal (addEvent)="addToFoundAirplanes($event)">
-    </app-airplane-add-modal>
-</ng-template> -->
-
-<ng-template #addingModalTemplate let-addingModal>
-    <div class="modal-header">
-        <h4 class="modal-title">Add Airplane</h4>
-        <button
-            type="button"
-            class="close"
-            aria-label="Close"
-            (click)="addingModal.dismiss('Times sign click')"
-        >
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form [formGroup]="addingForm">
-            <label for="first-class-seats-max">Max First Class Seats: </label>
-            <input
-                type="number"
-                id="first-class-seats-max"
-                formControlName="firstClassSeatsMax"
-                #firstClassSeatsMax
-            />
-            <label for="business-class-seats-max"
-                >Max Business Class Seats:
-            </label>
-            <input
-                type="number"
-                id="business-class-seats-max"
-                formControlName="businessClassSeatsMax"
-                #businessClassSeatsMax
-            />
-            <label for="economy-class-seats-max"
-                >Max Economy Class Seats:
-            </label>
-            <input
-                type="number"
-                id="economy-class-seats-max"
-                formControlName="economyClassSeatsMax"
-                #economyClassSeatsMax
-            />
-            <label for="model">Model: </label>
-            <input type="text" id="model" #model />
-        </form>
-    </div>
-
-    <div class="modal-footer">
-        <button
-            type="button"
-            class="btn btn-light"
-            (click)="addingModal.close('Close click')"
-        >
-            Cancel
-        </button>
-        <!-- (click) passes input value to add() and then clears the input -->
-        <button
-            type="button"
-            class="btn btn-light"
-            (click)="
-                addAirplane(
-                    model.value,
-                    firstClassSeatsMax.value,
-                    businessClassSeatsMax.value,
-                    economyClassSeatsMax.value
-                )
-            "
-        >
-            Add
-        </button>
-    </div>
-</ng-template>
 
 <ng-template #editingModalTemplate let-editingModal>
     <div class="modal-header">

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
+import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneService } from '../airplane.service';
 
 @Component({
@@ -94,59 +95,16 @@ export class AirplanesComponent implements OnInit {
         this.airplaneService.deleteAirplane(airplane.id).subscribe();
     }
 
-    // openModal(): void {
-    //     this.modalService.open(AirplaneAddModalComponent, { centered: true });
-    // }
+    openAddModal(): void {
+        const modalRef = this.modalService.open(AirplaneAddModalComponent, {
+            centered: true,
+        });
+        modalRef.result.then((airplane: Airplane) => {
+            this.foundAirplanes.push(airplane);
+        });
+    }
 
     open(content: any): void {
         this.modalService.open(content, { centered: true });
-    }
-
-    /**
-     * Adds an airplane given input values.
-     */
-    addAirplane(
-        model: string,
-        firstClassSeatsMax: string,
-        businessClassSeatsMax: string,
-        economyClassSeatsMax: string
-    ): void {
-        this.add(
-            model,
-            parseInt(firstClassSeatsMax),
-            parseInt(businessClassSeatsMax),
-            parseInt(economyClassSeatsMax)
-        );
-    }
-
-    add(
-        model: string,
-        firstClassSeatsMax: number,
-        businessClassSeatsMax: number,
-        economyClassSeatsMax: number
-    ): void {
-        model = model.trim();
-        if (
-            !(
-                model &&
-                firstClassSeatsMax &&
-                businessClassSeatsMax &&
-                economyClassSeatsMax
-            )
-        ) {
-            return;
-        }
-        const airplane = {
-            model,
-            firstClassSeatsMax,
-            businessClassSeatsMax,
-            economyClassSeatsMax,
-        };
-        this.airplaneService
-            .addAirplane(airplane as Airplane)
-            .subscribe((airplane) => {
-                this.foundAirplanes.push(airplane);
-                this.modalService.dismissAll('Add click');
-            });
     }
 }

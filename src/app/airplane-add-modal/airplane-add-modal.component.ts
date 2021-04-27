@@ -1,42 +1,55 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
 import { AirplaneService } from '../airplane.service';
 
 @Component({
     selector: 'app-airplane-add-modal',
     templateUrl: './airplane-add-modal.component.html',
-    styleUrls: ['./airplane-add-modal.component.css']
+    styleUrls: ['./airplane-add-modal.component.css'],
 })
 export class AirplaneAddModalComponent implements OnInit {
+    addingForm: FormGroup = new FormGroup(
+        {
+            firstClassSeatsMax: new FormControl(''),
+            businessClassSeatsMax: new FormControl(''),
+            economyClassSeatsMax: new FormControl(''),
+            model: new FormControl(''),
+        },
+        [Validators.required]
+    );
     @Output() addEvent: EventEmitter<Airplane> = new EventEmitter();
 
-    constructor(private airplaneService: AirplaneService) {}
+    constructor(
+        private airplaneService: AirplaneService,
+        public activeModal: NgbActiveModal
+    ) {}
 
     ngOnInit(): void {}
 
+    /**
+     * Adds an airplane given input values.
+     */
     addAirplane(
-        model: HTMLInputElement,
-        firstClassSeatsMax: HTMLInputElement,
-        businessClassSeatsMax: HTMLInputElement,
-        economyClassSeatsMax: HTMLInputElement
-    ): void {
-        this.add(
-            model.value,
-            firstClassSeatsMax.value,
-            businessClassSeatsMax.value,
-            economyClassSeatsMax.value
-        );
-        model.value = '';
-        firstClassSeatsMax.value = '';
-        businessClassSeatsMax.value = '';
-        economyClassSeatsMax.value = '';
-    }
-
-    add(
         model: string,
         firstClassSeatsMax: string,
         businessClassSeatsMax: string,
         economyClassSeatsMax: string
+    ): void {
+        this.add(
+            model,
+            parseInt(firstClassSeatsMax),
+            parseInt(businessClassSeatsMax),
+            parseInt(economyClassSeatsMax)
+        );
+    }
+
+    add(
+        model: string,
+        firstClassSeatsMax: number,
+        businessClassSeatsMax: number,
+        economyClassSeatsMax: number
     ): void {
         model = model.trim();
         if (
@@ -49,16 +62,16 @@ export class AirplaneAddModalComponent implements OnInit {
         ) {
             return;
         }
-        const airplane = {
+        const airplane: Airplane = {
             model,
-            firstClassSeatsMax: parseInt(firstClassSeatsMax),
-            businessClassSeatsMax: parseInt(businessClassSeatsMax),
-            economyClassSeatsMax: parseInt(economyClassSeatsMax),
-        };
+            firstClassSeatsMax,
+            businessClassSeatsMax,
+            economyClassSeatsMax,
+        } as Airplane;
         this.airplaneService
-            .addAirplane(airplane as Airplane)
-            .subscribe((airplane) => {
-                this.addEvent.emit(airplane);
+            .addAirplane(airplane)
+            .subscribe((airplane: Airplane) => {
+                this.activeModal.close(airplane);
             });
     }
 }
