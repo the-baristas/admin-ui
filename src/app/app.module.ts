@@ -14,7 +14,8 @@ import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component'
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ReactiveFormsModule } from '@angular/forms'
     LoginComponent,
     LayoutComponent,
     HomeComponent,
-    AirplaneAddModalComponent
+    AirplaneAddModalComponent,
+    AirplaneEditModalComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airplane } from '../airplane';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
+import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { AirplaneService } from '../airplane.service';
 
 @Component({
@@ -14,25 +14,6 @@ export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
     page: number = 1;
     pageSize: number = 10;
-    addingForm: FormGroup = new FormGroup(
-        {
-            firstClassSeatsMax: new FormControl(''),
-            businessClassSeatsMax: new FormControl(''),
-            economyClassSeatsMax: new FormControl(''),
-            model: new FormControl(''),
-        },
-        [Validators.required]
-    );
-    selectedAirplane: Airplane = {} as Airplane;
-    editingForm: FormGroup = new FormGroup(
-        {
-            firstClassSeatsMax: new FormControl(''),
-            businessClassSeatsMax: new FormControl(''),
-            economyClassSeatsMax: new FormControl(''),
-            model: new FormControl(''),
-        },
-        [Validators.required]
-    );
 
     constructor(
         private airplaneService: AirplaneService,
@@ -46,38 +27,6 @@ export class AirplanesComponent implements OnInit {
             .subscribe(
                 (airplanes) => (this.foundAirplanes = airplanes.slice(0, 10))
             );
-
-        this.editingForm.valueChanges.subscribe((airplane: Airplane) => {
-            this.selectedAirplane.firstClassSeatsMax =
-                airplane.firstClassSeatsMax;
-            this.selectedAirplane.businessClassSeatsMax =
-                airplane.businessClassSeatsMax;
-            this.selectedAirplane.economyClassSeatsMax =
-                airplane.economyClassSeatsMax;
-            this.selectedAirplane.model = airplane.model;
-        });
-    }
-
-    save(): void {
-        this.airplaneService
-            .updateAirplane(this.selectedAirplane)
-            .subscribe((updatedAirplane: Airplane) => {
-                const updatedAirplaneIndex = this.foundAirplanes.findIndex(
-                    (a: Airplane) => a.id === updatedAirplane.id
-                );
-                this.foundAirplanes[updatedAirplaneIndex] = updatedAirplane;
-                this.modalService.dismissAll('Save click');
-            });
-    }
-
-    updateEditingForm(airplane: Airplane): void {
-        this.editingForm.setValue({
-            firstClassSeatsMax: airplane.firstClassSeatsMax,
-            businessClassSeatsMax: airplane.businessClassSeatsMax,
-            economyClassSeatsMax: airplane.economyClassSeatsMax,
-            model: airplane.model,
-        });
-        this.selectedAirplane.id = airplane.id;
     }
 
     addToFoundAirplanes(airplane: Airplane): void {
@@ -104,7 +53,26 @@ export class AirplanesComponent implements OnInit {
         });
     }
 
-    open(content: any): void {
-        this.modalService.open(content, { centered: true });
+    /**
+     * Open the Edit Modal for the given airplane.
+     */
+    openEditModal(selectedAirplane: Airplane): void {
+        const modalRef = this.modalService.open(AirplaneEditModalComponent, {
+            centered: true,
+        });
+        // The selected airplane in the foundAirplanes array is cloned and
+        // passed it to the modal component so that changes made in the modal
+        // won't affect the airplanes list.
+        modalRef.componentInstance.selectedAirplane = Object.assign(
+            {},
+            selectedAirplane
+        );
+
+        modalRef.result.then((updatedAirplane: Airplane) => {
+            const updatedAirplaneIndex = this.foundAirplanes.findIndex(
+                (a: Airplane) => a.id === updatedAirplane.id
+            );
+            this.foundAirplanes[updatedAirplaneIndex] = updatedAirplane;
+        });
     }
 }
