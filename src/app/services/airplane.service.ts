@@ -1,8 +1,4 @@
-import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -141,30 +137,4 @@ export class AirplaneService {
                 catchError(this.handleError<any>('updateAirplane', airplane))
             );
     }
-
-    // /**
-    //  * Handle Http operation that failed.
-    //  * Let the app continue.
-    //  * @param operation - name of the operation that failed
-    //  * @param result - optional value to return as the observable result
-    //  */
-    // private handleError<T>(operation = 'operation', result = {} as T) {
-    //     return (error: HttpErrorResponse): Observable<T> => {
-    //         // TODO: send the error to remote logging infrastructure
-    //         console.error(error);
-
-    //         const message =
-    //             error.error instanceof ErrorEvent
-    //                 ? error.error.message
-    //                 : `server returned code ${error.status} with body "${error.error}"`;
-
-    //         // TODO: better job of transforming error for user consumption
-    //         this.messageService.add(
-    //             `AirplaneService: ${operation} failed: ${message}`
-    //         );
-
-    //         // Let the app keep running by returning a safe result.
-    //         return of(result as T);
-    //     };
-    // }
 }

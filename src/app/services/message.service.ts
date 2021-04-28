@@ -8,7 +8,7 @@ export class MessageService {
 
     add(message: string) {
         this.message = message;
-        this.timerSubscription = timer(3000).subscribe(() => {
+        this.timerSubscription = timer(4000).subscribe(() => {
             this.clear();
         })
     }

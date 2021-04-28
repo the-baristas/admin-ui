@@ -4,29 +4,29 @@ import {
     debounceTime,
     distinctUntilChanged,
     map,
-    switchMap
+    switchMap,
 } from 'rxjs/operators';
-import { Airplane } from '../entities/airplane';
-import { AirplaneService } from '../services/airplane.service';
+import { Booking } from '../entities/booking';
+import { BookingService } from '../services/booking.service';
 
 @Component({
-    selector: 'app-airplane-search',
-    templateUrl: './airplane-search.component.html',
-    styleUrls: ['./airplane-search.component.css'],
+    selector: 'app-booking-search',
+    templateUrl: './booking-search.component.html',
+    styleUrls: ['./booking-search.component.css'],
 })
-export class AirplaneSearchComponent implements OnInit {
-    airplanes$!: Observable<Airplane[]>;
-    selectedAirplane: Airplane = {} as Airplane;
+export class BookingSearchComponent implements OnInit {
+    bookings$!: Observable<Booking[]>;
+    selectedBooking: Booking = {} as Booking;
     page: number = 1;
     pageSize: number = 10;
-    @Output() resultsEvent: EventEmitter<Airplane[]> = new EventEmitter();
+    @Output() resultsEvent: EventEmitter<Booking[]> = new EventEmitter();
 
     private searchTerms = new Subject<string>();
 
-    constructor(private airplaneService: AirplaneService) {}
+    constructor(private bookingService: BookingService) {}
 
     ngOnInit(): void {
-        this.initializeAirplanes$();
+        this.initializeBookings$();
     }
 
     // Push a search term into the observable stream.
@@ -34,34 +34,34 @@ export class AirplaneSearchComponent implements OnInit {
         this.searchTerms.next(term);
     }
 
-    updateSearchBox(searchBox: HTMLInputElement, airplane: Airplane): void {
-        searchBox.value = airplane.model;
-        this.selectedAirplane.id = airplane.id;
-        this.selectedAirplane.model = airplane.model;
-        this.initializeAirplanes$();
+    updateSearchBox(searchBox: HTMLInputElement, booking: Booking): void {
+        searchBox.value = booking.confirmationCode;
+        this.selectedBooking.id = booking.id;
+        this.selectedBooking.confirmationCode = booking.confirmationCode;
+        this.initializeBookings$();
     }
 
     showResults(): void {
-        this.airplaneService
-            .searchAirplanes(this.selectedAirplane.model)
-            .subscribe((airplanes: Airplane[]) => {
-                this.resultsEvent.emit(airplanes);
+        this.bookingService
+            .searchBookings(this.selectedBooking.confirmationCode)
+            .subscribe((bookings: Booking[]) => {
+                this.resultsEvent.emit(bookings);
             });
     }
 
-    initializeAirplanes$(): void {
-        this.airplanes$ = this.searchTerms.pipe(
+    initializeBookings$(): void {
+        this.bookings$ = this.searchTerms.pipe(
             // wait 300ms after each keystroke before considering the term
             debounceTime(300),
             // ignore new term if same as previous term
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
             switchMap((term: string) =>
-                this.airplaneService.searchAirplanes(term)
+                this.bookingService.searchBookings(term)
             ),
             // Remove duplicates.
-            map((airplanes: Array<Airplane>) =>
-                this.makeArrayUnique(airplanes, 'model')
+            map((bookings: Array<Booking>) =>
+                this.makeArrayUnique(bookings, 'model')
             )
         );
     }

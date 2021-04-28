@@ -15,6 +15,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { BookingSearchComponent } from './booking-search/booking-search.component';
+import { BookingAddModalComponent } from './booking-add-modal/booking-add-modal.component';
+import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { BookingsComponent } from './bookings/bookings.component';
     AirplaneEditModalComponent,
     DeleteModalComponent,
     BookingsComponent,
+    BookingSearchComponent,
+    BookingAddModalComponent,
+    BookingEditModalComponent,
   ],
   imports: [
     BrowserModule,
