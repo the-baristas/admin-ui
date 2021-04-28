@@ -15,7 +15,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component'
+import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-
     LayoutComponent,
     HomeComponent,
     AirplaneAddModalComponent,
-    AirplaneEditModalComponent
+    AirplaneEditModalComponent,
+    DeleteModalComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,11 @@
     (resultsEvent)="replaceFoundAirplanes($event)"
 ></app-airplane-search>
 
-<button class="btn btn-lg btn-primary" id="create-new-button" (click)="openAddModal()">
+<button
+    class="btn btn-lg btn-primary"
+    id="create-new-button"
+    (click)="openAddModal()"
+>
     Create New
 </button>
 
@@ -37,8 +41,10 @@
                 </button>
             </td>
             <td>
-                <!-- TODO: Add dialog box for confirmation. -->
-                <button class="btn btn-primary" (click)="delete(airplane)">
+                <button
+                    class="btn btn-primary"
+                    (click)="openDeleteModal(airplane)"
+                >
                     Delete
                 </button>
             </td>

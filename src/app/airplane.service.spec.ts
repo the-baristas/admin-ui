@@ -182,7 +182,7 @@ describe('AirplaneService', () => {
                 businessClassSeatsMax: 0,
                 economyClassSeatsMax: 0,
                 model: 'Boeing 777',
-            };
+            } as Airplane;
 
             airplaneService
                 .updateAirplane(updateAirplane)

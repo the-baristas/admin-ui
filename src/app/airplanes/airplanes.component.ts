@@ -4,6 +4,7 @@ import { Airplane } from '../airplane';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { AirplaneService } from '../airplane.service';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
     selector: 'app-airplanes',
@@ -73,6 +74,18 @@ export class AirplanesComponent implements OnInit {
                 (a: Airplane) => a.id === updatedAirplane.id
             );
             this.foundAirplanes[updatedAirplaneIndex] = updatedAirplane;
+        });
+    }
+
+    openDeleteModal(airplaneToDelete: Airplane): void {
+        const modalRef = this.modalService.open(DeleteModalComponent, {
+            centered: true,
+        });
+        modalRef.componentInstance.entityToDelete = airplaneToDelete;
+        modalRef.componentInstance.entityName = 'Airplane';
+
+        modalRef.result.then((airplane: Airplane) => {
+            this.delete(airplane);
         });
     }
 }
