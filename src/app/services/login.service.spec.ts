@@ -115,7 +115,14 @@ describe('LoginService', () => {
     expect(localStorage.getItem('utopia_token')).toBe(null);
   });
 
+  it('test isAdmin', () => {
+    let notAdminToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqamVmZjk0IiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfQ1VTVE9NRVIifV0sImlhdCI6MTYxOTU1NTE0OCwiZXhwIjoxNjIwNzE2NDAwfQ.i7oAxpQ1s_vnV9oKZjJFaXSNTheHWEg51cIAo5cXuTDVbXabh19SX3MKargu7qPFPfhglPuF2hzNsZ6CjvD5jA';
+    let adminToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2MTk0Njg0ODUsImV4cCI6MTYyMDYzMDAwMH0.utXkOjKOB81430ilmK8Xx0oTcL5RNhwyLPQFj7c51KdrtKkaHdCo-Lb_TU58k1mO2hc5sqqLiKthxbu11W3lNQ';
 
+    expect(loginService.isAdmin(notAdminToken)).toBeFalsy();
+    expect(loginService.isAdmin(adminToken)).toBeTruthy();
+
+  });
 
 
 });
