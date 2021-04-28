@@ -89,9 +89,6 @@ export class FlightComponent implements OnInit {
               if (error.status === 404) {
                 alert("One or more fields are invalid.")
               }
-              else if (error.status === 409) {
-                alert("Username, email, and/or phone number already exists.")
-              }
             }
           );
       }
