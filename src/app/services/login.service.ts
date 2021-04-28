@@ -47,9 +47,12 @@ export class LoginService {
 
   public isAdmin(token: string) {
     let decodedToken: any = jwt_decode<any>(token);
+    return this.hasAdminRole(decodedToken);
+  }
+
+  hasAdminRole(decodedToken: any) {
     let role: String = decodedToken.authorities[0].authority;
     return role.endsWith('ADMIN');
-
   }
 
   public setSession(token: string) {
