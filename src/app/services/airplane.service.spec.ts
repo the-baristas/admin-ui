@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from 'src/environments/environment';
-import { Airplane } from './airplane';
+import { Airplane } from '../entities/airplane';
 import { AirplaneService } from './airplane.service';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { MessageService } from './message.service';

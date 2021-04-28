@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Airplane } from '../airplane';
+import { Airplane } from '../entities/airplane';
 
 @Component({
     selector: 'app-delete-modal',

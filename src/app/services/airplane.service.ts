@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Airplane } from './airplane';
+import { Airplane } from '../entities/airplane';
 import {
     HandleError,
     HttpErrorHandlerService,

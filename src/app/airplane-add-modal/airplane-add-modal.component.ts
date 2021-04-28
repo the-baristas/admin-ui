@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Airplane } from '../airplane';
-import { AirplaneService } from '../airplane.service';
+import { Airplane } from '../entities/airplane';
+import { AirplaneService } from '../services/airplane.service';
 
 @Component({
     selector: 'app-airplane-add-modal',

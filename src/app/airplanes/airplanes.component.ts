@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Airplane } from '../airplane';
+import { Airplane } from '../entities/airplane';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
-import { AirplaneService } from '../airplane.service';
+import { AirplaneService } from '../services/airplane.service';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
