@@ -30,10 +30,6 @@ export class AirplanesComponent implements OnInit {
             );
     }
 
-    addToFoundAirplanes(airplane: Airplane): void {
-        this.foundAirplanes.push(airplane);
-    }
-
     replaceFoundAirplanes(airplanes: Airplane[]): void {
         this.foundAirplanes = airplanes;
     }
@@ -84,8 +80,6 @@ export class AirplanesComponent implements OnInit {
         modalRef.componentInstance.entityToDelete = airplaneToDelete;
         modalRef.componentInstance.entityName = 'Airplane';
 
-        modalRef.result.then((airplane: Airplane) => {
-            this.delete(airplane);
-        });
+        modalRef.result.then(this.delete.bind(this));
     }
 }

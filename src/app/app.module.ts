@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
+import { BookingsComponent } from './bookings/bookings.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MessagesComponent } from './messages/messages.component';
     AirplaneAddModalComponent,
     AirplaneEditModalComponent,
     DeleteModalComponent,
+    BookingsComponent,
   ],
   imports: [
     BrowserModule,

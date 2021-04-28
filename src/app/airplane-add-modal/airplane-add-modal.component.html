@@ -16,24 +16,21 @@
             type="number"
             id="first-class-seats-max"
             formControlName="firstClassSeatsMax"
-            #firstClassSeatsMax
         />
         <label for="business-class-seats-max">Max Business Class Seats: </label>
         <input
             type="number"
             id="business-class-seats-max"
             formControlName="businessClassSeatsMax"
-            #businessClassSeatsMax
         />
         <label for="economy-class-seats-max">Max Economy Class Seats: </label>
         <input
             type="number"
             id="economy-class-seats-max"
             formControlName="economyClassSeatsMax"
-            #economyClassSeatsMax
         />
         <label for="model">Model: </label>
-        <input type="text" id="model" #model />
+        <input type="text" id="model" formControlName="model" />
     </form>
 </div>
 
@@ -45,19 +42,5 @@
     >
         Cancel
     </button>
-    <!-- (click) passes input value to add() and then clears the input -->
-    <button
-        type="button"
-        class="btn btn-light"
-        (click)="
-            addAirplane(
-                model.value,
-                firstClassSeatsMax.value,
-                businessClassSeatsMax.value,
-                economyClassSeatsMax.value
-            )
-        "
-    >
-        Add
-    </button>
+    <button type="button" class="btn btn-light" (click)="add()">Add</button>
 </div>

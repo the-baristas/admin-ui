@@ -30,7 +30,7 @@ export class AirplaneEditModalComponent implements OnInit {
         this.updateForm();
 
         this.editingForm.valueChanges.subscribe((airplane: Airplane) => {
-            // Copies changed properties to selectedAirplanes
+            // Changed properties are copied to selectedAirplanes.
             Object.assign(this.selectedAirplane, airplane);
         });
     }

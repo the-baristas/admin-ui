@@ -22,36 +22,20 @@ export class AirplaneAddModalComponent implements OnInit {
     @Output() addEvent: EventEmitter<Airplane> = new EventEmitter();
 
     constructor(
-        private airplaneService: AirplaneService,
-        public activeModal: NgbActiveModal
+        public activeModal: NgbActiveModal,
+        private airplaneService: AirplaneService
     ) {}
 
     ngOnInit(): void {}
 
-    /**
-     * Adds an airplane given input values.
-     */
-    addAirplane(
-        model: string,
-        firstClassSeatsMax: string,
-        businessClassSeatsMax: string,
-        economyClassSeatsMax: string
-    ): void {
-        this.add(
-            model,
-            parseInt(firstClassSeatsMax),
-            parseInt(businessClassSeatsMax),
-            parseInt(economyClassSeatsMax)
-        );
-    }
-
-    add(
-        model: string,
-        firstClassSeatsMax: number,
-        businessClassSeatsMax: number,
-        economyClassSeatsMax: number
-    ): void {
-        model = model.trim();
+    add(): void {
+        const model = this.addingForm.controls.model.value.trim();
+        const firstClassSeatsMax = this.addingForm.controls.firstClassSeatsMax
+            .value;
+        const businessClassSeatsMax = this.addingForm.controls
+            .businessClassSeatsMax.value;
+        const economyClassSeatsMax = this.addingForm.controls
+            .economyClassSeatsMax.value;
         if (
             !(
                 model &&
