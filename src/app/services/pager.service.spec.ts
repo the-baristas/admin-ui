@@ -10,7 +10,7 @@ describe('PagerService', () => {
     service = TestBed.inject(PagerService);
   });
 
-  //it('should be created', () => {
-  //  expect(service).toBeTruthy();
-  //});
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 });

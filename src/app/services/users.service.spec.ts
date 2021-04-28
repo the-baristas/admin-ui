@@ -11,8 +11,8 @@ describe('UsersService', () => {
   let service: UsersService;
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
-
-  let userData: any = {
+  let apiUrl = environment.apiUrl + "/users";  
+  let userData: any = [{
     userId: 1,
     givenName: "First",
     familyName: "Last",
@@ -21,7 +21,16 @@ describe('UsersService', () => {
     phone: "1112227878",
     role: "ROLE_USER",
     isActive: 1
-  };
+  }, {
+    userId: 2,
+    givenName: "First",
+    familyName: "Last",
+    username: "username5",
+    email: "email@yahoo.com",
+    phone: "1114447878",
+    role: "ROLE_USER",
+    isActive: 1
+  }]
 
 
 
@@ -55,24 +64,34 @@ describe('UsersService', () => {
     );
 
     const request = httpTestingController.expectOne('/data');
-
     expect(request.request.method).toEqual('GET');
-
     request.flush(userData);
   });
 
 
-    it('get all users returns mock user data', () => {
-      service.getAllUsers().subscribe((data) => {
-        expect(data).toEqual([userData])
-      }
-      )
-
-    let apiUrl = environment.apiUrl + "/users";  
+  it('get all users returns mock user data', () => {
+    service.getAllUsers().subscribe((data) => {
+    expect(data).toEqual(userData)
+   });
     let mockRequest = httpTestingController.expectOne(apiUrl);
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
-    mockRequest.flush([userData]);
+    mockRequest.flush(userData);
+  });
+
+  it('Get all users failing should give error message', () => {
+    let error!: string
+    service.getAllUsers().subscribe(null, e => {
+      error = e;
     });
+
+    let request = httpTestingController.expectOne(apiUrl);
+    request.flush("Unable to retrieve user data", {
+      status: 400,
+      statusText: "Unable to retrieve user data"
+    });
+
+    expect(error.indexOf("Unable to retrieve user data") >= 0).toBeTruthy();
+  });
 
   });

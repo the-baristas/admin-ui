@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators'
-import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators'
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,16 @@ export class LoginService {
 
   public login(username: string, password: string) {
 
-    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(tap(response => {
-      console.log(response.headers.keys());
-    }));
+    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 403 || error.status === 400)
+          return throwError('Invalid username and/or password');
+        else
+          return throwError('There was some sort of problem while trying to establish a connection. Please try again later.');
+      }
+      )
+
+    );
 
   }
 
@@ -35,6 +43,16 @@ export class LoginService {
     let headers: HttpHeaders = new HttpHeaders({'Authorization': this.getToken()});
 
     return headers
+  }
+
+  public isAdmin(token: string) {
+    let decodedToken: any = jwt_decode<any>(token);
+    return this.hasAdminRole(decodedToken);
+  }
+
+  hasAdminRole(decodedToken: any) {
+    let role: String = decodedToken.authorities[0].authority;
+    return role.endsWith('ADMIN');
   }
 
   public setSession(token: string) {
