@@ -24,10 +24,7 @@ export class AirplaneSearchComponent implements OnInit {
 
     private searchTerms = new Subject<string>();
 
-    constructor(
-        private airplaneService: AirplaneService,
-        private router: Router
-    ) {}
+    constructor(private airplaneService: AirplaneService) {}
 
     ngOnInit(): void {
         this.initializeAirplanes$();

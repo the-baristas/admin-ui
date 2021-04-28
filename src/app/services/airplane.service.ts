@@ -21,15 +21,16 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
     public airplaneServicePath: string = '/airplanes';
-    // private handleError: HandleError;
+    private handleError: HandleError;
 
     constructor(
         private httpClient: HttpClient,
-        private messageService: MessageService // httpErrorHandlerService: HttpErrorHandlerService
+        private messageService: MessageService,
+        httpErrorHandlerService: HttpErrorHandlerService
     ) {
-        // this.handleError = httpErrorHandlerService.createHandleError(
-        //     'AirplaneService'
-        // );
+        this.handleError = httpErrorHandlerService.createHandleError(
+            'AirplaneService'
+        );
     }
 
     getAirplanes(): Observable<Airplane[]> {
@@ -141,29 +142,29 @@ export class AirplaneService {
             );
     }
 
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    private handleError<T>(operation = 'operation', result = {} as T) {
-        return (error: HttpErrorResponse): Observable<T> => {
-            // TODO: send the error to remote logging infrastructure
-            console.error(error);
+    // /**
+    //  * Handle Http operation that failed.
+    //  * Let the app continue.
+    //  * @param operation - name of the operation that failed
+    //  * @param result - optional value to return as the observable result
+    //  */
+    // private handleError<T>(operation = 'operation', result = {} as T) {
+    //     return (error: HttpErrorResponse): Observable<T> => {
+    //         // TODO: send the error to remote logging infrastructure
+    //         console.error(error);
 
-            const message =
-                error.error instanceof ErrorEvent
-                    ? error.error.message
-                    : `server returned code ${error.status} with body "${error.error}"`;
+    //         const message =
+    //             error.error instanceof ErrorEvent
+    //                 ? error.error.message
+    //                 : `server returned code ${error.status} with body "${error.error}"`;
 
-            // TODO: better job of transforming error for user consumption
-            this.messageService.add(
-                `AirplaneService: ${operation} failed: ${message}`
-            );
+    //         // TODO: better job of transforming error for user consumption
+    //         this.messageService.add(
+    //             `AirplaneService: ${operation} failed: ${message}`
+    //         );
 
-            // Let the app keep running by returning a safe result.
-            return of(result as T);
-        };
-    }
+    //         // Let the app keep running by returning a safe result.
+    //         return of(result as T);
+    //     };
+    // }
 }
