@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class UsersService {
 
   
-  private serverUrl = environment.apiUrl + "/users";  ;
+  private serverUrl = environment.apiUrl + "/users";
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
