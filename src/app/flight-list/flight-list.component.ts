@@ -30,6 +30,8 @@ export class FlightComponent implements OnInit {
       searchOrigin!: string;
       searchDestination!: string;
 
+      confirmation!: boolean;
+
       constructor(private flightService: FlightService, private modalService: NgbModal, 
         private pagerService: PagerService, private formBuilder: FormBuilder) { }
             
@@ -65,12 +67,14 @@ export class FlightComponent implements OnInit {
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
-              
               if (error.status === 404) {
                 alert("One or more fields are invalid.")
               }
               else if (error.status === 409) {
-                alert("Username, email, and/or phone number already exists.")
+                alert("Flight already exists.")
+              }
+              else if (error.status === 500) {
+                alert("Internal Server Error! Try again later.")
               }
             }
           );
@@ -94,19 +98,23 @@ export class FlightComponent implements OnInit {
       }
 
       public onDeleteFlight() {
-        console.log(this.updateFlightForm.value.id);
-        this.flightService.deleteFlight(this.updateFlightForm.value.id)
-        .subscribe(
-          (response: any) => {
-            this.getFlights();
-            this.modalRef.close();
-          },
-          (error: HttpErrorResponse) => {
-            if (error.status === 204) {
-              alert("Deleted Successfully!")
+        this.confirmation = confirm("Are you sure you want to delete this flight? (For auditing purposes, flights should be disabled rather than deleted.")
+
+        if (this.confirmation === true) {
+          console.log(this.updateFlightForm.value.id);
+          this.flightService.deleteFlight(this.updateFlightForm.value.id)
+          .subscribe(
+            (response: any) => {
+              this.getFlights();
+              this.modalRef.close();
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 204) {
+                alert("Deleted Successfully!")
+              }
             }
-          }
-        )
+          )
+        }
       }
 
       open(content: any, obj: any) {
@@ -197,7 +205,6 @@ export class FlightComponent implements OnInit {
           this.getFlights();
           return;
         }
-    
         
         this.flightService.getFlight(parseInt(this.searchFlightsForm.value.searchString)).subscribe(
           (response: Flight) => {

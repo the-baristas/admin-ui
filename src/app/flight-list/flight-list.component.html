@@ -14,7 +14,7 @@
   </div>
   
   <div class="ds-1-row">
-    <table class="table">
+    <table class="table table-responsive table-striped">
       <thead>
         <tr>
           <th scope="col">ID:</th>
@@ -32,8 +32,8 @@
           <td>{{flight.id}}</td>
           <td>{{flight.airplaneId}}</td>
           <td>{{flight.route.originId}} to {{flight.route.destinationId}}</td>
-          <td>{{flight.departureTime}}</td>
-          <td>{{flight.arrivalTime}}</td>
+          <td>{{flight.departureTime | date }}<br /> {{flight.departureTime | date: 'shortTime' }}</td>
+          <td>{{flight.arrivalTime | date }} <br /> {{flight.arrivalTime | date: 'shortTime'}}</td>
           <td>First Class: ${{flight.firstPrice}}<br /> Business Class: ${{flight.businessPrice}}<br /> Economy Class: ${{flight.economyPrice}}</td>
           <td>First Class: {{flight.firstReserved}}<br /> Business Class: {{flight.businessReserved}}<br /> Economy Class: {{flight.economyReserved}}</td>
           <td><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, flight)" data-toggle="modal">Edit</button> </td>
@@ -109,6 +109,11 @@
                        class="form-control"
                        formControlName="economyPrice" />
       
+                <label for="isActive">Disable?</label>
+                <input type="checkbox" 
+                       class="form-control"
+                       formControlName="isActive"
+                       value="1" />
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
