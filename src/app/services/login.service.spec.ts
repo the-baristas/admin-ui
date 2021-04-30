@@ -115,7 +115,20 @@ describe('LoginService', () => {
     expect(localStorage.getItem('utopia_token')).toBe(null);
   });
 
+  it('test hasAdminRole', () => {
+    let tokenPayload1 = {
+      sub: "admin",
+      authorities: [{ authority: "ROLE_ADMIN" } ], iat: 0, exp: 0
+    }
+    let tokenPayload2 = {
+      sub: "customer",
+      authorities: [{ authority: "ROLE_CUSTOMER" }], iat: 0, exp: 0
+    }
 
+    expect(loginService.hasAdminRole(tokenPayload1)).toBeTruthy();
+    expect(loginService.hasAdminRole(tokenPayload2)).toBeFalsy();
+
+  });
 
 
 });

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,16 @@ export class LoginService {
     let headers: HttpHeaders = new HttpHeaders({'Authorization': this.getToken()});
 
     return headers
+  }
+
+  public isAdmin(token: string) {
+    let decodedToken: any = jwt_decode<any>(token);
+    return this.hasAdminRole(decodedToken);
+  }
+
+  hasAdminRole(decodedToken: any) {
+    let role: String = decodedToken.authorities[0].authority;
+    return role.endsWith('ADMIN');
   }
 
   public setSession(token: string) {

@@ -20,9 +20,9 @@ describe('LoginComponent', () => {
   let loginResponse = new HttpResponse({ body: '', headers: header });
 
   beforeEach(async () => {
-    
 
-    loginServiceMock = jasmine.createSpyObj('LoginService', ['login']);
+
+    loginServiceMock = jasmine.createSpyObj('LoginService', ['login', 'isAdmin', 'setSession']);
     loginServiceMock.login.and.returnValue(of(loginResponse));
 
     await TestBed.configureTestingModule({
@@ -30,7 +30,7 @@ describe('LoginComponent', () => {
       imports: [HttpClientModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
       providers: [{ provide: LoginService, useValue: loginServiceMock }]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -64,12 +64,4 @@ describe('LoginComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('sign in');
   });
 
-  xit('should render error message if user inputs too many characters into username field', () => {
-    component.initializeForms();
-    component.loginForm.value.username = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    let compiled = fixture.debugElement.nativeElement;
-    let field = compiled.querySelector('input')
-
-    expect(compiled.querySelector('b').textContent).toContain('less than');
-  });
 });
