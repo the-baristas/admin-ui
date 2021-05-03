@@ -9,7 +9,6 @@
 
     <ul class="suggestions">
         <li
-            #listItem
             *ngFor="let airplane of airplanes$ | async"
             (click)="updateSearchBox(searchBox, airplane); showResults()"
         >

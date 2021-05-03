@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">#</th>
             <th scope="col">Max First Class Seats</th>
             <th scope="col">Max Business Class Seats</th>
             <th scope="col">Max Economy Class Seats</th>
@@ -24,10 +24,11 @@
         <tr
             *ngFor="
                 let airplane of foundAirplanes
-                    | slice: (page - 1) * pageSize:page * pageSize
+                    | slice: (page - 1) * pageSize:page * pageSize;
+                let i = index
             "
         >
-            <td>{{ airplane.id }}</td>
+            <td>{{ i + 1 }}</td>
             <td>{{ airplane.firstClassSeatsMax }}</td>
             <td>{{ airplane.businessClassSeatsMax }}</td>
             <td>{{ airplane.economyClassSeatsMax }}</td>

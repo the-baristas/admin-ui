@@ -34,14 +34,6 @@ export class BookingsComponent implements OnInit {
     replaceFoundBookings(bookings: Booking[]): void {
         this.foundBookings = bookings;
     }
-
-    delete(booking: Booking): void {
-        this.foundBookings = this.foundBookings.filter(
-            (b: Booking) => b !== booking
-        );
-        this.bookingService.deleteBooking(booking.id).subscribe();
-    }
-
     toggleActive(booking: Booking) {
         booking.active = !booking.active;
         this.bookingService.updateBooking(booking).subscribe();
@@ -87,5 +79,12 @@ export class BookingsComponent implements OnInit {
         modalRef.componentInstance.entityName = 'Booking';
 
         modalRef.result.then(this.delete.bind(this));
+    }
+
+    delete(booking: Booking): void {
+        this.foundBookings = this.foundBookings.filter(
+            (b: Booking) => b !== booking
+        );
+        this.bookingService.deleteBooking(booking.id).subscribe();
     }
 }

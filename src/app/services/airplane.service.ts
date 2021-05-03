@@ -16,7 +16,7 @@ const httpOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
-    public airplaneServicePath: string = '/airplanes';
+    airplaneServicePath: string = '/airplanes';
     private handleError: HandleError;
 
     constructor(

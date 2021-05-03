@@ -29,16 +29,16 @@ export class AirplaneSearchComponent implements OnInit {
         this.initializeAirplanes$();
     }
 
-    // Push a search term into the observable stream.
-    search(term: string): void {
-        this.searchTerms.next(term);
-    }
-
     updateSearchBox(searchBox: HTMLInputElement, airplane: Airplane): void {
         searchBox.value = airplane.model;
         this.selectedAirplane.id = airplane.id;
         this.selectedAirplane.model = airplane.model;
         this.initializeAirplanes$();
+    }
+
+    // Push a search term into the observable stream.
+    search(term: string): void {
+        this.searchTerms.next(term);
     }
 
     showResults(): void {
@@ -49,7 +49,7 @@ export class AirplaneSearchComponent implements OnInit {
             });
     }
 
-    initializeAirplanes$(): void {
+    private initializeAirplanes$(): void {
         this.airplanes$ = this.searchTerms.pipe(
             // wait 300ms after each keystroke before considering the term
             debounceTime(300),

@@ -1,9 +1,10 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {
     HttpClientTestingModule,
-    HttpTestingController
+    HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { defer } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Airplane } from '../entities/airplane';
 import { AirplaneService } from './airplane.service';
@@ -11,7 +12,7 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
 import { MessageService } from './message.service';
 
 describe('AirplaneService', () => {
-    let httpClient: HttpClient;
+    // let httpClient: HttpClient;
     let httpTestingController: HttpTestingController;
     let airplaneService: AirplaneService;
 
@@ -22,14 +23,14 @@ describe('AirplaneService', () => {
             // Provide the service-under-test and its dependencies
             providers: [
                 AirplaneService,
-                MessageService,
-                HttpErrorHandlerService,
+                // MessageService,
+                // HttpErrorHandlerService,
             ],
         });
 
         // Inject the http, test controller, and service-under-test
         // as they will be referenced by each test.
-        httpClient = TestBed.inject(HttpClient);
+        // httpClient = TestBed.inject(HttpClient);
         httpTestingController = TestBed.inject(HttpTestingController);
         airplaneService = TestBed.inject(AirplaneService);
     });
@@ -272,43 +273,35 @@ describe('AirplaneService', () => {
         });
     });
 
-    describe('#searchAirplanes', () => {
-    });
+    describe('#searchAirplanes', () => {});
 
-    describe('#addAirplanes', () => {
-    });
+    describe('#addAirplanes', () => {});
 
-    describe('#deleteAirplanes', () => {
-    });
+    describe('#deleteAirplanes', () => {});
 });
 
 describe('AirplaneService', () => {
     let airplaneService: AirplaneService;
-    let httpClientSpy: jasmine.SpyObj<HttpClient>;
     let messageServiceSpy: jasmine.SpyObj<MessageService>;
-    let httpErrorHandlerService: jasmine.SpyObj<HttpErrorHandlerService>;
+    let httpErrorHandlerServiceSpy: jasmine.SpyObj<HttpErrorHandlerService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
             providers: [
                 AirplaneService,
-                { provide: HttpClient, useValue: httpClientSpy },
                 { provide: MessageService, useValue: messageServiceSpy },
                 {
                     provide: HttpErrorHandlerService,
-                    useValue: httpErrorHandlerService,
+                    useValue: httpErrorHandlerServiceSpy,
                 },
             ],
         });
-        httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
         messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-        airplaneService = TestBed.inject(AirplaneService);
-        httpClientSpy = TestBed.inject(
-            HttpClient
-        ) as jasmine.SpyObj<HttpClient>;
         messageServiceSpy = TestBed.inject(
             MessageService
         ) as jasmine.SpyObj<MessageService>;
+        airplaneService = TestBed.inject(AirplaneService);
     });
 
     it('should be created', () => {
@@ -316,55 +309,55 @@ describe('AirplaneService', () => {
     });
 });
 
-// describe('AirplaneService (with spies)', () => {
-//     let httpClientSpy: { get: jasmine.Spy };
-//     let messageServiceSpy: { add: jasmine.Spy };
-//     let airplaneService: AirplaneService;
+describe('AirplaneService (with spies)', () => {
+    let httpClientSpy: { get: jasmine.Spy };
+    let messageServiceSpy: { add: jasmine.Spy };
+    let airplaneService: AirplaneService;
 
-//     beforeEach(() => {
-//         httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-//         messageServiceSpy = jasmine.createSpyObj('MessageServie', ['add']);
-//         airplaneService = new AirplaneService(
-//             httpClientSpy as any,
-//             messageServiceSpy as any,
-//             HttpErrorHandlerService as any
-//         );
-//     });
+    beforeEach(() => {
+        httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+        messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+        airplaneService = new AirplaneService(
+            httpClientSpy as any,
+            messageServiceSpy as any,
+            HttpErrorHandlerService as any
+        );
+    });
 
-//     it('should return expected airplanes (HttpClient called once)', () => {
-//         const expectedAirplanes: Airplane[] = [{} as Airplane];
-//         httpClientSpy.get.and.returnValue(
-//             defer(() => Promise.resolve(expectedAirplanes))
-//         );
+    it('should return expected airplanes (HttpClient called once)', () => {
+        const expectedAirplanes: Airplane[] = [{} as Airplane];
+        httpClientSpy.get.and.returnValue(
+            defer(() => Promise.resolve(expectedAirplanes))
+        );
 
-//         airplaneService
-//             .getAirplanes()
-//             .subscribe(
-//                 (airplanes) =>
-//                     expect(airplanes).toEqual(
-//                         expectedAirplanes,
-//                         'expected airplanes'
-//                     ),
-//                 fail
-//             );
-//         expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
-//     });
+        airplaneService
+            .getAirplanes()
+            .subscribe(
+                (airplanes) =>
+                    expect(airplanes).toEqual(
+                        expectedAirplanes,
+                        'expected airplanes'
+                    ),
+                fail
+            );
+        expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
+    });
 
-//     it('should return an error when the server returns a 404', () => {
-//         const errorResponse = new HttpErrorResponse({
-//             error: 'test 404 error',
-//             status: 404,
-//             statusText: 'Not Found',
-//         });
+    it('should return an error when the server returns a 404', () => {
+        const errorResponse = new HttpErrorResponse({
+            error: 'test 404 error',
+            status: 404,
+            statusText: 'Not Found',
+        });
 
-//         httpClientSpy.get.and.returnValue(
-//             defer(() => Promise.reject(errorResponse))
-//         );
+        httpClientSpy.get.and.returnValue(
+            defer(() => Promise.reject(errorResponse))
+        );
 
-//         airplaneService.getAirplanes().subscribe(
-//             (airplanes: Airplane[]) => fail('expected an error, not airplanes'),
-//             (error: HttpErrorResponse) =>
-//                 expect(error.message).toContain('test 404 error')
-//         );
-//     });
-// });
+        airplaneService.getAirplanes().subscribe(
+            (airplanes: Airplane[]) => fail('expected an error, not airplanes'),
+            (error: HttpErrorResponse) =>
+                expect(error.message).toContain('test 404 error')
+        );
+    });
+});
