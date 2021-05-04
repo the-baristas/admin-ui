@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { switchMap } from 'rxjs/operators';
+import { Airplane } from '../entities/airplane';
+import { AirplaneService } from '../services/airplane.service';
 
 @Component({
     selector: 'app-airplane-add-modal',
@@ -8,50 +11,55 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./airplane-add-modal.component.css']
 })
 export class AirplaneAddModalComponent implements OnInit {
-    // addingForm: FormGroup = new FormGroup(
-    //     {
-    //         firstClassSeatsMax: new FormControl(''),
-    //         businessClassSeatsMax: new FormControl(''),
-    //         economyClassSeatsMax: new FormControl(''),
-    //         model: new FormControl('')
-    //     },
-    //     [Validators.required]
-    // );
-    addingForm!: FormGroup;
-    add!: Function;
+    addingForm: FormGroup = new FormGroup(
+        {
+            firstClassSeatsMax: new FormControl(''),
+            businessClassSeatsMax: new FormControl(''),
+            economyClassSeatsMax: new FormControl(''),
+            model: new FormControl('')
+        },
+        [Validators.required]
+    );
 
-    constructor(public activeModal: NgbActiveModal) {}
+    constructor(
+        public activeModal: NgbActiveModal,
+        private airplaneService: AirplaneService
+    ) {}
 
     ngOnInit(): void {}
 
-    // add(): void {
-    //     const model = this.addingForm.controls.model.value.trim();
-    //     const firstClassSeatsMax = this.addingForm.controls.firstClassSeatsMax
-    //         .value;
-    //     const businessClassSeatsMax = this.addingForm.controls
-    //         .businessClassSeatsMax.value;
-    //     const economyClassSeatsMax = this.addingForm.controls
-    //         .economyClassSeatsMax.value;
-    //     if (
-    //         !(
-    //             model &&
-    //             firstClassSeatsMax &&
-    //             businessClassSeatsMax &&
-    //             economyClassSeatsMax
-    //         )
-    //     ) {
-    //         return;
-    //     }
-    //     const airplane: Airplane = {
-    //         model,
-    //         firstClassSeatsMax,
-    //         businessClassSeatsMax,
-    //         economyClassSeatsMax
-    //     } as Airplane;
-    //     this.airplaneService
-    //         .addAirplane(airplane)
-    //         .subscribe((airplane: Airplane) => {
-    //             this.activeModal.close(airplane);
-    //         });
-    // }
+    add(): void {
+        const firstClassSeatsMax: number = this.addingForm.get(
+            'firstClassSeatsMax'
+        )?.value;
+        const businessClassSeatsMax: number = this.addingForm.get(
+            'businessClassSeatsMax'
+        )?.value;
+        const economyClassSeatsMax: number = this.addingForm.get(
+            'economyClassSeatsMax'
+        )?.value;
+        const model: string = this.addingForm.get('model')?.value.trim();
+        // TODO: Check fields in a better way.
+        if (
+            firstClassSeatsMax < 0 ||
+            businessClassSeatsMax < 0 ||
+            economyClassSeatsMax < 0 ||
+            !model
+        ) {
+            return;
+        }
+        const airplane: Airplane = {
+            firstClassSeatsMax,
+            businessClassSeatsMax,
+            economyClassSeatsMax,
+            model
+        } as Airplane;
+
+        this.airplaneService
+            .addAirplane(airplane)
+            .pipe(switchMap(() => this.airplaneService.getAirplanes()))
+            .subscribe((airplanes: Airplane[]) =>
+                this.activeModal.close(airplanes)
+            );
+    }
 }

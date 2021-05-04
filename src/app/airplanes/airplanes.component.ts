@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
+import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
-import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { Airplane } from '../entities/airplane';
+import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
 
 @Component({
@@ -14,17 +14,8 @@ import { AirplaneService } from '../services/airplane.service';
 })
 export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
-    page: number = 1;
+    pageNumber: number = 1;
     pageSize: number = 10;
-    addingForm: FormGroup = new FormGroup(
-        {
-            firstClassSeatsMax: new FormControl(''),
-            businessClassSeatsMax: new FormControl(''),
-            economyClassSeatsMax: new FormControl(''),
-            model: new FormControl('')
-        },
-        [Validators.required]
-    );
 
     constructor(
         private airplaneService: AirplaneService,
@@ -36,9 +27,14 @@ export class AirplanesComponent implements OnInit {
         this.airplaneService
             .getAirplanes()
             .subscribe(
-                (airplanes: Airplane[]) =>
-                    (this.foundAirplanes = airplanes.slice(0, 10))
+                (airplanes: Airplane[]) => (this.foundAirplanes = airplanes)
             );
+        // this.airplaneService
+        //     .getAirplanesPage(this.pageNumber, this.pageSize)
+        //     .subscribe(
+        //         (airplanesPage: Page<Airplane>) =>
+        //             (this.foundAirplanes = airplanesPage.content)
+        //     );
     }
 
     replaceFoundAirplanes(airplanes: Airplane[]): void {
@@ -46,44 +42,15 @@ export class AirplanesComponent implements OnInit {
     }
 
     openAddModal(): void {
-        const modalRef = this.modalService.open(AirplaneAddModalComponent, {
-            centered: true
-        });
-        modalRef.componentInstance.addingForm = this.addingForm;
-        modalRef.componentInstance.add = () => {
-            const model = this.addingForm.controls.model.value.trim();
-            const firstClassSeatsMax = this.addingForm.controls
-                .firstClassSeatsMax.value;
-            const businessClassSeatsMax = this.addingForm.controls
-                .businessClassSeatsMax.value;
-            const economyClassSeatsMax = this.addingForm.controls
-                .economyClassSeatsMax.value;
-            if (
-                !(
-                    model &&
-                    firstClassSeatsMax &&
-                    businessClassSeatsMax &&
-                    economyClassSeatsMax
-                )
-            ) {
-                return;
+        const modalRef: NgbModalRef = this.modalService.open(
+            AirplaneAddModalComponent,
+            {
+                centered: true
             }
-            const airplane: Airplane = {
-                model,
-                firstClassSeatsMax,
-                businessClassSeatsMax,
-                economyClassSeatsMax
-            } as Airplane;
-
-            this.airplaneService.addAirplane(airplane).subscribe(() => {
-                this.airplaneService
-                    .getAirplanes()
-                    .subscribe((airplanes: Airplane[]) => {
-                        this.foundAirplanes = airplanes;
-                        modalRef.close();
-                    });
-            });
-        };
+        );
+        modalRef.result.then((airplanes: Airplane[]) => {
+            this.foundAirplanes = airplanes;
+        });
     }
 
     /**
@@ -110,20 +77,16 @@ export class AirplanesComponent implements OnInit {
     }
 
     openDeleteModal(airplaneToDelete: Airplane): void {
-        const modalRef = this.modalService.open(DeleteModalComponent, {
+        const modalRef = this.modalService.open(AirplaneDeleteModalComponent, {
             centered: true
         });
-        modalRef.componentInstance.entityToDelete = airplaneToDelete;
+        modalRef.componentInstance.airplaneToDelete = airplaneToDelete;
         modalRef.componentInstance.entityName = 'Airplane';
 
-        modalRef.result.then(this.delete.bind(this));
-    }
-
-    // NOTE: This doesn't need to be public.
-    delete(airplane: Airplane): void {
-        this.foundAirplanes = this.foundAirplanes.filter(
-            (a: Airplane) => a !== airplane
-        );
-        this.airplaneService.deleteAirplane(airplane.id).subscribe();
+        modalRef.result.then((airplane: Airplane) => {
+            this.foundAirplanes = this.foundAirplanes.filter(
+                (a: Airplane) => a !== airplane
+            );
+        });
     }
 }

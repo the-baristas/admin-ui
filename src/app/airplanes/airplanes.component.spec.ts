@@ -5,18 +5,18 @@ import {
     tick,
     waitForAsync
 } from '@angular/core/testing';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { defer, EMPTY, of } from 'rxjs';
 import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
-import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
+import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
 import { Airplane } from '../entities/airplane';
 import { AirplaneService } from '../services/airplane.service';
 import { AirplanesComponent } from './airplanes.component';
 
-fdescribe('AirplanesComponent', () => {
+describe('AirplanesComponent', () => {
     let component: AirplanesComponent;
     let fixture: ComponentFixture<AirplanesComponent>;
     let airplaneServiceSpy: jasmine.SpyObj<AirplaneService>;
@@ -45,7 +45,7 @@ fdescribe('AirplanesComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should initialize foundAirplanes after Angular calls ngOnInit (synchronous)', () => {
+    it('should initialize foundAirplanes after Angular calls ngOnInit (synchronous observable)', () => {
         const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
         airplaneServiceSpy.getAirplanes.and.returnValue(of(airplanes)); // synchronous observable
         fixture.detectChanges(); // ngOnInit
@@ -53,7 +53,7 @@ fdescribe('AirplanesComponent', () => {
         expect(component.foundAirplanes.length).toBe(2);
     });
 
-    it('should initialize foundAirplanes after Angular calls ngOnInit (fakeAsync - synchronous)', fakeAsync(() => {
+    it('should initialize foundAirplanes after Angular calls ngOnInit (fakeAsync)', fakeAsync(() => {
         const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
         airplaneServiceSpy.getAirplanes.and.returnValue(
             defer(() => Promise.resolve(airplanes)) // asynchronous observable
@@ -66,7 +66,7 @@ fdescribe('AirplanesComponent', () => {
     }));
 
     it(
-        'should initialize foundAirplanes after Angular calls ngOnInit (waitForAsync - asynchronous)',
+        'should initialize foundAirplanes after Angular calls ngOnInit (waitForAsync)',
         waitForAsync(() => {
             const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
             airplaneServiceSpy.getAirplanes.and.returnValue(
@@ -82,7 +82,7 @@ fdescribe('AirplanesComponent', () => {
         })
     );
 
-    it('should initialize foundAirplanes after Angular calls ngOnInit (marbles - synchronous)', () => {
+    it('should initialize foundAirplanes after Angular calls ngOnInit (marbles)', () => {
         const testScheduler: TestScheduler = new TestScheduler(
             (actual, expected) => {
                 // asserting the two objects are equal - required
@@ -112,14 +112,17 @@ fdescribe('AirplanesComponent', () => {
         expect(button?.innerText).toEqual('Create New');
     });
 
-    it('#openAddModal should open the add modal', () => {
-        const ngbModal = TestBed.inject(NgbModal);
-        spyOn(ngbModal, 'open').and.callThrough();
+    it('#openAddModal should open the add modal (synchronous observable)', () => {
+        const modalService = TestBed.inject(NgbModal);
+        spyOn(modalService, 'open').and.callThrough();
         component.openAddModal();
 
-        expect(ngbModal.open).toHaveBeenCalledWith(AirplaneAddModalComponent, {
-            centered: true
-        });
+        expect(modalService.open).toHaveBeenCalledWith(
+            AirplaneAddModalComponent,
+            {
+                centered: true
+            }
+        );
     });
 
     it('should create 2 table rows when there are 2 Airplanes in foundAirplanes', () => {
@@ -138,35 +141,28 @@ fdescribe('AirplanesComponent', () => {
     });
 
     it('#openEditModal should open the edit modal', () => {
-        const ngbModal = TestBed.inject(NgbModal);
-        spyOn(ngbModal, 'open').and.callThrough();
+        const modalService = TestBed.inject(NgbModal);
+        spyOn(modalService, 'open').and.callThrough();
         component.openEditModal({} as Airplane);
 
-        expect(ngbModal.open).toHaveBeenCalledWith(AirplaneEditModalComponent, {
-            centered: true
-        });
+        expect(modalService.open).toHaveBeenCalledWith(
+            AirplaneEditModalComponent,
+            {
+                centered: true
+            }
+        );
     });
 
     it('#openDeleteModel should open the delete modal', () => {
-        const ngbModal = TestBed.inject(NgbModal);
-        spyOn(ngbModal, 'open').and.callThrough();
+        const modalService = TestBed.inject(NgbModal);
+        spyOn(modalService, 'open').and.callThrough();
         component.openDeleteModal({} as Airplane);
 
-        expect(ngbModal.open).toHaveBeenCalledWith(DeleteModalComponent, {
-            centered: true
-        });
-    });
-
-    it('#delete should delete the correct airplane', () => {
-        const airplane = { id: 1 } as Airplane;
-        airplaneServiceSpy.deleteAirplane
-            .withArgs(airplane.id)
-            .and.returnValue(of(airplane));
-        component.foundAirplanes = [airplane];
-        component.delete(airplane);
-
-        expect(
-            fixture.componentInstance.foundAirplanes.includes(airplane)
-        ).toBeFalse();
+        expect(modalService.open).toHaveBeenCalledWith(
+            AirplaneDeleteModalComponent,
+            {
+                centered: true
+            }
+        );
     });
 });

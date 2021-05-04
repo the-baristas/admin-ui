@@ -13,7 +13,7 @@
     <p>
         <strong
             >Are you sure you want to delete
-            <span class="text-primary">ID {{ entityToDelete.id }}</span>
+            <span class="text-primary">ID {{ airplaneToDelete.id }}</span>
             {{ entityName }}?</strong
         >
     </p>
@@ -34,7 +34,7 @@
     <button
         type="button"
         class="btn btn-danger"
-        (click)="activeModal.close(entityToDelete)"
+        (click)="delete()"
     >
         Ok
     </button>

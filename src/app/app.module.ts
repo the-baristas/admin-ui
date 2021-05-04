@@ -9,7 +9,7 @@ import { AirplaneSearchComponent } from './airplane-search/airplane-search.compo
 import { AirplanesComponent } from './airplanes/airplanes.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { AirplaneDeleteModalComponent } from './airplane-delete-modal/airplane-delete-modal.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
@@ -30,7 +30,7 @@ import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-mod
     HomeComponent,
     AirplaneAddModalComponent,
     AirplaneEditModalComponent,
-    DeleteModalComponent,
+    AirplaneDeleteModalComponent,
     BookingsComponent,
     BookingSearchComponent,
     BookingAddModalComponent,

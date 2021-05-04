@@ -24,7 +24,7 @@
         <tr
             *ngFor="
                 let airplane of foundAirplanes
-                    | slice: (page - 1) * pageSize:page * pageSize;
+                    | slice: (pageNumber - 1) * pageSize:pageNumber * pageSize;
                 let i = index
             "
         >
@@ -55,6 +55,6 @@
 
 <ngb-pagination
     [collectionSize]="foundAirplanes.length"
-    [(page)]="page"
+    [(page)]="pageNumber"
     [pageSize]="pageSize"
 ></ngb-pagination>

@@ -4,14 +4,15 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Airplane } from '../entities/airplane';
+import { Page } from '../entities/page';
 import {
     HandleError,
-    HttpErrorHandlerService,
+    HttpErrorHandlerService
 } from './http-error-handler.service';
 import { MessageService } from './message.service';
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable({ providedIn: 'root' })
@@ -37,6 +38,28 @@ export class AirplaneService {
                     this.messageService.add('Successfully found airplanes.')
                 ),
                 catchError(this.handleError<Airplane[]>('getAirplanes', []))
+            );
+    }
+
+    getAirplanesPage(number: number, size: number): Observable<Page<Airplane>> {
+        return this.httpClient
+            .get<Page<Airplane>>(
+                `${
+                    environment.apiUrl + this.airplaneServicePath
+                }/page?number=${number}&size=${size}`
+            )
+            .pipe(
+                tap(() =>
+                    this.messageService.add(
+                        'Successfully found airplanes page.'
+                    )
+                ),
+                catchError(
+                    this.handleError<Page<Airplane>>(
+                        'getAirplanesPage',
+                        {} as Page<Airplane>
+                    )
+                )
             );
     }
 
@@ -72,9 +95,7 @@ export class AirplaneService {
         }
         return this.httpClient
             .get<Airplane[]>(
-                `${
-                    environment.apiUrl + this.airplaneServicePath
-                }/?model=${term}`
+                `${environment.apiUrl + this.airplaneServicePath}?model=${term}`
             )
             .pipe(
                 tap((x) =>

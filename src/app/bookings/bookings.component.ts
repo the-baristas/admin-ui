@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookingAddModalComponent } from '../booking-add-modal/booking-add-modal.component';
 import { BookingEditModalComponent } from '../booking-edit-modal/booking-edit-modal.component';
-import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
+import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
 import { Booking } from '../entities/booking';
 import { BookingService } from '../services/booking.service';
 
@@ -72,7 +72,7 @@ export class BookingsComponent implements OnInit {
     }
 
     openDeleteModal(bookingToDelete: Booking): void {
-        const modalRef = this.modalService.open(DeleteModalComponent, {
+        const modalRef = this.modalService.open(AirplaneDeleteModalComponent, {
             centered: true,
         });
         modalRef.componentInstance.entityToDelete = bookingToDelete;
