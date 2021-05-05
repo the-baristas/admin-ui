@@ -41,12 +41,15 @@ export class AirplaneService {
             );
     }
 
-    getAirplanesPage(number: number, size: number): Observable<Page<Airplane>> {
+    getAirplanesPage(
+        pageIndex: number,
+        pageSize: number
+    ): Observable<Page<Airplane>> {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
                     environment.apiUrl + this.airplaneServicePath
-                }/page?number=${number}&size=${size}`
+                }/page?index=${pageIndex}&size=${pageSize}`
             )
             .pipe(
                 tap(() =>
@@ -95,7 +98,9 @@ export class AirplaneService {
         }
         return this.httpClient
             .get<Airplane[]>(
-                `${environment.apiUrl + this.airplaneServicePath}?model=${term}`
+                `${
+                    environment.apiUrl + this.airplaneServicePath
+                }/search?model=${term}`
             )
             .pipe(
                 tap((x) =>

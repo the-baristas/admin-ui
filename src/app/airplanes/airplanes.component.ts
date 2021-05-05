@@ -23,18 +23,13 @@ export class AirplanesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        // Show some airplanes at the start before a search is done.
+        const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .getAirplanes()
+            .getAirplanesPage(pageIndex, this.pageSize)
             .subscribe(
-                (airplanes: Airplane[]) => (this.foundAirplanes = airplanes)
+                (airplanesPage: Page<Airplane>) =>
+                    (this.foundAirplanes = airplanesPage.content)
             );
-        // this.airplaneService
-        //     .getAirplanesPage(this.pageNumber, this.pageSize)
-        //     .subscribe(
-        //         (airplanesPage: Page<Airplane>) =>
-        //             (this.foundAirplanes = airplanesPage.content)
-        //     );
     }
 
     replaceFoundAirplanes(airplanes: Airplane[]): void {
