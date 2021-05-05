@@ -1,0 +1,35 @@
+
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.grid-item{
+    padding: 5px;
+}
+
+.form-control.ng-touched.ng-invalid {
+  border: 2px solid red;
+}
+
+#userSearchField {
+  margin: 5px;
+  width: 245px;
+}
+
+@media screen and (max-width: 800px){
+    .hideUnder800px{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 550px) {
+  .hideUnder550px {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 450px){
+    .hideUnder450px{
+        display: none;
+    }
+}

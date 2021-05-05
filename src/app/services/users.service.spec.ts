@@ -70,7 +70,7 @@ describe('UsersService', () => {
 
 
   it('get all users returns mock user data', () => {
-    service.getAllUsers().subscribe((data) => {
+    service.getAllUsers(0, 10).subscribe((data) => {
     expect(data).toEqual(userData)
    });
     let mockRequest = httpTestingController.expectOne(apiUrl);
@@ -81,7 +81,7 @@ describe('UsersService', () => {
 
   it('Get all users failing should give error message', () => {
     let error!: string
-    service.getAllUsers().subscribe(null, e => {
+    service.getAllUsers(0, 10).subscribe(null, e => {
       error = e;
     });
 

@@ -1,167 +1,196 @@
 <div class="ds-1-row ds-u-margin-top--3">
-  <div class="ds-1-col--9">
+  <div style="width:25%; margin-left: 100px">
     <form [formGroup]="searchUsersForm">
-      <input type="text" class="form-control" formControlName="searchString" (input)="searchUsersById()"/>
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringEmail" placeholder="Search Email" />
     </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByEmailErrorMessage" style="display:none;color:red">
+      A user with this email does not exist.
+    </div>
   </div>
-  <div class="ds-1-row ds-u-margin-top--3" id="searchByIdErrorMessage" style="display:none;color:red" >A user with this ID does not exist.</div>
+
+  <div style="width:25%; margin-left: 100px">
+    <form [formGroup]="searchUsersForm">
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username"  />
+    </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByUsernameErrorMessage" style="display:none;color:red">
+      A user with this username does not exist.
+    </div>
+  </div>
+
+  <div style="width:25%; margin-left: 100px">
+    <form [formGroup]="searchUsersForm">
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone"  />
+    </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByPhoneErrorMessage" style="display:none;color:red">
+      A user with this phone number does not exist.
+    </div>
+  </div>
+  <div class="grid-container" style="width: 200px;">
+    <div class="grid-item" style="width:25%; margin-left: 100px">
+      <button class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
+    </div>
+    <div class="grid-item" style="width:25%; margin-left: 100px">
+      <button class="btn btn-primary" (click)="searchUsers()">Search</button>
+    </div>
+  </div>
+  
+
 </div>
 
 <div class="ds-1-row ds-u-margin-top--3">
   <div class="ds-1-col--9">
     <ngb-pagination [collectionSize]="totalUsers"
-                    [(page)]="pager.currentPage"
+                    [(page)]="pageNumber"
                     [maxSize]="10"
                     [boundaryLinks]="true"
                     (pageChange)="setPage($event)">
     </ngb-pagination>
+    <div style="text-align:right; margin-right: 130px">
+      <button class="btn btn-primary" (click)="open(userModal, null)">Create</button>
+    </div>
   </div>
+
+
 </div>
 
 <div class="ds-1-row ds-u-margin-top--9">
+  <h3>List of Users</h3>
   <table class="table">
     <thead>
-      List of Users
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Username</th>
+        <th class="hideUnder800px" scope="col">First</th>
+        <th class="hideUnder800px" scope="col">Last</th>
+        <th class="hideUnder550px" scope="col">Username</th>
         <th scope="col">Email</th>
         <th scope="col">Phone Number</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of pagedUsers; let i = index">
-        <td>{{i + 1}}</td>
-        <td>{{user.givenName}}</td>
-        <td>{{user.familyName}}</td>
-        <td>{{user.username}}</td>
+      <tr *ngFor="let user of users; let i = index">
+        <td >{{i + 1}}</td>
+        <td class="hideUnder800px">{{user.givenName}}</td>
+        <td class="hideUnder800px">{{user.familyName}}</td>
+        <td class="hideUnder550px">{{user.username}}</td>
         <td>{{user.email}}</td>
         <td>{{user.phone}}</td>
-        <td> <button class="btn btn-primary" (click)="open(saveUserModal, user)" data-toggle="modal">Edit</button> </td>
+        <td> <button class="btn btn-primary" data-toggle="modal">Edit</button> </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<ng-template #saveUserModal let-c="close" let-d="dismiss">
-
+<ng-template #userModal let-c="close" let-d="dismiss">
   <form [formGroup]="updateUserForm" (submit)="onUpdateUser()">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit User Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">{{action}} User</h5>
+
         </div>
         <div class="modal-body">
-          <p>Enter details to save.</p>
-          <label for="givenName">First Name</label>
-          <input type="text"
-                 class="form-control"
-                 formControlName="givenName" />
-          <span *ngIf="updateUserFormControls.givenName.touched && updateUserFormControls.givenName.errors?.required" class="text-danger">
-            <b>Please enter a valid name</b>
-          </span>
-          <span *ngIf="updateUserFormControls.givenName.errors?.maxlength" class="text-danger">
-            <b>Please enter less than 45 characters</b>
+          <p>Enter user details to save</p>
+          <div>
+            <label for="givenName">First Name</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="givenName" />
+            <span *ngIf="updateUserFormControls.givenName.touched && updateUserFormControls.givenName.errors?.required" class="text-danger">
+              <b>Please enter a valid name</b>
+            </span>
+            <span *ngIf="updateUserFormControls.givenName.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="familyName">Last Name</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="familyName" />
+            <span *ngIf="updateUserFormControls.familyName.touched && updateUserFormControls.familyName.errors?.required" class="text-danger">
+              <b>Please enter a valid name</b>
+            </span>
+            <span *ngIf="updateUserFormControls.familyName.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="username">Username</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="username" />
+            <span *ngIf="updateUserFormControls.username.touched && updateUserFormControls.username.errors?.required" class="text-danger">
+              <b>Please enter a valid username</b>
+            </span>
+            <span *ngIf="updateUserFormControls.username.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+
+          <span *ngIf="action === 'Add'">
+            <label for="username">Password</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="password" />
+            <span *ngIf="updateUserFormControls.password.touched && updateUserFormControls.password.errors?.required" class="text-danger">
+              <b>Please enter a valid password</b>
+            </span>
+            <span *ngIf="updateUserFormControls.password.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
           </span>
 
-          <label for="familyName">Last Name</label>
-          <input type="text"
-                 class="form-control"
-                 formControlName="familyName" />
-          <span *ngIf="updateUserFormControls.familyName.touched && updateUserFormControls.familyName.errors?.required" class="text-danger">
-            <b>Please enter a valid name</b>
-          </span>
-          <span *ngIf="updateUserFormControls.familyName.errors?.maxlength" class="text-danger">
-            <b>Please enter less than 45 characters</b>
-          </span>
+          <div>
+            <label for="email">Email</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="email" />
+            <span *ngIf="updateUserFormControls.email.touched && ( updateUserFormControls.email.errors?.required || updateUserFormControls.email.errors?.email)" class="text-danger">
+              <b>Please enter a valid email</b>
+            </span>
+            <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 50 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="phone">Phone Number</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="phone" />
+            <span *ngIf="updateUserFormControls.phone.touched && updateUserFormControls.phone.errors?.required" class="text-danger">
+              <b>Please enter a 10 digit number</b>
+            </span>
+            <span *ngIf="updateUserFormControls.phone.errors?.maxlength" class="text-danger">
+              <b>Please enter a 10 digit number</b>
+            </span>
+          </div>
 
-          <label for="username">Username</label>
-          <input type="text"
-                 class="form-control"
-                 formControlName="username" />
-          <span *ngIf="updateUserFormControls.username.touched && updateUserFormControls.username.errors?.required" class="text-danger">
-            <b>Please enter a valid username</b>
-          </span>
-          <span *ngIf="updateUserFormControls.username.errors?.maxlength" class="text-danger">
-            <b>Please enter less than 45 characters</b>
-          </span>
+          <div>
+            <label for="role">Role</label>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td scope="col">Customer<input id="customer" type="radio" value="ROLE_CUSTOMER" name="role" class="form-control" formControlName="role"></td>
+                    <td scope="col">Admin<input id="admin" type="radio" value="ROLE_ADMIN" name="role" class="form-control" formControlName="role"></td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
 
-          <label for="email">Email</label>
-          <input type="text"
-                 class="form-control"
-                 formControlName="email" />
-          <span *ngIf="updateUserFormControls.email.touched && ( updateUserFormControls.email.errors?.required || updateUserFormControls.email.errors?.email)" class="text-danger">
-            <b>Please enter a valid email</b>
-          </span>
-          <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
-            <b>Please enter less than 50 characters</b>
-          </span>
-
-          <label for="phone">Phone Number</label>
-          <input type="text"
-                 class="form-control"
-                 formControlName="phone" />
-          <span *ngIf="updateUserFormControls.phone.touched && updateUserFormControls.phone.errors?.required" class="text-danger">
-            <b>Please enter a 10 digit number</b>
-          </span>
-          <span *ngIf="updateUserFormControls.phone.errors?.maxlength" class="text-danger">
-            <b>Please enter a 10 digit number</b>
-          </span>
-
+          <div>
+            <label for="isActive">Active?</label>
+            <div>
+              <input type="checkbox" class="form-control" formControlName="active" />
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+          <button type="submit" class="btn btn-primary"> {{action}} </button>
         </div>
       </div>
     </div>
   </form>
-
-</ng-template>
-
-<ng-template #updateUserModal let-c="close" let-d="dismiss">
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateEmployeeModalLabel">Edit User</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form #editForm="ngForm">
-          <div class="form-group">
-            <label for="name">First Name</label>
-            <input type="text" ngModel="{{editEmployee?.givenName}}" name="givenName" class="form-control" id="givenName" aria-describedby="emailHelp" placeholder="First Name">
-          </div>
-          <div class="form-group">
-            <label for="email">Last Name</label>
-            <input type="email" ngModel="{{editEmployee?.familyName}}" name="familyName" class="form-control" id="familyName" placeholder="Last Name">
-          </div>
-          <div class="form-group">
-            <label for="phone">Username</label>
-            <input type="text" ngModel="{{editEmployee?.username}}" name="username" class="form-control" id="username" placeholder="Job title">
-          </div>
-          <div class="form-group">
-            <label for="phone">email</label>
-            <input type="text" ngModel="{{editEmployee?.email}}" name="email" class="form-control" id="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <label for="phone"> Phone Number</label>
-            <input type="text" ngModel="{{editEmployee?.phone}}" name="phone" class="form-control" id="phone" placeholder="Image URL">
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
-            <button type="submit" (click)="onUpdateUser()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-
 </ng-template>
