@@ -53,8 +53,21 @@
     </tbody>
 </table>
 
-<ngb-pagination
-    [collectionSize]="foundAirplanes.length"
-    [(page)]="pageNumber"
-    [pageSize]="pageSize"
-></ngb-pagination>
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+        [collectionSize]="foundAirplanes.length"
+        [(page)]="pageNumber"
+        [pageSize]="pageSize"
+    ></ngb-pagination>
+
+    <select
+        class="custom-select"
+        style="width: auto"
+        name="pageSize"
+        [(ngModel)]="this.pageSize"
+    >
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="25">25 items per page</option>
+        <option [ngValue]="50">50 items per page</option>
+    </select>
+</div>

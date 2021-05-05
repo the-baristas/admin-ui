@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AirplaneEditModalComponent } from './airplane-edit-modal.component';
 
-describe('AirplaneEditModalComponent', () => {
+fdescribe('AirplaneEditModalComponent', () => {
   let component: AirplaneEditModalComponent;
   let fixture: ComponentFixture<AirplaneEditModalComponent>;
 
