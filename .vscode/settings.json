@@ -1,4 +1,6 @@
 {
-  "css.styleSheets": ["node_modules/bootstrap/dist/css/bootstrap.min.css"],
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "css.styleSheets": [
+        "node_modules/bootstrap/dist/css/bootstrap.min.css"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

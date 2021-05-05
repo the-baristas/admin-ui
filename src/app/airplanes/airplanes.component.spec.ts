@@ -5,18 +5,18 @@ import {
     tick,
     waitForAsync
 } from '@angular/core/testing';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { defer, EMPTY, of } from 'rxjs';
 import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
-import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
+import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { Airplane } from '../entities/airplane';
 import { AirplaneService } from '../services/airplane.service';
 import { AirplanesComponent } from './airplanes.component';
 
-describe('AirplanesComponent', () => {
+fdescribe('AirplanesComponent', () => {
     let component: AirplanesComponent;
     let fixture: ComponentFixture<AirplanesComponent>;
     let airplaneServiceSpy: jasmine.SpyObj<AirplaneService>;
@@ -133,9 +133,9 @@ describe('AirplanesComponent', () => {
         const tableRows:
             | NodeListOf<HTMLTableRowElement>
             | undefined = airplanesElement
-            .querySelector('table')
-            ?.querySelector('tbody')
-            ?.querySelectorAll('tr');
+                .querySelector('table')
+                ?.querySelector('tbody')
+                ?.querySelectorAll('tr');
 
         expect(tableRows?.length).toBe(2);
     });

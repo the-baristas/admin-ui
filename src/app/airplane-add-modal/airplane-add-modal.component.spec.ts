@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { Airplane } from '../entities/airplane';
 import { AirplaneService } from '../services/airplane.service';
 import { AirplaneAddModalComponent } from './airplane-add-modal.component';
 
-fdescribe('AirplaneAddModalComponent', () => {
+describe('AirplaneAddModalComponent', () => {
     let component: AirplaneAddModalComponent;
     let fixture: ComponentFixture<AirplaneAddModalComponent>;
     let airplaneServiceSpy: jasmine.SpyObj<AirplaneService>;
@@ -20,7 +19,6 @@ fdescribe('AirplaneAddModalComponent', () => {
 
         await TestBed.configureTestingModule({
             declarations: [AirplaneAddModalComponent],
-            imports: [ReactiveFormsModule],
             providers: [
                 NgbActiveModal,
                 { provide: AirplaneService, useValue: airplaneServiceSpy }
@@ -66,8 +64,8 @@ fdescribe('AirplaneAddModalComponent', () => {
         const airplanes: Airplane[] = [airplane];
         airplaneServiceSpy.getAirplanes.and.returnValue(of(airplanes));
         component.addingForm.setValue(airplane);
+        spyOn(activeModal, 'close');
 
-        spyOn(activeModal, 'close').and.callThrough();
         component.add();
         expect(activeModal.close).toHaveBeenCalledWith(airplanes);
     });
