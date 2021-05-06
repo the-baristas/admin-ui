@@ -5,6 +5,7 @@ import { User } from '../entities/user';
 import { LoginService } from './login.service';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
+import { Page } from '../entities/Page';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class UsersService {
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-  public getAllUsers() {
-    return this.http.get<User[]>(`${this.serverUrl}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+  public getAllUsers(page:number,size:number) {
+    return this.http.get<Page<User>>(`${this.serverUrl}?page=${page}&size=${size}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
         return throwError('Unable to retrieve user data')}
       )
@@ -42,10 +43,40 @@ export class UsersService {
     )
   }
 
-  public createUser(user: User): Observable<void> {
-    return this.http.post<void>(`${this.serverUrl}`, user, { headers: this.loginService.getHeadersWithToken() }).pipe(
+  public getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(`${this.serverUrl}/username/${username}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to create user')
+        return throwError('Unable to retrieve user data')
+      }
+      )
+    )
+  }
+
+  public getUserByPhoneNumber(phone: string): Observable<User> {
+    return this.http.get<User>(`${this.serverUrl}/phone/${phone}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Unable to retrieve user data')
+      }
+      )
+    )
+  }
+
+  public createUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.serverUrl}`, user, { headers: this.loginService.getHeadersWithToken() }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return throwError("One or more fields are invalid.")
+        }
+        else if (error.status === 409) {
+          return throwError("Username, email, and/or phone number already exists.")
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else{
+          return throwError("Something went wrong")
+
+        }
       }
       )
     )
