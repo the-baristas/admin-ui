@@ -25,12 +25,12 @@
       A user with this phone number does not exist.
     </div>
   </div>
-  <div class="grid-container" style="width: 200px;">
+  <div  class="grid-container" style="width: 200px;">
     <div class="grid-item" style="width:25%; margin-left: 100px">
-      <button class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
+      <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
     </div>
-    <div class="grid-item" style="width:25%; margin-left: 100px">
-      <button class="btn btn-primary" (click)="searchUsers()">Search</button>
+    <div  class="grid-item" style="width:25%; margin-left: 100px">
+      <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
     </div>
   </div>
   
@@ -41,12 +41,21 @@
   <div class="ds-1-col--9">
     <ngb-pagination [collectionSize]="totalUsers"
                     [(page)]="pageNumber"
-                    [maxSize]="10"
+                    [pageSize]="pageSize"
+                    [maxSize]="4"
                     [boundaryLinks]="true"
                     (pageChange)="setPage($event)">
     </ngb-pagination>
+    <select class="custom-select"
+            style="width: auto"
+            name="pageSize"
+            [(ngModel)]="this.pageSize" (change)="searchUsers()">
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="25">25 items per page</option>
+      <option [ngValue]="50">50 items per page</option>
+    </select>
     <div style="text-align:right; margin-right: 130px">
-      <button class="btn btn-primary" (click)="open(userModal, null)">Create</button>
+      <button id="createButton" class="btn btn-primary" (click)="open(userModal, null)">Create</button>
     </div>
   </div>
 
@@ -74,7 +83,7 @@
         <td class="hideUnder550px">{{user.username}}</td>
         <td>{{user.email}}</td>
         <td>{{user.phone}}</td>
-        <td> <button class="btn btn-primary" data-toggle="modal">Edit</button> </td>
+        <td> <button id="editButton" class="btn btn-primary" data-toggle="modal">Edit</button> </td>
       </tr>
     </tbody>
   </table>
@@ -187,8 +196,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
-          <button type="submit" class="btn btn-primary"> {{action}} </button>
+          <button id="updateModalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+          <button id="updateModalSubmit" type="submit" class="btn btn-primary"> {{action}} </button>
         </div>
       </div>
     </div>

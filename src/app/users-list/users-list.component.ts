@@ -66,7 +66,6 @@ export class UsersListComponent implements OnInit {
       this.usersService.createUser(this.updateUserForm.value)
         .subscribe(
           (response: any) => {
-            console.log(response);
             this.searchUsers();
             this.modalRef.close();
             this.updateUserForm.reset();
@@ -121,13 +120,11 @@ export class UsersListComponent implements OnInit {
   }
 
   setPage(page: number) {
-
-    if (page < 1 || page > this.totalUsers) {
+    if (page < 1 || page > this.currentPage.totalPages) {
       return;
     }
     else {
-      console.log("else");
-      this.getUsers(page - 1, 10)
+      this.getUsers(page - 1, this.pageSize)
     }
   }
 
@@ -162,7 +159,8 @@ export class UsersListComponent implements OnInit {
     else {
       this.users = [];
     }
-    
+
+
     if (this.searchUsersForm.value.searchStringEmail !== '')
       this.searchByEmail();
     else {

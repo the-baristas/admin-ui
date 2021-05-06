@@ -64,7 +64,6 @@ export class UsersService {
   public createUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.serverUrl}`, user, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
         if (error.status === 404) {
           return throwError("One or more fields are invalid.")
         }
