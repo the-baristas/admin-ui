@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
 import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
@@ -15,7 +16,8 @@ import { AirplaneService } from '../services/airplane.service';
 export class AirplanesComponent implements OnInit {
     foundAirplanes: Airplane[] = [];
     pageNumber: number = 1;
-    pageSize: number = 10;
+    pageSizeControl: FormControl = new FormControl(10);
+    totalElements!: number;
 
     constructor(
         private airplaneService: AirplaneService,
@@ -23,17 +25,26 @@ export class AirplanesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        const pageIndex = this.pageNumber - 1;
-        this.airplaneService
-            .getAirplanesPage(pageIndex, this.pageSize)
-            .subscribe(
-                (airplanesPage: Page<Airplane>) =>
-                    (this.foundAirplanes = airplanesPage.content)
-            );
+        this.initializeAirplanesPage();
+
+        this.pageSizeControl.valueChanges.subscribe(() => {
+            this.initializeAirplanesPage();
+        });
     }
 
-    replaceFoundAirplanes(airplanes: Airplane[]): void {
-        this.foundAirplanes = airplanes;
+    initializeAirplanesPage(): void {
+        const pageIndex = this.pageNumber - 1;
+        this.airplaneService
+            .searchAirplanesPage("", pageIndex, this.pageSizeControl.value)
+            .subscribe((airplanesPage: Page<Airplane>) => {
+                this.foundAirplanes = airplanesPage.content;
+                this.totalElements = airplanesPage.totalElements;
+            });
+    }
+
+    replaceFoundAirplanes(airplanesPage: Page<Airplane>): void {
+        this.foundAirplanes = airplanesPage.content;
+        this.pageSizeControl.setValue(airplanesPage.totalPages);
     }
 
     openAddModal(): void {

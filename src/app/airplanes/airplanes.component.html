@@ -1,4 +1,5 @@
 <app-airplane-search
+    [pageSizeControl]="pageSizeControl"
     (resultsEvent)="replaceFoundAirplanes($event)"
 ></app-airplane-search>
 
@@ -23,8 +24,7 @@
     <tbody>
         <tr
             *ngFor="
-                let airplane of foundAirplanes
-                    | slice: (pageNumber - 1) * pageSize:pageNumber * pageSize;
+                let airplane of foundAirplanes;
                 let i = index
             "
         >
@@ -55,16 +55,17 @@
 
 <div class="d-flex justify-content-between p-2">
     <ngb-pagination
-        [collectionSize]="foundAirplanes.length"
+        [collectionSize]="totalElements"
         [(page)]="pageNumber"
-        [pageSize]="pageSize"
+        [pageSize]="pageSizeControl.value"
+        (pageChange)="initializeAirplanesPage()"
     ></ngb-pagination>
 
     <select
         class="custom-select"
         style="width: auto"
         name="pageSize"
-        [(ngModel)]="this.pageSize"
+        [formControl]="pageSizeControl"
     >
         <option [ngValue]="10">10 items per page</option>
         <option [ngValue]="25">25 items per page</option>

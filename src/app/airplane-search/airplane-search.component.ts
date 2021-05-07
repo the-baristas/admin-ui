@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import {
     debounceTime,
@@ -7,20 +8,20 @@ import {
     switchMap
 } from 'rxjs/operators';
 import { Airplane } from '../entities/airplane';
+import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
 
 @Component({
     selector: 'app-airplane-search',
     templateUrl: './airplane-search.component.html',
-    styleUrls: ['./airplane-search.component.css'],
+    styleUrls: ['./airplane-search.component.css']
 })
 export class AirplaneSearchComponent implements OnInit {
     airplanes$!: Observable<Airplane[]>;
     selectedAirplane: Airplane = {} as Airplane;
-    page: number = 1;
-    pageSize: number = 10;
-    @Output() resultsEvent: EventEmitter<Airplane[]> = new EventEmitter();
-
+    @Input() pageNumber!: number;
+    @Input() pageSizeControl!: FormControl;
+    @Output() resultsEvent: EventEmitter<Page<Airplane>> = new EventEmitter();
     private searchTerms = new Subject<string>();
 
     constructor(private airplaneService: AirplaneService) {}
@@ -42,14 +43,20 @@ export class AirplaneSearchComponent implements OnInit {
     }
 
     showResults(): void {
+        const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .searchAirplanes(this.selectedAirplane.model)
-            .subscribe((airplanes: Airplane[]) => {
-                this.resultsEvent.emit(airplanes);
+            .searchAirplanesPage(
+                this.selectedAirplane.model,
+                pageIndex,
+                this.pageSizeControl.value
+            )
+            .subscribe((airplanesPage: Page<Airplane>) => {
+                this.resultsEvent.emit(airplanesPage);
             });
     }
 
     private initializeAirplanes$(): void {
+        const suggestionsPageSize = 5;
         this.airplanes$ = this.searchTerms.pipe(
             // wait 300ms after each keystroke before considering the term
             debounceTime(300),
@@ -57,10 +64,16 @@ export class AirplaneSearchComponent implements OnInit {
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
             switchMap((term: string) =>
-                this.airplaneService.searchAirplanes(term)
+                this.airplaneService.searchAirplanesPage(
+                    term,
+                    0,
+                    suggestionsPageSize
+                )
             ),
+            // Map the page to an array.
+            map((airplanesPage: Page<Airplane>) => airplanesPage.content),
             // Remove duplicates.
-            map((airplanes: Array<Airplane>) =>
+            map((airplanes: Airplane[]) =>
                 this.makeArrayUnique(airplanes, 'model')
             )
         );
@@ -71,7 +84,7 @@ export class AirplaneSearchComponent implements OnInit {
      * @param array
      * @param property
      */
-    private makeArrayUnique(array: Array<any>, property: any): Array<any> {
+    private makeArrayUnique(array: any[], property: any): any[] {
         return array.filter(
             (value: any, index: number) =>
                 index ===

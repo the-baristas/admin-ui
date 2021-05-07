@@ -100,7 +100,7 @@ export class AirplaneService {
             .get<Airplane[]>(
                 `${
                     environment.apiUrl + this.airplaneServicePath
-                }/search?model=${term}`
+                }/search?term=${term}`
             )
             .pipe(
                 tap((x) =>
@@ -113,6 +113,39 @@ export class AirplaneService {
                           )
                 ),
                 catchError(this.handleError<Airplane[]>('searchAirplanes', []))
+            );
+    }
+
+    searchAirplanesPage(
+        term: string,
+        pageIndex: number,
+        pageSize: number
+    ): Observable<Page<Airplane>> {
+        if (term.trim() === "") {
+            return this.getAirplanesPage(pageIndex, pageSize);
+        }
+        return this.httpClient
+            .get<Page<Airplane>>(
+                `${
+                    environment.apiUrl + this.airplaneServicePath
+                }/search?term=${term}&index=${pageIndex}&size=${pageSize}`
+            )
+            .pipe(
+                tap((page: Page<Airplane>) =>
+                    page.totalPages
+                        ? this.messageService.add(
+                              `Found airplanes matching "${term}".`
+                          )
+                        : this.messageService.add(
+                              `No airplanes matching "${term}".`
+                          )
+                ),
+                catchError(
+                    this.handleError<Page<Airplane>>(
+                        'searchAirplanes',
+                        {} as Page<Airplane>
+                    )
+                )
             );
     }
 
