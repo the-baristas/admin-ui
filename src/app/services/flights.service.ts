@@ -84,7 +84,7 @@ export class FlightService {
         );
     }
 
-    /** GET airplane by id. Will 404 if id not found */
+    /** GET flight by id. Will 404 if id not found */
     public getFlight(id: number): Observable<Flight> {
         const url = `${environment.apiUrl + this.flightServicePath}/${id}`;
         return this.httpClient.get<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
@@ -111,7 +111,7 @@ export class FlightService {
         );
     }
 
-    /** PUT: update the airplane on the server */
+    /** PUT: update the flight on the server */
     public updateFlight(flight: Flight): Observable<any> {
         return this.httpClient.put(environment.apiUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`updated flight id=${flight.id}`)),

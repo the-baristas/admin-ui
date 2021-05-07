@@ -20,6 +20,7 @@ export class FlightComponent implements OnInit {
 
       updateFlightForm!: FormGroup;
       public editFlight!: Flight;
+      updatedFlight!: Observable<Flight>;
 
       addFlightForm!: FormGroup;
       public newFlight!: Flight;
@@ -85,7 +86,15 @@ export class FlightComponent implements OnInit {
             (response: any) => {
               const pageIndex = this.pageNumber - 1;
               this.flightService.getFlight(response);
-              this.flightService.getFlightsPage(pageIndex, this.pageSize);
+              this.flightService.getFlightsPage(pageIndex, this.pageSize)
+              .subscribe(
+                (flightsPage: Page<Flight>) => {
+                  this.currentPage = flightsPage;
+                  this.pageNumber = flightsPage.number+1;
+                  this.flights = flightsPage.content;
+                  this.totalFlights = flightsPage.totalElements;
+                  console.log(flightsPage);
+                });
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
@@ -107,8 +116,16 @@ export class FlightComponent implements OnInit {
           .subscribe(
             (response: any) => {
               const pageIndex = this.pageNumber - 1;
-              this.flightService.getFlight(response);
-              this.flightService.getFlightsPage(pageIndex, this.pageSize);
+              this.updatedFlight = this.flightService.getFlight(response);
+              this.flightService.getFlightsPage(pageIndex, this.pageSize)
+              .subscribe(
+                (flightsPage: Page<Flight>) => {
+                  this.currentPage = flightsPage;
+                  this.pageNumber = flightsPage.number+1;
+                  this.flights = flightsPage.content;
+                  this.totalFlights = flightsPage.totalElements;
+                  console.log(flightsPage);
+                });
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {

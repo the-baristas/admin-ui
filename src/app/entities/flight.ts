@@ -24,6 +24,6 @@ export interface Flight {
     businessPrice: number;
     economyReserved: number;
     economyPrice: number;
-    isActive: number;
+    isActive: boolean;
   }
   
