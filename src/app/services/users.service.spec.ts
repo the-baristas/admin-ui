@@ -41,6 +41,7 @@ describe('UsersService', () => {
     totalPages: 1,
     number: 0,
     totalElements: 2,
+    numberOfElements: 2,
     first: true,
     last: true,
     empty: false

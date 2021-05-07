@@ -4,6 +4,7 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\entities",
+    "\\src\\app\\login",
     "\\src\\app\\services",
     "\\src\\app\\users-list",
     "\\src\\environments"

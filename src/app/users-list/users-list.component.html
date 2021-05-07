@@ -10,7 +10,7 @@
 
   <div style="width:25%; margin-left: 100px">
     <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username"  />
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username" />
     </form>
     <div class="ds-1-row ds-u-margin-top--3" id="searchByUsernameErrorMessage" style="display:none;color:red">
       A user with this username does not exist.
@@ -19,21 +19,21 @@
 
   <div style="width:25%; margin-left: 100px">
     <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone"  />
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone" />
     </form>
     <div class="ds-1-row ds-u-margin-top--3" id="searchByPhoneErrorMessage" style="display:none;color:red">
       A user with this phone number does not exist.
     </div>
   </div>
-  <div  class="grid-container" style="width: 200px;">
+  <div class="grid-container" style="width: 200px;">
     <div class="grid-item" style="width:25%; margin-left: 100px">
       <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
     </div>
-    <div  class="grid-item" style="width:25%; margin-left: 100px">
+    <div class="grid-item" style="width:25%; margin-left: 100px">
       <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
     </div>
   </div>
-  
+
 
 </div>
 
@@ -55,7 +55,7 @@
       <option [ngValue]="50">50 items per page</option>
     </select>
     <div style="text-align:right; margin-right: 130px">
-      <button id="createButton" class="btn btn-primary" (click)="open(userModal, null)">Create</button>
+      <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create</button>
     </div>
   </div>
 
@@ -77,20 +77,21 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of users; let i = index">
-        <td >{{i + 1}}</td>
+        <td>{{i + 1}}</td>
         <td class="hideUnder800px">{{user.givenName}}</td>
         <td class="hideUnder800px">{{user.familyName}}</td>
         <td class="hideUnder550px">{{user.username}}</td>
         <td>{{user.email}}</td>
         <td>{{user.phone}}</td>
-        <td> <button id="editButton" class="btn btn-primary" data-toggle="modal">Edit</button> </td>
+        <td> <button id="editButton" class="btn btn-primary" (click)="openModal(userModal, user)">Edit</button> </td>
+        <td> <button id="deleteButton" type="button" class="btn btn-danger" (click)="openDeleteModal(null, user.userId)">Delete</button></td>
       </tr>
     </tbody>
   </table>
 </div>
 
 <ng-template #userModal let-c="close" let-d="dismiss">
-  <form [formGroup]="updateUserForm" (submit)="onUpdateUser()">
+  <form [formGroup]="updateUserForm" (submit)="userModalPerformAction()">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -197,9 +198,11 @@
         </div>
         <div class="modal-footer">
           <button id="updateModalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
-          <button id="updateModalSubmit" type="submit" class="btn btn-primary"> {{action}} </button>
+          <button id="updateModalSubmit" type="submit" class="btn btn-primary" [disabled]="updateUserForm.invalid"> {{action}} </button>
         </div>
       </div>
     </div>
   </form>
 </ng-template>
+
+
