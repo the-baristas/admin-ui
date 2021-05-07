@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Airplane } from '../airplane';
-import { AirplaneService } from '../airplane.service';
+import { Airplane } from '../entities/airplane';
+import { AirplaneService } from '../services/airplane.service';
 
 @Component({
     selector: 'app-airplane-detail',

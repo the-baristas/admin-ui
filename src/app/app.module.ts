@@ -15,6 +15,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { HomeComponent } from './home/home.component';
 import { FlightComponent } from './flight-list/flight-list.component';
+import { RouteListComponent } from './route-list/route-list.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { FlightComponent } from './flight-list/flight-list.component';
     HeaderComponent,
     HomeComponent,
     FlightComponent,
+    RouteListComponent,
   ],
   imports: [
     BrowserModule,

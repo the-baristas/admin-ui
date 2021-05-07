@@ -5,6 +5,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { FlightComponent } from './flight-list/flight-list.component';
+import { RouteListComponent } from './route-list/route-list.component';
 
 const routes: Routes = [
 
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: 'flights',
         component: FlightComponent
+      },
+      {
+        path: 'routes',
+        component: RouteListComponent
       }
     ]
   }

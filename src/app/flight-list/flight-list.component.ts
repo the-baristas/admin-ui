@@ -4,8 +4,9 @@ import { FlightService } from '../services/flights.service';
 import { PagerService } from '../services/pager.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { HttpErrorResponse } from '@angular/common/http';
-import { RouteConfigLoadEnd } from '@angular/router';
+import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Page } from '../entities/page';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-flight-list',
@@ -14,7 +15,8 @@ import { RouteConfigLoadEnd } from '@angular/router';
 })
 export class FlightComponent implements OnInit {
 
-      foundFlights: Flight[] = [];
+      flights: Flight[] = [];
+      foundFlightPages!: Flight[];
 
       updateFlightForm!: FormGroup;
       public editFlight!: Flight;
@@ -24,7 +26,11 @@ export class FlightComponent implements OnInit {
     
       totalFlights!: number;
       pager: any = {};
-      pagedFlights!: any[];
+      currentPage!: Page<Flight>;
+      totalElements: number = 0;
+      page: number = 1;
+      pageNumber: number = 1;
+      pageSize: number = 10;
     
       searchFlightsForm!: FormGroup;
       searchOrigin!: string;
@@ -33,37 +39,53 @@ export class FlightComponent implements OnInit {
       confirmation!: boolean;
 
       constructor(private flightService: FlightService, private modalService: NgbModal, 
-        private pagerService: PagerService, private formBuilder: FormBuilder) { }
+        private pagerService: PagerService, private formBuilder: FormBuilder, private httpClient: HttpClient) { }
             
       private modalRef!: NgbModalRef;
       errMsg: any;
       closeResult: any;
 
       ngOnInit(): void {
-        this.getFlights();
+        const pageIndex = this.pageNumber - 1;
+        this.flightService
+            .getFlightsPage(pageIndex, this.pageSize)
+            .subscribe(
+                (flightsPage: Page<Flight>) => {
+                  this.currentPage = flightsPage;
+                  this.pageNumber = flightsPage.number+1;
+                  this.flights = flightsPage.content;
+                  this.totalFlights = flightsPage.totalElements;
+                  console.log(flightsPage);
+                }
+            );
         this.initializeForms();
       }
 
-      public getFlights(): void {
-        this.flightService.getAllFlights().subscribe(
-          (response: Flight[]) => {
-            this.foundFlights = response;
-            this.totalFlights = this.foundFlights.length;
-            this.setPage(1);
-            console.log(this.foundFlights);
-          },
-          (error: HttpErrorResponse) => {
-            alert(error.message)
-          }
-        );
-      }
+      // public getFlights(): void {
+      //   this.flightService.getAllFlights().subscribe(
+      //     (response: Flight[]) => {
+      //       this.foundFlights = response;
+      //       this.totalFlights = this.foundFlights.length;
+      //       this.setPage(1);
+      //       console.log(this.foundFlights);
+      //     },
+      //     (error: HttpErrorResponse) => {
+      //       alert(error.message)
+      //     }
+      //   );
+      // }
+
+      replaceFoundFlights(flights: Flight[]): void {
+        this.flights = flights;
+    }
 
       public onUpdateFlight() {
-        this.flightService.updateFlight(this.updateFlightForm.value)
+        this.flightService.updateFlight(this.updateFlightForm.value as Flight)
           .subscribe(
             (response: any) => {
+              const pageIndex = this.pageNumber - 1;
               this.flightService.getFlight(response);
-              this.getFlights();
+              this.flightService.getFlightsPage(pageIndex, this.pageSize);
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
@@ -81,11 +103,12 @@ export class FlightComponent implements OnInit {
       }
 
       public onAddFlight() {
-        this.flightService.addFlight(this.addFlightForm.value)
+        this.flightService.addFlight(this.addFlightForm.value as Flight)
           .subscribe(
             (response: any) => {
+              const pageIndex = this.pageNumber - 1;
               this.flightService.getFlight(response);
-              this.getFlights();
+              this.flightService.getFlightsPage(pageIndex, this.pageSize);
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
@@ -105,7 +128,8 @@ export class FlightComponent implements OnInit {
           this.flightService.deleteFlight(this.updateFlightForm.value.id)
           .subscribe(
             (response: any) => {
-              this.getFlights();
+              const pageIndex = this.pageNumber - 1;
+              this.flightService.getFlightsPage(pageIndex, this.pageSize);
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
@@ -149,15 +173,22 @@ export class FlightComponent implements OnInit {
         );
       }
 
-      setPage(page: number) {
-        if (page < 1 || page > this.totalFlights) {
+      setPage(pageNo: number) {
+        if (pageNo < 1 || pageNo > this.totalFlights) {
           return;
         }
-        this.pager = this.pagerService.getPager(this.totalFlights, page, 10);
-        this.pagedFlights = this.foundFlights.slice(
-          this.pager.startIndex,
-          this.pager.endIndex + 1
-        )
+        else {
+          console.log(pageNo);
+          this.flightService.getFlightsPage(pageNo - 1, this.pageSize).subscribe(
+            (flightsPage: Page<Flight>) => {
+              this.currentPage = flightsPage;
+              this.pageNumber = flightsPage.number+1;
+              this.flights = flightsPage.content;
+              this.totalFlights = flightsPage.totalElements;
+              console.log(flightsPage);
+            }
+          )
+        }
       }
 
       initializeForms() {
@@ -202,14 +233,15 @@ export class FlightComponent implements OnInit {
         if (this.searchFlightsForm.value.searchString === '') {
           let div: any = document.getElementById('searchByIdErrorMessage');
           div.style.display = "none";
-          this.getFlights();
+          const pageIndex = this.pageNumber - 1;
+              this.flightService.getFlightsPage(pageIndex, this.pageSize);
           return;
         }
         
         this.flightService.getFlight(parseInt(this.searchFlightsForm.value.searchString)).subscribe(
           (response: Flight) => {
-            this.foundFlights = [response];
-            this.totalFlights = this.foundFlights.length;
+            this.flights = [response];
+            this.totalFlights = this.flights.length;
             this.setPage(1);
             let div: any = document.getElementById('searchByIdErrorMessage');
             div.style.display = "none";
@@ -225,18 +257,19 @@ export class FlightComponent implements OnInit {
         if (this.searchFlightsForm.value.searchOrigin === '' || this.searchFlightsForm.value.searchDestination === '') {
           let div: any = document.getElementById('searchByIdErrorMessage');
           div.style.display = "none";
-          this.getFlights();
+          const pageIndex = this.pageNumber - 1;
+          this.flightService.getFlightsPage(pageIndex, this.pageSize);
           return;
         }
     
         this.flightService.getFlightByLocation(this.searchFlightsForm.value.searchOrigin, this.searchFlightsForm.value.searchDestination).subscribe(
           (response: Flight[]) => {
-            this.foundFlights = response;
-            this.totalFlights = this.foundFlights.length;
+            this.flights = response;
+            this.totalFlights = this.flights.length;
             this.setPage(1);
             let div: any = document.getElementById('searchByIdErrorMessage');
             div.style.display = "none";
-            console.log(this.foundFlights);
+            console.log(this.flights);
           },
           (error: HttpErrorResponse) => {
             let div: any = document.getElementById('searchByIdErrorMessage');

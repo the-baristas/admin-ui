@@ -2,8 +2,16 @@ export interface Flight {
     id: number;
     route: {
       id: number;
-      originId: string;
-      destinationId: string;
+      originAirport: {
+        iataId: string;
+        city: string;
+        isActive: number;
+  }
+      destinationAirport: {
+        iataId: string;
+        city: string;
+        isActive: number;
+  }
       isActive: number;
     };
     routeId: number

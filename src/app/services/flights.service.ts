@@ -8,42 +8,65 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 // environment config, sets api url
 import { environment } from 'src/environments/environment';
+import { HandleError,HttpErrorHandlerService } from './http-error-handler.service';
 
 import { Flight } from '../entities/flight';
 import { MessageService } from './message.service';
 import { LoginService } from './login.service';
+import { Page } from '../entities/page';
+
+const httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 // specifies that Angular should provide the service in the root injector
 @Injectable({ providedIn: "root" })
 export class FlightService {
     private flightServicePath: string = '/flights';
-
-    httpOptions = {
-        headers: this.loginService.getHeadersWithToken()
-    };
+    private pagedFlightServicePath: string = '/paged-flights?pageNo=0&pageSize=10&sortBy=id';
+    private handleError: HandleError;
 
     constructor(
-        private http: HttpClient,
+        private httpClient: HttpClient,
         private messageService: MessageService,
-        private loginService: LoginService
-    ) { }
+        private loginService: LoginService,
+        httpErrorHandlerService: HttpErrorHandlerService
+        ) {
+            this.handleError = httpErrorHandlerService.createHandleError(
+                'FlightService'
+            );
+        }
 
-    public getAllFlights() {
-        return this.http.get<Flight[]>(environment.apiUrl + this.flightServicePath, this.httpOptions)
+    public getAllFlights(): Observable<Flight[]> {
+        return this.httpClient.get<Flight[]>(environment.apiUrl + this.flightServicePath, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
-                tap(_ => this.log('fetched flights')),
+                tap(_ => this.messageService.add('fetched flights')),
                 catchError((error: HttpErrorResponse) => {
                     return throwError('Unable to retrieve flight data')}
                 )
             );   
     }
 
+    public getFlightsPage(pageIndex: number, pageSize: number): Observable<Page<Flight>> {
+        return this.httpClient.get<Page<Flight>>(
+            `${environment.apiUrl}/paged-flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+              tap(() =>
+              this.messageService.add(
+                'Successfully found flights page.'
+              )
+              ),
+              catchError(
+                this.handleError<Page<Flight>>('getFlightsPage', {} as Page<Flight>)
+              )
+            );
+ }
+
     public getFlightByLocation(originId: string, destinationId: string): Observable<Flight[]> {
         console.log("Origin ID:" + originId + "Destination ID:" + destinationId);
         const url = `${environment.apiUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}`;
         console.log(url);
-        return this.http.get<Flight[]>(url, this.httpOptions).pipe(
-            tap(_ => this.log(`fetched flight(s) traveling from ${originId} to ${destinationId}`)),
+        return this.httpClient.get<Flight[]>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap(_ => this.messageService.add(`fetched flight(s) traveling from ${originId} to ${destinationId}`)),
             catchError(this.handleError<Flight[]>(`getFlightByLocation originId=${originId} destinationId=${destinationId}`, []))
         );
     }
@@ -51,11 +74,11 @@ export class FlightService {
     /** GET airplane by id. Return `undefined` when id not found */
     public getFlightNo404<Data>(id: number): Observable<Flight> {
         const url = `${environment.apiUrl + this.flightServicePath}/?id=${id}`;
-        return this.http.get<Flight[]>(url, this.httpOptions).pipe(
+        return this.httpClient.get<Flight[]>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             map(flights => flights[0]), // returns a {0|1} element array
             tap(a => {
                 const outcome = a ? `fetched` : `did not find`;
-                this.log(`${outcome} flight id=${id}`);
+                this.messageService.add(`${outcome} flight id=${id}`);
             }),
             catchError(this.handleError<Flight>(`getFlight id=${id}`))
         );
@@ -64,8 +87,8 @@ export class FlightService {
     /** GET airplane by id. Will 404 if id not found */
     public getFlight(id: number): Observable<Flight> {
         const url = `${environment.apiUrl + this.flightServicePath}/${id}`;
-        return this.http.get<Flight>(url, this.httpOptions).pipe(
-            tap(_ => this.log(`fetched flight id=${id}`)),
+        return this.httpClient.get<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap(_ => this.messageService.add(`fetched flight id=${id}`)),
             catchError(this.handleError<Flight>(`getFlight id=${id}`))
         );
     }
@@ -73,8 +96,8 @@ export class FlightService {
     public addFlight(flight: Flight): Observable<Flight> {
         console.log(flight);
         const url = `${environment.apiUrl}/routes/${flight.routeId}/flights`;
-        return this.http.post<Flight>(url, flight, this.httpOptions).pipe(
-            tap((newFlight: Flight) => this.log(`added flight with id=${newFlight.id}`)),
+        return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap((newFlight: Flight) => this.messageService.add(`added flight with id=${newFlight.id}`)),
             catchError(this.handleError<Flight>("addFlight"))
         );
     }
@@ -82,36 +105,18 @@ export class FlightService {
     public deleteFlight(id: number): Observable<Flight> {
         const url = `${environment.apiUrl + this.flightServicePath}/${id}`;
         console.log(id);
-        return this.http.delete<Flight>(url, this.httpOptions).pipe(
-            tap(_ => this.log(`deleted flight id=${id}`)),
+        return this.httpClient.delete<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap(_ => this.messageService.add(`deleted flight id=${id}`)),
             catchError(this.handleError<Flight>("deleteFlight"))
         );
     }
 
     /** PUT: update the airplane on the server */
     public updateFlight(flight: Flight): Observable<any> {
-        return this.http.put(environment.apiUrl + this.flightServicePath + `/${flight.id}`, flight, this.httpOptions).pipe(
-            tap(_ => this.log(`updated flight id=${flight.id}`)),
+        return this.httpClient.put(environment.apiUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap(_ => this.messageService.add(`updated flight id=${flight.id}`)),
             catchError(this.handleError<any>("updateFlight"))
         );
     }
 
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    private handleError<T>(operation = "operation", result?: T) {
-        return (error: any): Observable<T> => {
-            console.error(error);
-            this.log(`${operation} failed: ${error.message}`);
-            return of(result as T);
-        }
-    }
-
-    /** Log a FlightService message with the MessageService */
-    private log(message: string) {
-        this.messageService.add(`FlightService: ${message}`);
-    }
 }

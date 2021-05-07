@@ -28,15 +28,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let flight of pagedFlights; let i = index">
-          <td>{{flight.id}}</td>
-          <td>{{flight.airplaneId}}</td>
-          <td>{{flight.route.originId}} to {{flight.route.destinationId}}</td>
-          <td>{{flight.departureTime | date }}<br /> {{flight.departureTime | date: 'shortTime' }}</td>
-          <td>{{flight.arrivalTime | date }} <br /> {{flight.arrivalTime | date: 'shortTime'}}</td>
-          <td>First Class: ${{flight.firstPrice}}<br /> Business Class: ${{flight.businessPrice}}<br /> Economy Class: ${{flight.economyPrice}}</td>
-          <td>First Class: {{flight.firstReserved}}<br /> Business Class: {{flight.businessReserved}}<br /> Economy Class: {{flight.economyReserved}}</td>
-          <td><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, flight)" data-toggle="modal">Edit</button> </td>
+        <tr *ngFor="let page of flights; let i = index">
+          <td>{{page.id}}</td>
+          <td>{{page.airplaneId}}</td>
+          <td>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</td>
+          <td>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}</td>
+          <td>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}</td>
+          <td>First Class: ${{page.firstPrice}}<br /> Business Class: ${{page.businessPrice}}<br /> Economy Class: ${{page.economyPrice}}</td>
+          <td>First Class: {{page.firstReserved}}<br /> Business Class: {{page.businessReserved}}<br /> Economy Class: {{page.economyReserved}}</td>
+          <td><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, page)" data-toggle="modal">Edit</button> </td>
         </tr>
       </tbody>
     </table>
@@ -45,11 +45,21 @@
 <div id="pagination-top" class="ds-1-row ds-u-margin-top">
     <div class="ds-1-col">
       <ngb-pagination [collectionSize]="totalFlights"
-                      [(page)]="pager.currentPage"
-                      [maxSize]="10"
-                      [boundaryLinks]="true"
-                      (pageChange)="setPage($event)">
+                      (pageChange)="setPage($event)"
+                      [(page)]="pageNumber"
+                      [pageSize]="pageSize">
       </ngb-pagination>
+
+      <select
+      class="custom-select"
+      style="width: auto"
+      name="pageSize"
+      [(ngModel)]="this.pageSize"
+  >
+  <option [ngValue]="10">10 items per page</option>
+  <option [ngValue]="25">25 items per page</option>
+  <option [ngValue]="50">50 items per page</option>
+</select>
     </div>
   </div>
   
