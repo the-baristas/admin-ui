@@ -64,9 +64,9 @@ describe('AirplaneSearchComponent', () => {
             .withArgs(model)
             .and.returnValue(of(airplanes));
         component.selectedAirplane = airplane;
-        component.showResults();
+        component.onSuggestionClick();
 
-        component.resultsEvent.subscribe(
+        component.searchResultsDisplay.subscribe(
             (value: Airplane[]) => expect(value).toEqual(airplanes),
             fail
         );

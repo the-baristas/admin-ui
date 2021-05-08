@@ -18,6 +18,7 @@ export class AirplanesComponent implements OnInit {
     pageNumber: number = 1;
     pageSizeControl: FormControl = new FormControl(10);
     totalElements!: number;
+    searchTerm: string = '';
 
     constructor(
         private airplaneService: AirplaneService,
@@ -25,36 +26,53 @@ export class AirplanesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.initializeAirplanesPage();
+        this.getAirplanesPage();
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
-            const pagesMax = Math.ceil(this.totalElements / pageSize);
+            const pagesMax: number = Math.ceil(this.totalElements / pageSize);
             // The page number may be set to be greater than the max number of
             // pages when pageSize is changed.
             this.pageNumber = Math.min(this.pageNumber, pagesMax);
-            this.initializeAirplanesPage();
+            // this.initializeAirplanesPage();
+            this.searchAirplanesPage();
         });
     }
 
-    onPageChange(): void {
-        this.initializeAirplanesPage();
+    onSearchResultsDisplay(searchTerm: string): void {
+        this.searchTerm = searchTerm;
+        this.searchAirplanesPage();
     }
 
-    initializeAirplanesPage(
-        pageSize: number = this.pageSizeControl.value
-    ): void {
+    onAllDisplay(): void {
+        this.getAirplanesPage();
+    }
+
+    onPageChange(): void {
+        this.getAirplanesPage();
+    }
+
+    getAirplanesPage(): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .getAirplanesPage(pageIndex, pageSize)
+            .getAirplanesPage(pageIndex, this.pageSizeControl.value)
             .subscribe((airplanesPage: Page<Airplane>) => {
                 this.foundAirplanes = airplanesPage.content;
                 this.totalElements = airplanesPage.totalElements;
             });
     }
 
-    replaceFoundAirplanes(airplanesPage: Page<Airplane>): void {
-        this.foundAirplanes = airplanesPage.content;
-        this.pageSizeControl.setValue(airplanesPage.totalPages);
+    searchAirplanesPage() {
+        const pageIndex = this.pageNumber - 1;
+        this.airplaneService
+            .searchAirplanesPage(
+                this.searchTerm,
+                pageIndex,
+                this.pageSizeControl.value
+            )
+            .subscribe((airplanesPage: Page<Airplane>) => {
+                this.foundAirplanes = airplanesPage.content;
+                this.totalElements = airplanesPage.totalElements;
+            });
     }
 
     openAddModal(): void {

@@ -125,7 +125,7 @@ export class AirplaneService {
         pageSize: number
     ): Observable<Page<Airplane>> {
         if (term.trim() === '') {
-            return this.getAirplanesPage(pageIndex, pageSize);
+            return of({ content: [] as Airplane[] } as Page<Airplane>);
         }
         return this.httpClient
             .get<Page<Airplane>>(
@@ -144,10 +144,9 @@ export class AirplaneService {
                           )
                 ),
                 catchError(
-                    this.handleError<Page<Airplane>>(
-                        'searchAirplanes',
-                        {} as Page<Airplane>
-                    )
+                    this.handleError<Page<Airplane>>('searchAirplanes', {
+                        content: [] as Airplane[]
+                    } as Page<Airplane>)
                 )
             );
     }

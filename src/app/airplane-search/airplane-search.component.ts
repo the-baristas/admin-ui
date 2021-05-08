@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
     debounceTime,
@@ -19,15 +18,21 @@ import { AirplaneService } from '../services/airplane.service';
 export class AirplaneSearchComponent implements OnInit {
     airplanes$!: Observable<Airplane[]>;
     selectedAirplane: Airplane = {} as Airplane;
-    @Input() pageNumber!: number;
-    @Input() pageSizeControl!: FormControl;
-    @Output() resultsEvent: EventEmitter<Page<Airplane>> = new EventEmitter();
+    @Output() searchResultsDisplay: EventEmitter<string> = new EventEmitter();
+    @Output() allDisplay: EventEmitter<void> = new EventEmitter();
     private searchTerms = new Subject<string>();
 
     constructor(private airplaneService: AirplaneService) {}
 
     ngOnInit(): void {
         this.initializeAirplanes$();
+
+        // An empty search box should show all airplanes.
+        this.searchTerms.subscribe((term: string) => {
+            if (term === '') {
+                this.allDisplay.emit();
+            }
+        });
     }
 
     updateSearchBox(searchBox: HTMLInputElement, airplane: Airplane): void {
@@ -42,17 +47,9 @@ export class AirplaneSearchComponent implements OnInit {
         this.searchTerms.next(term);
     }
 
-    showResults(): void {
-        const pageIndex = this.pageNumber - 1;
-        this.airplaneService
-            .searchAirplanesPage(
-                this.selectedAirplane.model,
-                pageIndex,
-                this.pageSizeControl.value
-            )
-            .subscribe((airplanesPage: Page<Airplane>) => {
-                this.resultsEvent.emit(airplanesPage);
-            });
+    onSuggestionClick(searchBox: HTMLInputElement, airplane: Airplane): void {
+        this.updateSearchBox(searchBox, airplane);
+        this.searchResultsDisplay.emit(this.selectedAirplane.model);
     }
 
     private initializeAirplanes$(): void {
