@@ -9,3 +9,7 @@ input {
 #create-new-button {
     float: right;
 }
+
+select {
+    width: auto;
+}

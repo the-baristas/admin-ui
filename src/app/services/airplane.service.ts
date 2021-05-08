@@ -58,10 +58,13 @@ export class AirplaneService {
                     )
                 ),
                 catchError(
-                    this.handleError<Page<Airplane>>(
-                        'getAirplanesPage',
-                        {} as Page<Airplane>
-                    )
+                    this.handleError<Page<Airplane>>('getAirplanesPage', {
+                        content: [] as Airplane[],
+                        number: 0,
+                        numberOfElements: 0,
+                        totalElements: 0,
+                        totalPages: 0
+                    } as Page<Airplane>)
                 )
             );
     }
@@ -121,7 +124,7 @@ export class AirplaneService {
         pageIndex: number,
         pageSize: number
     ): Observable<Page<Airplane>> {
-        if (term.trim() === "") {
+        if (term.trim() === '') {
             return this.getAirplanesPage(pageIndex, pageSize);
         }
         return this.httpClient

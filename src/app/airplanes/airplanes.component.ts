@@ -27,15 +27,25 @@ export class AirplanesComponent implements OnInit {
     ngOnInit(): void {
         this.initializeAirplanesPage();
 
-        this.pageSizeControl.valueChanges.subscribe(() => {
+        this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
+            const pagesMax = Math.ceil(this.totalElements / pageSize);
+            // The page number may be set to be greater than the max number of
+            // pages when pageSize is changed.
+            this.pageNumber = Math.min(this.pageNumber, pagesMax);
             this.initializeAirplanesPage();
         });
     }
 
-    initializeAirplanesPage(): void {
+    onPageChange(): void {
+        this.initializeAirplanesPage();
+    }
+
+    initializeAirplanesPage(
+        pageSize: number = this.pageSizeControl.value
+    ): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .searchAirplanesPage("", pageIndex, this.pageSizeControl.value)
+            .getAirplanesPage(pageIndex, pageSize)
             .subscribe((airplanesPage: Page<Airplane>) => {
                 this.foundAirplanes = airplanesPage.content;
                 this.totalElements = airplanesPage.totalElements;
