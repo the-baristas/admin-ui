@@ -8,6 +8,8 @@ import { Data } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Page } from '../entities/Page';
 
+
+
 describe('UsersService', () => {
   let service: UsersService;
   let httpTestingController: HttpTestingController;
@@ -129,19 +131,19 @@ describe('UsersService', () => {
     mockRequest.flush(userData[0]);
   });
 
-  it('Get user by email failing should give error message', () => {
+  it('Get user by email 404 should give error message', () => {
     let error!: string
     service.getUserByEmail(userData[0].email).subscribe(null, e => {
       error = e;
     });
 
     let request = httpTestingController.expectOne(apiUrl + "/email/" + userData[0].email);
-    request.flush("Unable to retrieve user data", {
-      status: 400,
-      statusText: "Unable to retrieve user data"
+    request.flush("A user with this email does not exist", {
+      status: 404,
+      statusText: "A user with this email does not exist"
     });
 
-    expect(error.indexOf("Unable to retrieve user data") >= 0).toBeTruthy();
+    expect(error.indexOf("A user with this email does not exist") >= 0).toBeTruthy();
   });
 
   it('get user by username returns mock user data', () => {
@@ -154,19 +156,19 @@ describe('UsersService', () => {
     mockRequest.flush(userData[0]);
   });
 
-  it('Get user by username failing should give error message', () => {
+  it('Get user by username 404 should give error message', () => {
     let error!: string
     service.getUserByUsername(userData[0].username).subscribe(null, e => {
       error = e;
     });
 
     let request = httpTestingController.expectOne(apiUrl + "/username/" + userData[0].username);
-    request.flush("Unable to retrieve user data", {
-      status: 400,
-      statusText: "Unable to retrieve user data"
+    request.flush("A user with this username does not exist", {
+      status: 404,
+      statusText: "A user with this username does not exist"
     });
 
-    expect(error.indexOf("Unable to retrieve user data") >= 0).toBeTruthy();
+    expect(error.indexOf("A user with this username does not exist") >= 0).toBeTruthy();
   });
 
   it('get user by phone number returns mock user data', () => {
@@ -179,19 +181,19 @@ describe('UsersService', () => {
     mockRequest.flush(userData[0]);
   });
 
-  it('Get user by phone number failing should give error message', () => {
+  it('Get user by phone number 404 should give error message', () => {
     let error!: string
     service.getUserByPhoneNumber(userData[0].phone).subscribe(null, e => {
       error = e;
     });
 
     let request = httpTestingController.expectOne(apiUrl + "/phone/" + userData[0].phone);
-    request.flush("Unable to retrieve user data", {
-      status: 400,
-      statusText: "Unable to retrieve user data"
+    request.flush("A user with this phone number does not exist", {
+      status: 404,
+      statusText: "A user with this phone number does not exist"
     });
 
-    expect(error.indexOf("Unable to retrieve user data") >= 0).toBeTruthy();
+    expect(error.indexOf("A user with this phone number does not exist") >= 0).toBeTruthy();
   });
 
   it('Test create user', () => {
@@ -204,4 +206,140 @@ describe('UsersService', () => {
     mockRequest.flush(userAdmin);
   });
 
+  it('Create user 400 should give error message', () => {
+    let error!: string
+    service.createUser(userAdmin).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl);
+    request.flush("One or more fields are invalid.", {
+      status: 400,
+      statusText: "One or more fields are invalid."
+    });
+
+    expect(error.indexOf("One or more fields are invalid.") >= 0).toBeTruthy();
   });
+
+  it('Create user 409 should give error message', () => {
+    let error!: string
+    service.createUser(userAdmin).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl);
+    request.flush("Username, email, and/or phone number already exists.", {
+      status: 409,
+      statusText: "Username, email, and/or phone number already exists."
+    });
+
+    expect(error.indexOf("Username, email, and/or phone number already exists.") >= 0).toBeTruthy();
+  });
+
+  it('Create user 500 should give error message', () => {
+    let error!: string
+    service.createUser(userAdmin).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl);
+    request.flush("Database error", {
+      status: 500,
+      statusText: "Database error"
+    });
+
+    expect(error.indexOf("Database error") >= 0).toBeTruthy();
+  });
+
+  it('Update user 400 should give error message', () => {
+    let error!: string
+    service.updateUser(userAdmin, userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("One or more fields are invalid.", {
+      status: 400,
+      statusText: "One or more fields are invalid."
+    });
+
+    expect(error.indexOf("One or more fields are invalid.") >= 0).toBeTruthy();
+  });
+
+  it('Update user 404 should give error message', () => {
+    let error!: string
+    service.updateUser(userAdmin, userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("This user does not exist", {
+      status: 404,
+      statusText: "This user does not exist"
+    });
+
+    expect(error.indexOf("This user does not exist") >= 0).toBeTruthy();
+  });
+
+  it('Update user 409 should give error message', () => {
+    let error!: string
+    service.updateUser(userAdmin, userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("Username, email, and/or phone number already exists.", {
+      status: 409,
+      statusText: "Username, email, and/or phone number already exists."
+    });
+
+    expect(error.indexOf("Username, email, and/or phone number already exists.") >= 0).toBeTruthy();
+  });
+
+  it('Update user 500 should give error message', () => {
+    let error!: string
+    service.updateUser(userAdmin, userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("Database error", {
+      status: 500,
+      statusText: "Database error"
+    });
+
+    expect(error.indexOf("Database error") >= 0).toBeTruthy();
+  });
+
+  it('Delete user 404 should give error message', () => {
+    let error!: string
+    service.deleteUser(userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("This user does not exist", {
+      status: 404,
+      statusText: "This user does not exist"
+    });
+
+    expect(error.indexOf("This user does not exist") >= 0).toBeTruthy();
+  });
+
+  it('Delete user 500 should give error message', () => {
+    let error!: string
+    service.deleteUser(userAdmin.userId).subscribe(null, e => {
+      error = e;
+    });
+
+    let request = httpTestingController.expectOne(apiUrl + "/" + userAdmin.userId);
+    request.flush("Database error", {
+      status: 500,
+      statusText: "Database error"
+    });
+
+    expect(error.indexOf("Database error") >= 0).toBeTruthy();
+  });
+
+  });
+

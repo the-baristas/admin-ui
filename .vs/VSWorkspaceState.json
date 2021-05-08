@@ -3,12 +3,12 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\entities",
-    "\\src\\app\\login",
-    "\\src\\app\\services",
+    "\\src\\app\\layout",
+    "\\src\\app\\user-delete-modal",
+    "\\src\\app\\user-search",
     "\\src\\app\\users-list",
     "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\users-list\\users-list.component.ts",
+  "SelectedNode": "\\src\\app\\user-search\\user-search.component.ts",
   "PreviewInSolutionExplorer": false
 }

@@ -26,4 +26,10 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-4/23/2021: First completed iteration. Login screen and logout button implmented. Unfinished users page.
+Anthony Sirimarco - 4/22/2021 - Added user authentication with JWT tokens along with a login page, a stock homepage, and an (unfinished) users page for testing purposes.
+
+Anthony Sirimarco - 4/27/2021 - Login page will now reject valid credentials if the user does not have the admin role.
+
+Anthony Sirimarco - 5/5/2021 - Added ability to create users and to search for users by email, username and phone number. Incorporated back-end pagination to users.
+
+Anthony Sirimarco - 5/7/2021 - Added ability to update and delete users

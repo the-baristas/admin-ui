@@ -1,5 +1,0 @@
-Anthony Sirimarco - 4/22/2021 - Added user authentication with JWT tokens along with a login page, a stock homepage, and an (unfinished) users page for testing purposes.
-
-Anthony Sirimarco - 4/27/2021 - Login page will now reject valid credentials if the user does not have the admin role.
-
-Anthony Sirimarco - 5/5/2021 - Added ability to create users and to search for users by email, username and phone number. Incorporated back-end pagination to users.

@@ -180,7 +180,7 @@ describe('UsersListComponent', () => {
     component.updateUserForm.value.active = userAdmin.active;
 
     component.action = 'Add';
-    component.onUpdateUser();
+    component.userModalPerformAction();
     expect(component.updateUserForm.controls.givenName.dirty).toBeFalsy();
     expect(component.updateUserForm.controls.familyName.dirty).toBeFalsy();
     expect(component.updateUserForm.controls.email.dirty).toBeFalsy();
