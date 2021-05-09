@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { Airplane } from '../entities/airplane';
+import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
 import { AirplaneAddModalComponent } from './airplane-add-modal.component';
 
@@ -13,8 +14,7 @@ describe('AirplaneAddModalComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'addAirplane',
-            'getAirplanes'
+            'addAirplane'
         ]);
 
         await TestBed.configureTestingModule({
@@ -61,12 +61,10 @@ describe('AirplaneAddModalComponent', () => {
         airplaneServiceSpy.addAirplane
             .withArgs(airplane)
             .and.returnValue(of(airplane));
-        const airplanes: Airplane[] = [airplane];
-        airplaneServiceSpy.getAirplanes.and.returnValue(of(airplanes));
         component.addingForm.setValue(airplane);
         spyOn(activeModal, 'close');
 
         component.add();
-        expect(activeModal.close).toHaveBeenCalledWith(airplanes);
+        expect(activeModal.close).toHaveBeenCalledWith(airplane);
     });
 });

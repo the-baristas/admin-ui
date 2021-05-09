@@ -1,7 +1,11 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpResponse
+} from '@angular/common/http';
 import {
     HttpClientTestingModule,
-    HttpTestingController,
+    HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { defer } from 'rxjs';
@@ -22,10 +26,10 @@ describe('AirplaneService', () => {
             imports: [HttpClientTestingModule],
             // Provide the service-under-test and its dependencies
             providers: [
-                AirplaneService,
+                AirplaneService
                 // MessageService,
                 // HttpErrorHandlerService,
-            ],
+            ]
         });
 
         // Inject the http, test controller, and service-under-test
@@ -143,17 +147,17 @@ describe('AirplaneService', () => {
     describe('#updateAirplane', () => {
         // Expecting the query form of URL so should not 404 when id not found
         const makeUrl = (id: number) =>
-            `${environment.apiUrl}/${airplaneService.airplaneServicePath}/?id=${id}`;
+            `${environment.apiUrl}${airplaneService.airplaneServicePath}/?id=${id}`;
 
         it('should update a airplane and return it', () => {
-            const updateAirplane: Airplane = { id: 1 } as Airplane;
+            const updatingAirplane: Airplane = { id: 1 } as Airplane;
 
             airplaneService
-                .updateAirplane(updateAirplane)
+                .updateAirplane(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
-                            updateAirplane,
+                            updatingAirplane,
                             'should return the airplane'
                         ),
                     fail
@@ -161,68 +165,74 @@ describe('AirplaneService', () => {
 
             // AirplaneService should have made one request to PUT airplane
             const testRequest = httpTestingController.expectOne(
-                environment.apiUrl + airplaneService.airplaneServicePath
+                `${environment.apiUrl + airplaneService.airplaneServicePath}/${
+                    updatingAirplane.id
+                }`
             );
             expect(testRequest.request.method).toEqual('PUT');
-            expect(testRequest.request.body).toEqual(updateAirplane);
+            expect(testRequest.request.body).toEqual(updatingAirplane);
 
             // Expect server to return the airplane after PUT
             const expectedResponse = new HttpResponse({
                 status: 200,
                 statusText: 'OK',
-                body: updateAirplane,
+                body: updatingAirplane
             });
             testRequest.event(expectedResponse);
         });
 
         // This service reports the error but finds a way to let the app keep going.
-        it('should turn 404 error into return of the update airplane', () => {
-            const updateAirplane: Airplane = {
+        it('should turn 404 error into return of the updating airplane', () => {
+            const updatingAirplane: Airplane = {
                 id: 1,
                 firstClassSeatsMax: 0,
                 businessClassSeatsMax: 0,
                 economyClassSeatsMax: 0,
-                model: 'Boeing 777',
+                model: 'Boeing 777'
             } as Airplane;
 
             airplaneService
-                .updateAirplane(updateAirplane)
+                .updateAirplane(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
-                            updateAirplane,
-                            'should return the update airplane'
+                            updatingAirplane,
+                            'should return the updating airplane'
                         ),
                     fail
                 );
 
             const testRequest = httpTestingController.expectOne(
-                environment.apiUrl + airplaneService.airplaneServicePath
+                `${environment.apiUrl + airplaneService.airplaneServicePath}/${
+                    updatingAirplane.id
+                }`
             );
 
             // respond with a 404 and the error message in the body
             const message = 'deliberate 404 error';
             testRequest.flush(message, {
                 status: 404,
-                statusText: 'Not Found',
+                statusText: 'Not Found'
             });
         });
 
-        it('should turn network error into return of the update airplane', () => {
-            const updateAirplane: Airplane = { id: 1 } as Airplane;
+        it('should turn network error into return of the updating airplane', () => {
+            const updatingAirplane: Airplane = { id: 1 } as Airplane;
             airplaneService
-                .updateAirplane(updateAirplane)
+                .updateAirplane(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
-                            updateAirplane,
-                            'should return the update airplane'
+                            updatingAirplane,
+                            'should return the updating airplane'
                         ),
                     fail
                 );
 
             const req = httpTestingController.expectOne(
-                environment.apiUrl + airplaneService.airplaneServicePath
+                `${environment.apiUrl + airplaneService.airplaneServicePath}/${
+                    updatingAirplane.id
+                }`
             );
 
             // Create mock ErrorEvent, raised when something goes wrong at the network level.
@@ -234,7 +244,7 @@ describe('AirplaneService', () => {
                 // Just showing that you could provide this too.
                 filename: 'AirplaneService.ts',
                 lineno: 42,
-                colno: 21,
+                colno: 21
             });
 
             // Respond with mock error
@@ -280,7 +290,7 @@ describe('AirplaneService', () => {
     describe('#deleteAirplanes', () => {});
 });
 
-describe('AirplaneService', () => {
+xdescribe('AirplaneService (Angular CLI)', () => {
     let airplaneService: AirplaneService;
     let messageServiceSpy: jasmine.SpyObj<MessageService>;
     let httpErrorHandlerServiceSpy: jasmine.SpyObj<HttpErrorHandlerService>;
@@ -293,9 +303,9 @@ describe('AirplaneService', () => {
                 { provide: MessageService, useValue: messageServiceSpy },
                 {
                     provide: HttpErrorHandlerService,
-                    useValue: httpErrorHandlerServiceSpy,
-                },
-            ],
+                    useValue: httpErrorHandlerServiceSpy
+                }
+            ]
         });
         messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
         messageServiceSpy = TestBed.inject(
@@ -309,7 +319,7 @@ describe('AirplaneService', () => {
     });
 });
 
-describe('AirplaneService (with spies)', () => {
+xdescribe('AirplaneService (with spies)', () => {
     let httpClientSpy: { get: jasmine.Spy };
     let messageServiceSpy: { add: jasmine.Spy };
     let airplaneService: AirplaneService;
@@ -347,7 +357,7 @@ describe('AirplaneService (with spies)', () => {
         const errorResponse = new HttpErrorResponse({
             error: 'test 404 error',
             status: 404,
-            statusText: 'Not Found',
+            statusText: 'Not Found'
         });
 
         httpClientSpy.get.and.returnValue(

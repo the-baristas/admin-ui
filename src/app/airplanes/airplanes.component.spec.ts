@@ -13,17 +13,18 @@ import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-mo
 import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { Airplane } from '../entities/airplane';
+import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
 import { AirplanesComponent } from './airplanes.component';
 
-fdescribe('AirplanesComponent', () => {
+describe('AirplanesComponent', () => {
     let component: AirplanesComponent;
     let fixture: ComponentFixture<AirplanesComponent>;
     let airplaneServiceSpy: jasmine.SpyObj<AirplaneService>;
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'getAirplanes',
+            'getAirplanesPage',
             'deleteAirplane'
         ]);
 
@@ -47,7 +48,10 @@ fdescribe('AirplanesComponent', () => {
 
     it('should initialize foundAirplanes after Angular calls ngOnInit (synchronous observable)', () => {
         const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
-        airplaneServiceSpy.getAirplanes.and.returnValue(of(airplanes)); // synchronous observable
+        const airplanesPage: Page<Airplane> = {
+            content: airplanes
+        } as Page<Airplane>;
+        airplaneServiceSpy.getAirplanesPage.and.returnValue(of(airplanesPage)); // synchronous observable
         fixture.detectChanges(); // ngOnInit
 
         expect(component.foundAirplanes.length).toBe(2);
@@ -55,8 +59,11 @@ fdescribe('AirplanesComponent', () => {
 
     it('should initialize foundAirplanes after Angular calls ngOnInit (fakeAsync)', fakeAsync(() => {
         const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
-        airplaneServiceSpy.getAirplanes.and.returnValue(
-            defer(() => Promise.resolve(airplanes)) // asynchronous observable
+        const airplanesPage: Page<Airplane> = {
+            content: airplanes
+        } as Page<Airplane>;
+        airplaneServiceSpy.getAirplanesPage.and.returnValue(
+            defer(() => Promise.resolve(airplanesPage)) // asynchronous observable
         );
         fixture.detectChanges(); // ngOnInit
         tick(); // flush the observable
@@ -69,8 +76,11 @@ fdescribe('AirplanesComponent', () => {
         'should initialize foundAirplanes after Angular calls ngOnInit (waitForAsync)',
         waitForAsync(() => {
             const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
-            airplaneServiceSpy.getAirplanes.and.returnValue(
-                defer(() => Promise.resolve(airplanes)) // asynchronous observable
+            const airplanesPage: Page<Airplane> = {
+                content: airplanes
+            } as Page<Airplane>;
+            airplaneServiceSpy.getAirplanesPage.and.returnValue(
+                defer(() => Promise.resolve(airplanesPage)) // asynchronous observable
             );
             fixture.detectChanges(); // ngOnInit
 
@@ -87,7 +97,6 @@ fdescribe('AirplanesComponent', () => {
             (actual, expected) => {
                 // asserting the two objects are equal - required
                 // for TestScheduler assertions to work via your test framework
-                // e.g. using chai.
                 expect(actual).toEqual(expected);
             }
         );
@@ -95,8 +104,11 @@ fdescribe('AirplanesComponent', () => {
         testScheduler.run((helpers: RunHelpers) => {
             const { cold, flush } = helpers;
             const airplanes: Airplane[] = [{} as Airplane, {} as Airplane];
-            const a$ = cold('---x|', { x: airplanes });
-            airplaneServiceSpy.getAirplanes.and.returnValue(a$);
+            const airplanesPage: Page<Airplane> = {
+                content: airplanes
+            } as Page<Airplane>;
+            const a$ = cold('---x|', { x: airplanesPage });
+            airplaneServiceSpy.getAirplanesPage.and.returnValue(a$);
 
             fixture.detectChanges(); // ngOnInit
             flush(); // flush the observables
@@ -126,16 +138,16 @@ fdescribe('AirplanesComponent', () => {
     });
 
     it('should create 2 table rows when there are 2 Airplanes in foundAirplanes', () => {
-        airplaneServiceSpy.getAirplanes.and.returnValue(EMPTY);
+        airplaneServiceSpy.getAirplanesPage.and.returnValue(EMPTY);
         component.foundAirplanes = [{} as Airplane, {} as Airplane];
         fixture.detectChanges();
         const airplanesElement: HTMLElement = fixture.nativeElement;
         const tableRows:
             | NodeListOf<HTMLTableRowElement>
             | undefined = airplanesElement
-                .querySelector('table')
-                ?.querySelector('tbody')
-                ?.querySelectorAll('tr');
+            .querySelector('table')
+            ?.querySelector('tbody')
+            ?.querySelectorAll('tr');
 
         expect(tableRows?.length).toBe(2);
     });
