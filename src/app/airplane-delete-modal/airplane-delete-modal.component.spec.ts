@@ -41,7 +41,7 @@ describe('AirplaneDeleteModalComponent', () => {
         airplaneServiceSpy.deleteAirplane
             .withArgs(airplane.id)
             .and.returnValue(of(airplane));
-        component.airplaneToDelete = airplane;
+        component.selectedAirplane = airplane;
         fixture.detectChanges();
 
         spyOn(activeModal, 'close');

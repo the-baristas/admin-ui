@@ -114,7 +114,7 @@ export class AirplanesComponent implements OnInit {
         const modalRef = this.modalService.open(AirplaneDeleteModalComponent, {
             centered: true
         });
-        modalRef.componentInstance.airplaneToDelete = airplaneToDelete;
+        modalRef.componentInstance.selectedAirplane = airplaneToDelete;
         modalRef.componentInstance.entityName = 'Airplane';
 
         modalRef.result.then((deletedAirplane: Airplane) => {

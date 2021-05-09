@@ -9,7 +9,7 @@ import { AirplaneService } from '../services/airplane.service';
     styleUrls: ['./airplane-delete-modal.component.css']
 })
 export class AirplaneDeleteModalComponent implements OnInit {
-    public airplaneToDelete!: Airplane;
+    public selectedAirplane!: Airplane;
     public entityName!: string;
 
     constructor(
@@ -21,9 +21,9 @@ export class AirplaneDeleteModalComponent implements OnInit {
 
     delete(): void {
         this.airplaneService
-            .deleteAirplane(this.airplaneToDelete.id)
-            .subscribe((airplane: Airplane) => {
-                this.activeModal.close(airplane);
+            .deleteAirplane(this.selectedAirplane.id)
+            .subscribe(() => {
+                this.activeModal.close(this.selectedAirplane);
             });
     }
 }
