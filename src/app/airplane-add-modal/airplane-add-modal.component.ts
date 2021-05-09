@@ -57,9 +57,8 @@ export class AirplaneAddModalComponent implements OnInit {
 
         this.airplaneService
             .addAirplane(airplane)
-            .pipe(switchMap(() => this.airplaneService.getAirplanes()))
-            .subscribe((airplanes: Airplane[]) =>
-                this.activeModal.close(airplanes)
-            );
+            .subscribe((airplane: Airplane) => {
+                this.activeModal.close(airplane);
+            });
     }
 }

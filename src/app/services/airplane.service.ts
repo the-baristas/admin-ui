@@ -144,9 +144,44 @@ export class AirplaneService {
                           )
                 ),
                 catchError(
-                    this.handleError<Page<Airplane>>('searchAirplanes', {
+                    this.handleError<Page<Airplane>>('searchAirplanesPage', {
                         content: [] as Airplane[]
                     } as Page<Airplane>)
+                )
+            );
+    }
+
+    findDistinctAirplanesByModelContaining(
+        searchTerm: string,
+        pageIndex: number,
+        pageSize: number
+    ): Observable<Page<Airplane>> {
+        if (searchTerm.trim() === '') {
+            return of({ content: [] as Airplane[] } as Page<Airplane>);
+        }
+        return this.httpClient
+            .get<Page<Airplane>>(
+                `${
+                    environment.apiUrl + this.airplaneServicePath
+                }/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`
+            )
+            .pipe(
+                tap((page: Page<Airplane>) =>
+                    page.totalPages
+                        ? this.messageService.add(
+                              `Found airplanes matching "${searchTerm}".`
+                          )
+                        : this.messageService.add(
+                              `No airplanes matching "${searchTerm}".`
+                          )
+                ),
+                catchError(
+                    this.handleError<Page<Airplane>>(
+                        'findDistinctAirplanesByModelContaining',
+                        {
+                            content: [] as Airplane[]
+                        } as Page<Airplane>
+                    )
                 )
             );
     }

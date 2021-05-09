@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
@@ -43,7 +43,7 @@ export class AirplanesComponent implements OnInit {
         this.searchAirplanesPage();
     }
 
-    onAllDisplay(): void {
+    onAllAirplanesDisplay(): void {
         this.getAirplanesPage();
     }
 
@@ -82,8 +82,8 @@ export class AirplanesComponent implements OnInit {
                 centered: true
             }
         );
-        modalRef.result.then((airplanes: Airplane[]) => {
-            this.foundAirplanes = airplanes;
+        modalRef.result.then((airplane: Airplane) => {
+            this.foundAirplanes.push(airplane);
         });
     }
 

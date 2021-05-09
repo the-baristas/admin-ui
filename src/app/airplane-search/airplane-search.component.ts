@@ -19,18 +19,18 @@ export class AirplaneSearchComponent implements OnInit {
     airplanes$!: Observable<Airplane[]>;
     selectedAirplane: Airplane = {} as Airplane;
     @Output() searchResultsDisplay: EventEmitter<string> = new EventEmitter();
-    @Output() allDisplay: EventEmitter<void> = new EventEmitter();
+    @Output() allAirplanesDisplay: EventEmitter<void> = new EventEmitter();
     private searchTerms = new Subject<string>();
 
     constructor(private airplaneService: AirplaneService) {}
 
     ngOnInit(): void {
-        this.initializeAirplanes$();
+        this.initializeSuggestions();
 
         // An empty search box should show all airplanes.
         this.searchTerms.subscribe((term: string) => {
             if (term === '') {
-                this.allDisplay.emit();
+                this.allAirplanesDisplay.emit();
             }
         });
     }
@@ -39,7 +39,7 @@ export class AirplaneSearchComponent implements OnInit {
         searchBox.value = airplane.model;
         this.selectedAirplane.id = airplane.id;
         this.selectedAirplane.model = airplane.model;
-        this.initializeAirplanes$();
+        this.initializeSuggestions();
     }
 
     // Push a search term into the observable stream.
@@ -52,8 +52,8 @@ export class AirplaneSearchComponent implements OnInit {
         this.searchResultsDisplay.emit(this.selectedAirplane.model);
     }
 
-    private initializeAirplanes$(): void {
-        const suggestionsPageSize = 5;
+    private initializeSuggestions(): void {
+        const pageSize = 5;
         this.airplanes$ = this.searchTerms.pipe(
             // wait 300ms after each keystroke before considering the term
             debounceTime(300),
@@ -61,10 +61,10 @@ export class AirplaneSearchComponent implements OnInit {
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
             switchMap((term: string) =>
-                this.airplaneService.searchAirplanesPage(
+                this.airplaneService.findDistinctAirplanesByModelContaining(
                     term,
                     0,
-                    suggestionsPageSize
+                    pageSize
                 )
             ),
             // Map the page to an array.
