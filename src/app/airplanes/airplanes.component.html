@@ -1,5 +1,6 @@
 <app-airplane-search
-    (searchResultsDisplay)="onSearchResultsDisplay($event)" (allAirplanesDisplay)="onAllAirplanesDisplay()"
+    (searchResultsDisplay)="onSearchResultsDisplay($event)"
+    (allAirplanesDisplay)="onAllAirplanesDisplay()"
 ></app-airplane-search>
 
 <button
@@ -21,12 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr
-            *ngFor="
-                let airplane of foundAirplanes;
-                let i = index
-            "
-        >
+        <tr *ngFor="let airplane of foundAirplanes; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ airplane.firstClassSeatsMax }}</td>
             <td>{{ airplane.businessClassSeatsMax }}</td>

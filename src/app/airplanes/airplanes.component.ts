@@ -117,9 +117,9 @@ export class AirplanesComponent implements OnInit {
         modalRef.componentInstance.airplaneToDelete = airplaneToDelete;
         modalRef.componentInstance.entityName = 'Airplane';
 
-        modalRef.result.then((airplane: Airplane) => {
+        modalRef.result.then((deletedAirplane: Airplane) => {
             this.foundAirplanes = this.foundAirplanes.filter(
-                (a: Airplane) => a !== airplane
+                (airplane: Airplane) => airplane !== deletedAirplane
             );
         });
     }

@@ -207,7 +207,7 @@ export class AirplaneService {
         const url = `${environment.apiUrl + this.airplaneServicePath}/${id}`;
 
         return this.httpClient.delete<Airplane>(url, httpOptions).pipe(
-            tap((_) =>
+            tap(() =>
                 this.messageService.add(
                     `Successfully deleted! Airplane id=${id}`
                 )
@@ -220,7 +220,9 @@ export class AirplaneService {
     updateAirplane(airplane: Airplane): Observable<any> {
         return this.httpClient
             .put(
-                environment.apiUrl + this.airplaneServicePath,
+                `${environment.apiUrl + this.airplaneServicePath}/${
+                    airplane.id
+                }`,
                 airplane,
                 httpOptions
             )
