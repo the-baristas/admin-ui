@@ -82,7 +82,10 @@ export class RouteListComponent implements OnInit {
   }
 
   public onAddRoute() {
-    this.routeService.addRoute(this.addRouteForm.value as Route)
+    let originIdParam = this.addRouteForm.value.originId;
+    let destinationIdParam = this.addRouteForm.value.destinationId;
+
+    this.routeService.addRoute(this.addRouteForm.value as Route, originIdParam, destinationIdParam)
       .subscribe(
         (response: any) => {
           this.routeService.getRoute(response);
@@ -175,7 +178,6 @@ export class RouteListComponent implements OnInit {
           originId: new FormControl(this.newRoute),
           destinationId: new FormControl(this.newRoute),
           isActive: new FormControl(this.newRoute)
-  
         });
   }
 

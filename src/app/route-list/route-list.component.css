@@ -13,6 +13,17 @@
     box-sizing: border-box;
   }
 
+  .route-container, .ds-1-row, table {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+  }
+
+  table {
+    display: inline-table;
+  }
+
 
   .route-search-form {
     width: 100%;

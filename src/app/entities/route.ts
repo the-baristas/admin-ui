@@ -11,5 +11,7 @@ export interface Route {
             isActive: number;
       }
       isActive: number;
+      originId: number;
+      destinationId: number;
 }
   

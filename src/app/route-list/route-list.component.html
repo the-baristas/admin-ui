@@ -3,6 +3,7 @@
   <button type="button" id="add-route-button" class="btn btn-primary" (click)="openTwo(addRouteModal)">Create New</button>
 </div>
 
+<div class="route-container">
 <div class="ds-1-row">
   <table class="table table-responsive table-striped">
     <thead>
@@ -27,6 +28,7 @@
     </tbody>
   </table>
 </div>
+</div>
 
 <div id="pagination-top" class="ds-1-row ds-u-margin-top">
   <div class="ds-1-col">
@@ -50,17 +52,27 @@
             </div>
             <div class="modal-body">
               <p>Enter details to save.</p>
-              <label for="originId">Origin ID:</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="originId" />
 
-                     <label for="destinationId">Destination ID:</label>
-                     <input type="text"
-                            class="form-control"
-                            formControlName="destinationId" />
+
+              <label for="originAirport">Origin Airport:</label>
+                <select class="form-control"
+                        formControlName="originAirport">
+                <option [defaultSelected]=true [ngValue]="this.editRoute.originAirport" >{{this.editRoute.originAirport.iataId}} - {{this.editRoute.originAirport.city}}</option>
+                <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+                </select>
+                <br />
+
+                <label for="destinationAirport">Destination Airport:</label>
+                <select class="form-control"
+                        formControlName="destinationAirport">
+                <option [defaultSelected]=true [ngValue]="this.editRoute.destinationAirport" >{{this.editRoute.destinationAirport.iataId}} - {{this.editRoute.destinationAirport.city}}</option>
+                <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+                </select>
+                <br />
     
-              <label for="isActive">Disable?</label>
+              <label for="isActive">Active?</label>
               <input type="checkbox" 
                      class="form-control"
                      formControlName="isActive"
@@ -87,20 +99,29 @@
           </div>
           <div class="modal-body">
             <p>Enter details to save.</p>
-            <label for="originId">Origin ID:</label>
-            <input type="text"
-                   class="form-control"
-                   formControlName="originId" />
+            <label for="originId">Origin Airport:</label>
+            <select class="form-control"
+                    formControlName="originId">
+            <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
+            <option *ngFor="let route of foundRoutes; let i = index"
+                    [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+            </select>
+            <br />
 
-            <label for="destinationId">Destination ID:</label>
-            <input type="text"
-                   class="form-control"
-                   formControlName="destinationId" />
+            <label for="destinationId">Destination Airport:</label>
+            <select class="form-control"
+                    formControlName="destinationId">
+            <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
+            <option *ngFor="let route of foundRoutes; let i = index"
+                    [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+            </select>
+            <br />
                                               
-            <label for="isActive">Active (1 = Yes, 2 = No):</label>
-            <input type="text"
-                   class="form-control"
-                   formControlName="isActive" />
+            <label for="isActive">Active?:</label>
+            <input
+                type="checkbox"
+                class="form-control"
+                formControlName="isActive"/>
   
           </div>
           <div class="modal-footer">

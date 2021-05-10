@@ -4,8 +4,8 @@ import { Observable, Subject } from 'rxjs';
 import {
     debounceTime, distinct, distinctUntilChanged, distinctUntilKeyChanged, filter, map, switchMap
 } from 'rxjs/operators';
-import { Airplane } from '../airplane';
-import { AirplaneService } from '../airplane.service';
+import { Airplane } from '../entities/airplane';
+import { AirplaneService } from '../services/airplane.service';
 
 @Component({
     selector: 'app-airplane-search',

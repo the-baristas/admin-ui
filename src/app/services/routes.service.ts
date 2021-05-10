@@ -8,6 +8,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 // environment config, sets api url
 import { environment } from 'src/environments/environment';
+import { HandleError,HttpErrorHandlerService } from './http-error-handler.service';
 
 import { Route } from '../entities/route';
 import { MessageService } from './message.service';
@@ -25,11 +26,16 @@ export class RouteService {
     constructor(
         private http: HttpClient,
         private messageService: MessageService,
-        private loginService: LoginService
-    ) { }
+        private loginService: LoginService,
+        httpErrorHandlerService: HttpErrorHandlerService
+        ) {
+            this.handleError = httpErrorHandlerService.createHandleError(
+                'FlightService'
+            );
+        }
 
     public getAllRoutes() {
-        return this.http.get<Route[]>(environment.apiUrl + this.routeServicePath, this.httpOptions)
+        return this.http.get<Route[]>(environment.apiUrl + this.routeServicePath, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.log('fetched routes')),
                 catchError((error: HttpErrorResponse) => {
@@ -60,10 +66,12 @@ export class RouteService {
         );
     }
 
-    public addRoute(route: Route): Observable<Route> {
+    public addRoute(route: Route, originIdParam: string, destinationIdParam: string): Observable<Route> {
         console.log(route);
-        const url = environment.apiUrl + this.routeServicePath;
-        return this.http.post<Route>(url, route, this.httpOptions).pipe(
+        console.log(originIdParam);
+        console.log(destinationIdParam);
+        const url = environment.apiUrl + this.routeServicePath + '?originId=' + originIdParam + '&destinationId=' + destinationIdParam;
+        return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newRoute: Route) => this.log(`added route with id=${newRoute.id}`)),
             catchError(this.handleError<Route>("addRoute"))
         );

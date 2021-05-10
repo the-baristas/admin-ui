@@ -23,7 +23,7 @@ const httpOptions = {
 @Injectable({ providedIn: "root" })
 export class FlightService {
     private flightServicePath: string = '/flights';
-    private pagedFlightServicePath: string = '/paged-flights?pageNo=0&pageSize=10&sortBy=id';
+    private pagedFlightServicePath: string = '/flights?pageNo=0&pageSize=10&sortBy=id';
     private handleError: HandleError;
 
     constructor(
@@ -49,7 +49,7 @@ export class FlightService {
 
     public getFlightsPage(pageIndex: number, pageSize: number): Observable<Page<Flight>> {
         return this.httpClient.get<Page<Flight>>(
-            `${environment.apiUrl}/paged-flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            `${environment.apiUrl}/flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
               tap(() =>
               this.messageService.add(
                 'Successfully found flights page.'
