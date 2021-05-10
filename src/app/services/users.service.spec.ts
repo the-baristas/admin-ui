@@ -6,7 +6,9 @@ import { User } from '../entities/user';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Data } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Page } from '../entities/Page';
+import { Page } from '../entities/page';
+
+
 
 
 

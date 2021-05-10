@@ -1,0 +1,68 @@
+<app-booking-search
+    (resultsEvent)="replaceFoundBookings($event)"
+></app-booking-search>
+
+<button
+    class="btn btn-lg btn-primary"
+    id="create-new-button"
+    (click)="openAddModal()"
+>
+    Create New
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Confirmation Code</th>
+            <th scope="col">Layover Count</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="
+                let booking of foundBookings
+                    | slice: (page - 1) * pageSize:page * pageSize
+            "
+        >
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.confirmationCode }}</td>
+            <td>{{ booking.layoverCount }}</td>
+            <td>{{ booking.totalPrice }}</td>
+            <td>{{ booking.active }}</td>
+            <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="toggleActive(booking)"
+                >
+                    <span *ngIf=booking.active>Disable</span>
+                    <span *ngIf=!booking.active>Enable</span>
+                </button>
+            </td>
+            <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="openEditModal(booking)"
+                >
+                    Edit
+                </button>
+            </td>
+            <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="openDeleteModal(booking)"
+                >
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<ngb-pagination
+    [collectionSize]="foundBookings.length"
+    [(page)]="page"
+    [pageSize]="pageSize"
+></ngb-pagination>

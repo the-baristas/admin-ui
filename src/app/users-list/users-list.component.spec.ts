@@ -7,7 +7,7 @@ import { NgbModule, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 
 import { of } from 'rxjs/internal/observable/of';
 import { AppRoutingModule } from '../app-routing.module';
-import { Page } from '../entities/Page';
+import { Page } from '../entities/page';
 import { User } from '../entities/user';
 import { HeaderComponent } from '../layout/header/header.component';
 import { UsersService } from '../services/users.service';

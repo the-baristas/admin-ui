@@ -1,0 +1,68 @@
+<app-airplane-search
+    (searchResultsDisplay)="onSearchResultsDisplay($event)"
+    (allAirplanesDisplay)="onAllAirplanesDisplay()"
+></app-airplane-search>
+
+<button
+    class="btn btn-lg btn-primary"
+    id="create-new-button"
+    (click)="openAddModal()"
+>
+    Create New
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Max First Class Seats</th>
+            <th scope="col">Max Business Class Seats</th>
+            <th scope="col">Max Economy Class Seats</th>
+            <th scope="col">Model</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let airplane of foundAirplanes; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ airplane.firstClassSeatsMax }}</td>
+            <td>{{ airplane.businessClassSeatsMax }}</td>
+            <td>{{ airplane.economyClassSeatsMax }}</td>
+            <td>{{ airplane.model }}</td>
+            <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="openEditModal(airplane)"
+                >
+                    Edit
+                </button>
+            </td>
+            <td>
+                <button
+                    class="btn btn-primary"
+                    (click)="openDeleteModal(airplane)"
+                >
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+        [collectionSize]="totalElements"
+        [(page)]="pageNumber"
+        [pageSize]="pageSizeControl.value"
+        (pageChange)="onPageChange()"
+    ></ngb-pagination>
+
+    <select
+        class="custom-select"
+        name="pageSize"
+        [formControl]="pageSizeControl"
+    >
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="25">25 items per page</option>
+        <option [ngValue]="50">50 items per page</option>
+    </select>
+</div>

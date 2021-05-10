@@ -1,0 +1,18 @@
+<div id="search-component">
+    <label for="search-box">Airplane Search</label>
+    <input
+        #searchBox
+        id="search-box"
+        autocomplete="off"
+        (input)="search(searchBox.value)"
+    />
+
+    <ul class="suggestions">
+        <li
+            *ngFor="let airplane of airplanes$ | async"
+            (click)="onSuggestionClick(searchBox, airplane)"
+        >
+            {{ airplane.model }}
+        </li>
+    </ul>
+</div>

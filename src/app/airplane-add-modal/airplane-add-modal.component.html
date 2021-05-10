@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add</h4>
+    <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Times sign click')"
+    >
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="addingForm">
+        <label for="first-class-seats-max">Max First Class Seats: </label>
+        <input
+            type="number"
+            id="first-class-seats-max"
+            formControlName="firstClassSeatsMax"
+        />
+        <label for="business-class-seats-max">Max Business Class Seats: </label>
+        <input
+            type="number"
+            id="business-class-seats-max"
+            formControlName="businessClassSeatsMax"
+        />
+        <label for="economy-class-seats-max">Max Economy Class Seats: </label>
+        <input
+            type="number"
+            id="economy-class-seats-max"
+            formControlName="economyClassSeatsMax"
+        />
+        <label for="model">Model: </label>
+        <input type="text" id="model" formControlName="model" />
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button
+        type="button"
+        class="btn btn-light"
+        (click)="activeModal.close('Close click')"
+    >
+        Cancel
+    </button>
+    <button type="button" class="btn btn-light" (click)="add()">Add</button>
+</div>
