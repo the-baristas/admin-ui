@@ -19,6 +19,7 @@ import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
+import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { UsersListComponent } from './users-list/users-list.component';
         BookingAddModalComponent,
         BookingEditModalComponent,
         UsersListComponent,
-        HeaderComponent
+        HeaderComponent,
+        UserDeleteModalComponent
     ],
     imports: [
         BrowserModule,

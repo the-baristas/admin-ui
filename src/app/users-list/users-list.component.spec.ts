@@ -46,6 +46,7 @@ describe('UsersListComponent', () => {
     size: 2,
     totalPages: 1,
     number: 0,
+    numberOfElements: 2,
     totalElements: 2,
     first: true,
     last: true,
@@ -139,10 +140,10 @@ describe('UsersListComponent', () => {
   });
 
   it('Create button should open modal', () => {
-    spyOn(component, 'open').and.callThrough();
+    spyOn(component, 'openModal').and.callThrough();
     let button = fixture.debugElement.nativeElement.querySelector('#createButton');
     button.click();
-    expect(component.open).toHaveBeenCalled();
+    expect(component.openModal).toHaveBeenCalled();
     expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
   });
 
@@ -179,7 +180,7 @@ describe('UsersListComponent', () => {
     component.updateUserForm.value.active = userAdmin.active;
 
     component.action = 'Add';
-    component.onUpdateUser();
+    component.userModalPerformAction();
     expect(component.updateUserForm.controls.givenName.dirty).toBeFalsy();
     expect(component.updateUserForm.controls.familyName.dirty).toBeFalsy();
     expect(component.updateUserForm.controls.email.dirty).toBeFalsy();
