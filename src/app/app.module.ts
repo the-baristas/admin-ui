@@ -21,6 +21,7 @@ import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
+import { PhonePipe } from './pipes/phone.pipe';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { UsersListComponent } from './users-list/users-list.component';
         BookingEditModalComponent,
         UsersListComponent,
         HeaderComponent,
-        UserDeleteModalComponent
+        UserDeleteModalComponent,
+        PhonePipe
     ],
     imports: [
         BrowserModule,
