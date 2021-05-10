@@ -1,0 +1,205 @@
+<div class="ds-1-row ds-u-margin-top--3">
+  <div style="width:25%; margin-left: 100px">
+    <form [formGroup]="searchUsersForm">
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringEmail" placeholder="Search Email" />
+    </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByEmailErrorMessage" style="display:none;color:red">
+      A user with this email does not exist.
+    </div>
+  </div>
+
+  <div style="width:25%; margin-left: 100px">
+    <form [formGroup]="searchUsersForm">
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username"  />
+    </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByUsernameErrorMessage" style="display:none;color:red">
+      A user with this username does not exist.
+    </div>
+  </div>
+
+  <div style="width:25%; margin-left: 100px">
+    <form [formGroup]="searchUsersForm">
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone"  />
+    </form>
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByPhoneErrorMessage" style="display:none;color:red">
+      A user with this phone number does not exist.
+    </div>
+  </div>
+  <div  class="grid-container" style="width: 200px;">
+    <div class="grid-item" style="width:25%; margin-left: 100px">
+      <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
+    </div>
+    <div  class="grid-item" style="width:25%; margin-left: 100px">
+      <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
+    </div>
+  </div>
+  
+
+</div>
+
+<div class="ds-1-row ds-u-margin-top--3">
+  <div class="ds-1-col--9">
+    <ngb-pagination [collectionSize]="totalUsers"
+                    [(page)]="pageNumber"
+                    [pageSize]="pageSize"
+                    [maxSize]="4"
+                    [boundaryLinks]="true"
+                    (pageChange)="setPage($event)">
+    </ngb-pagination>
+    <select class="custom-select"
+            style="width: auto"
+            name="pageSize"
+            [(ngModel)]="this.pageSize" (change)="searchUsers()">
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="25">25 items per page</option>
+      <option [ngValue]="50">50 items per page</option>
+    </select>
+    <div style="text-align:right; margin-right: 130px">
+      <button id="createButton" class="btn btn-primary" (click)="open(userModal, null)">Create</button>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="ds-1-row ds-u-margin-top--9">
+  <h3>List of Users</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th class="hideUnder800px" scope="col">First</th>
+        <th class="hideUnder800px" scope="col">Last</th>
+        <th class="hideUnder550px" scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; let i = index">
+        <td >{{i + 1}}</td>
+        <td class="hideUnder800px">{{user.givenName}}</td>
+        <td class="hideUnder800px">{{user.familyName}}</td>
+        <td class="hideUnder550px">{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td> <button id="editButton" class="btn btn-primary" data-toggle="modal">Edit</button> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #userModal let-c="close" let-d="dismiss">
+  <form [formGroup]="updateUserForm" (submit)="onUpdateUser()">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{action}} User</h5>
+
+        </div>
+        <div class="modal-body">
+          <p>Enter user details to save</p>
+          <div>
+            <label for="givenName">First Name</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="givenName" />
+            <span *ngIf="updateUserFormControls.givenName.touched && updateUserFormControls.givenName.errors?.required" class="text-danger">
+              <b>Please enter a valid name</b>
+            </span>
+            <span *ngIf="updateUserFormControls.givenName.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="familyName">Last Name</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="familyName" />
+            <span *ngIf="updateUserFormControls.familyName.touched && updateUserFormControls.familyName.errors?.required" class="text-danger">
+              <b>Please enter a valid name</b>
+            </span>
+            <span *ngIf="updateUserFormControls.familyName.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="username">Username</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="username" />
+            <span *ngIf="updateUserFormControls.username.touched && updateUserFormControls.username.errors?.required" class="text-danger">
+              <b>Please enter a valid username</b>
+            </span>
+            <span *ngIf="updateUserFormControls.username.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </div>
+
+          <span *ngIf="action === 'Add'">
+            <label for="username">Password</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="password" />
+            <span *ngIf="updateUserFormControls.password.touched && updateUserFormControls.password.errors?.required" class="text-danger">
+              <b>Please enter a valid password</b>
+            </span>
+            <span *ngIf="updateUserFormControls.password.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 45 characters</b>
+            </span>
+          </span>
+
+          <div>
+            <label for="email">Email</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="email" />
+            <span *ngIf="updateUserFormControls.email.touched && ( updateUserFormControls.email.errors?.required || updateUserFormControls.email.errors?.email)" class="text-danger">
+              <b>Please enter a valid email</b>
+            </span>
+            <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
+              <b>Please enter less than 50 characters</b>
+            </span>
+          </div>
+          <div>
+            <label for="phone">Phone Number</label>
+            <input type="text"
+                   class="form-control"
+                   formControlName="phone" />
+            <span *ngIf="updateUserFormControls.phone.touched && updateUserFormControls.phone.errors?.required" class="text-danger">
+              <b>Please enter a 10 digit number</b>
+            </span>
+            <span *ngIf="updateUserFormControls.phone.errors?.maxlength" class="text-danger">
+              <b>Please enter a 10 digit number</b>
+            </span>
+          </div>
+
+          <div>
+            <label for="role">Role</label>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td scope="col">Customer<input id="customer" type="radio" value="ROLE_CUSTOMER" name="role" class="form-control" formControlName="role"></td>
+                    <td scope="col">Admin<input id="admin" type="radio" value="ROLE_ADMIN" name="role" class="form-control" formControlName="role"></td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <label for="isActive">Active?</label>
+            <div>
+              <input type="checkbox" class="form-control" formControlName="active" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="updateModalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+          <button id="updateModalSubmit" type="submit" class="btn btn-primary"> {{action}} </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

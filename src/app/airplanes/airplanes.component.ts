@@ -26,45 +26,48 @@ export class AirplanesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.getAirplanesPage();
+        this.findAllAirplanes();
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
             const pagesMax: number = Math.ceil(this.totalElements / pageSize);
             // The page number may be set to be greater than the max number of
             // pages when pageSize is changed.
             this.pageNumber = Math.min(this.pageNumber, pagesMax);
-            // this.initializeAirplanesPage();
-            this.searchAirplanesPage();
+            if (this.searchTerm === '') {
+                this.findAllAirplanes();
+            } else {
+                this.findAirplanesByModelContaining();
+            }
         });
     }
 
     onSearchResultsDisplay(searchTerm: string): void {
         this.searchTerm = searchTerm;
-        this.searchAirplanesPage();
+        this.findAirplanesByModelContaining();
     }
 
     onAllAirplanesDisplay(): void {
-        this.getAirplanesPage();
+        this.findAllAirplanes();
     }
 
     onPageChange(): void {
-        this.getAirplanesPage();
+        this.findAllAirplanes();
     }
 
-    getAirplanesPage(): void {
+    findAllAirplanes(): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .getAirplanesPage(pageIndex, this.pageSizeControl.value)
+            .findAllAirplanes(pageIndex, this.pageSizeControl.value)
             .subscribe((airplanesPage: Page<Airplane>) => {
                 this.foundAirplanes = airplanesPage.content;
                 this.totalElements = airplanesPage.totalElements;
             });
     }
 
-    searchAirplanesPage() {
+    findAirplanesByModelContaining() {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .searchAirplanesPage(
+            .findByModelContaining(
                 this.searchTerm,
                 pageIndex,
                 this.pageSizeControl.value

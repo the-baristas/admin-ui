@@ -9,30 +9,37 @@ import {
     HandleError,
     HttpErrorHandlerService
 } from './http-error-handler.service';
+import { LoginService } from './login.service';
 import { MessageService } from './message.service';
-
-const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
 
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
-    airplaneServicePath: string = '/airplanes';
+    private airplanesPath: string = '/airplanes';
+    private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
     constructor(
         private httpClient: HttpClient,
         private messageService: MessageService,
+        private loginService: LoginService,
         httpErrorHandlerService: HttpErrorHandlerService
     ) {
         this.handleError = httpErrorHandlerService.createHandleError(
             'AirplaneService'
         );
+        this.httpOptions = {
+            headers: new HttpHeaders({
+                Authorization: this.loginService.getToken()
+            })
+        };
     }
 
     getAirplanes(): Observable<Airplane[]> {
         return this.httpClient
-            .get<Airplane[]>(environment.apiUrl + this.airplaneServicePath)
+            .get<Airplane[]>(
+                environment.apiUrl + this.airplanesPath,
+                this.httpOptions
+            )
             .pipe(
                 tap(() =>
                     this.messageService.add('Successfully found airplanes.')
@@ -41,15 +48,16 @@ export class AirplaneService {
             );
     }
 
-    getAirplanesPage(
+    findAllAirplanes(
         pageIndex: number,
         pageSize: number
     ): Observable<Page<Airplane>> {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplaneServicePath
-                }/page?index=${pageIndex}&size=${pageSize}`
+                    environment.apiUrl + this.airplanesPath
+                }/page?index=${pageIndex}&size=${pageSize}`,
+                this.httpOptions
             )
             .pipe(
                 tap(() =>
@@ -61,7 +69,6 @@ export class AirplaneService {
                     this.handleError<Page<Airplane>>('getAirplanesPage', {
                         content: [] as Airplane[],
                         number: 0,
-                        numberOfElements: 0,
                         totalElements: 0,
                         totalPages: 0
                     } as Page<Airplane>)
@@ -71,10 +78,8 @@ export class AirplaneService {
 
     /** GET airplane by id. Return `undefined` when id not found */
     getAirplaneNo404<Data>(id: number): Observable<Airplane> {
-        const url = `${
-            environment.apiUrl + this.airplaneServicePath
-        }/?id=${id}`;
-        return this.httpClient.get<Airplane[]>(url).pipe(
+        const url = `${environment.apiUrl + this.airplanesPath}/?id=${id}`;
+        return this.httpClient.get<Airplane[]>(url, this.httpOptions).pipe(
             map((airplanes: Airplane[]) => airplanes[0]), // returns a {0|1} element array
             tap((a: Airplane) => {
                 const outcome = a ? `Found` : `Did not find`;
@@ -86,8 +91,8 @@ export class AirplaneService {
 
     /** GET airplane by id. Will 404 if id not found */
     getAirplaneById(id: number): Observable<Airplane> {
-        const url = `${environment.apiUrl + this.airplaneServicePath}/${id}`;
-        return this.httpClient.get<Airplane>(url).pipe(
+        const url = `${environment.apiUrl + this.airplanesPath}/${id}`;
+        return this.httpClient.get<Airplane>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add(`fetched airplane id=${id}`)),
             catchError(this.handleError<Airplane>(`getAirplane id=${id}`))
         );
@@ -102,8 +107,9 @@ export class AirplaneService {
         return this.httpClient
             .get<Airplane[]>(
                 `${
-                    environment.apiUrl + this.airplaneServicePath
-                }/search?term=${term}`
+                    environment.apiUrl + this.airplanesPath
+                }/search?term=${term}`,
+                this.httpOptions
             )
             .pipe(
                 tap((x) =>
@@ -119,28 +125,29 @@ export class AirplaneService {
             );
     }
 
-    searchAirplanesPage(
-        term: string,
+    findByModelContaining(
+        searchTerm: string,
         pageIndex: number,
         pageSize: number
     ): Observable<Page<Airplane>> {
-        if (term.trim() === '') {
+        if (searchTerm.trim() === '') {
             return of({ content: [] as Airplane[] } as Page<Airplane>);
         }
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplaneServicePath
-                }/search?term=${term}&index=${pageIndex}&size=${pageSize}`
+                    environment.apiUrl + this.airplanesPath
+                }/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
+                this.httpOptions
             )
             .pipe(
                 tap((page: Page<Airplane>) =>
                     page.totalPages
                         ? this.messageService.add(
-                              `Found airplanes matching "${term}".`
+                              `Found airplanes matching "${searchTerm}".`
                           )
                         : this.messageService.add(
-                              `No airplanes matching "${term}".`
+                              `No airplanes matching "${searchTerm}".`
                           )
                 ),
                 catchError(
@@ -162,8 +169,9 @@ export class AirplaneService {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplaneServicePath
-                }/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`
+                    environment.apiUrl + this.airplanesPath
+                }/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
+                this.httpOptions
             )
             .pipe(
                 tap((page: Page<Airplane>) =>
@@ -187,11 +195,15 @@ export class AirplaneService {
     }
 
     addAirplane(airplane: Airplane): Observable<Airplane> {
+        this.httpOptions.headers = this.httpOptions.headers.append(
+            'Content-Type',
+            'application/json'
+        );
         return this.httpClient
             .post<Airplane>(
-                environment.apiUrl + this.airplaneServicePath,
+                environment.apiUrl + this.airplanesPath,
                 airplane,
-                httpOptions
+                this.httpOptions
             )
             .pipe(
                 tap((newAirplane: Airplane) =>
@@ -204,9 +216,8 @@ export class AirplaneService {
     }
 
     deleteAirplane(id: number): Observable<Airplane> {
-        const url = `${environment.apiUrl + this.airplaneServicePath}/${id}`;
-
-        return this.httpClient.delete<Airplane>(url, httpOptions).pipe(
+        const url = `${environment.apiUrl + this.airplanesPath}/${id}`;
+        return this.httpClient.delete<Airplane>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
                     `Successfully deleted! Airplane id=${id}`
@@ -218,13 +229,15 @@ export class AirplaneService {
 
     /** PUT: update the airplane on the server */
     updateAirplane(airplane: Airplane): Observable<any> {
+        this.httpOptions.headers = this.httpOptions.headers.append(
+            'Content-Type',
+            'application/json'
+        );
         return this.httpClient
             .put(
-                `${environment.apiUrl + this.airplaneServicePath}/${
-                    airplane.id
-                }`,
+                `${environment.apiUrl + this.airplanesPath}/${airplane.id}`,
                 airplane,
-                httpOptions
+                this.httpOptions
             )
             .pipe(
                 tap(() =>
