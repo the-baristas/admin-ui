@@ -37,7 +37,15 @@ export class UsersService {
   public getUserByEmail(email: string): Observable<User> {
     return this.http.get<User>(`${this.serverUrl}/email/${email}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to retrieve user data')
+        if (error.status === 404) {
+          return throwError('A user with this email does not exist')
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else {
+          return throwError("Something went wrong")
+        }
       }
       )
     )
@@ -46,7 +54,15 @@ export class UsersService {
   public getUserByUsername(username: string): Observable<User> {
     return this.http.get<User>(`${this.serverUrl}/username/${username}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to retrieve user data')
+        if (error.status === 404) {
+          return throwError('A user with this username does not exist')
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else {
+          return throwError("Something went wrong")
+        }
       }
       )
     )
@@ -55,7 +71,15 @@ export class UsersService {
   public getUserByPhoneNumber(phone: string): Observable<User> {
     return this.http.get<User>(`${this.serverUrl}/phone/${phone}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to retrieve user data')
+        if (error.status === 404) {
+          return throwError('A user with this phone number does not exist')
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else {
+          return throwError("Something went wrong")
+        }
       }
       )
     )
@@ -64,7 +88,7 @@ export class UsersService {
   public createUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.serverUrl}`, user, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
+        if (error.status === 400) {
           return throwError("One or more fields are invalid.")
         }
         else if (error.status === 409) {
@@ -85,7 +109,21 @@ export class UsersService {
   public updateUser(user: User, userId: number): Observable<void> {
     return this.http.put<void>(`${this.serverUrl}/${userId}`, user, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to update user')
+        if (error.status === 400) {
+          return throwError("One or more fields are invalid.")
+        }
+        else if (error.status === 404) {
+          return throwError('This user does not exist')
+        }
+        else if (error.status === 409) {
+          return throwError("Username, email, and/or phone number already exists.")
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else {
+          return throwError("Something went wrong")
+        }
       }
       )
     )
@@ -94,7 +132,15 @@ export class UsersService {
   public deleteUser(userId: number): Observable<void> {
     return this.http.delete<void>(`${this.serverUrl}/${userId}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to delete user')
+        if (error.status === 404) {
+          return throwError("This user does not exist")
+        }
+        else if (error.status === 500) {
+          return throwError("Database error")
+        }
+        else {
+          return throwError("Something went wrong")
+        }
       }
       )
     )

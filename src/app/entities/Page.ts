@@ -2,6 +2,7 @@ export interface Page<T> {
   content: T[],
   size: number,
   number: number,
+  numberOfElements: number,
   totalPages: number,
   totalElements: number,
   first: boolean,
