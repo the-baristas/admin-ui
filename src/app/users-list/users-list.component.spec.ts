@@ -10,6 +10,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { Page } from '../entities/page';
 import { User } from '../entities/user';
 import { HeaderComponent } from '../layout/header/header.component';
+import { PhonePipe } from '../pipes/phone.pipe';
 import { UsersService } from '../services/users.service';
 
 import { UsersListComponent } from './users-list.component';
@@ -74,7 +75,7 @@ describe('UsersListComponent', () => {
     usersServiceMock.getUserByPhoneNumber.and.returnValue(of(userData[0]));
     usersServiceMock.createUser.and.returnValue(of(userAdmin));
     await TestBed.configureTestingModule({
-      declarations: [UsersListComponent, HeaderComponent],
+      declarations: [UsersListComponent, HeaderComponent, PhonePipe],
       imports: [
         BrowserModule,
         HttpClientModule,
@@ -134,9 +135,9 @@ describe('UsersListComponent', () => {
   it('should be Clear, Search and Create buttons', () => {
     let compiled = fixture.debugElement.nativeElement;
 
-    expect(compiled.querySelector('#clearButton').textContent).toBe('Clear');
-    expect(compiled.querySelector('#searchButton').textContent).toBe('Search');
-    expect(compiled.querySelector('#createButton').textContent).toBe('Create');
+    expect(compiled.querySelector('#clearButton').textContent).toContain('Clear');
+    expect(compiled.querySelector('#searchButton').textContent).toContain('Search');
+    expect(compiled.querySelector('#createButton').textContent).toContain('Create');
   });
 
   it('Create button should open modal', () => {

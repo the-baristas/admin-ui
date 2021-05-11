@@ -18,13 +18,13 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        if (
-            this.location.path() !== '/login' &&
-            !this.loginService.loggedIn()
-        ) {
-            this.loginService.setPreviousPage(this.location.path());
-            this.router.navigate(['/login']);
-        }
+      if (this.location.path() !== '/login' && !this.loginService.loggedIn()) {
+        this.loginService.setPreviousPage(this.location.path());
+        this.router.navigate(['/login']);
+      }
+      else if (this.location.path() === '/login' && this.loginService.loggedIn()) {
+        this.router.navigate(['/home']);
+      }
     }
 <<<<<<< HEAD
   }

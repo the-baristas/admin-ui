@@ -65,6 +65,8 @@ import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
+import { PhonePipe } from './pipes/phone.pipe';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
     declarations: [
@@ -84,7 +86,8 @@ import { UsersListComponent } from './users-list/users-list.component';
         BookingEditModalComponent,
         UsersListComponent,
         HeaderComponent,
-        UserDeleteModalComponent
+        UserDeleteModalComponent,
+        PhonePipe
     ],
     imports: [
         BrowserModule,
@@ -92,7 +95,8 @@ import { UsersListComponent } from './users-list/users-list.component';
         AppRoutingModule,
         HttpClientModule,
         NgbModule,
-        ReactiveFormsModule
+      ReactiveFormsModule,
+      NgHttpLoaderModule.forRoot(),
     ],
     providers: [],
     bootstrap: [AppComponent]

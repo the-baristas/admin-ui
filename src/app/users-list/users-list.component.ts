@@ -186,8 +186,8 @@ export class UsersListComponent implements OnInit {
             ]),
             email: new FormControl('', [
                 Validators.required,
-                Validators.email,
-                Validators.maxLength(50)
+              Validators.maxLength(50),
+              Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,4}$")
             ]),
             username: new FormControl('', [
                 Validators.required,
@@ -197,7 +197,7 @@ export class UsersListComponent implements OnInit {
             password: new FormControl(''),
             phone: new FormControl('', [
                 Validators.required,
-                Validators.maxLength(10)
+                Validators.pattern('1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?')
             ]),
             role: new FormControl(''),
             active: new FormControl('')

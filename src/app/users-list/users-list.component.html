@@ -1,5 +1,5 @@
 <div class="ds-1-row ds-u-margin-top--3">
-  <div style="width:25%; margin-left: 100px">
+  <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
       <input id="userSearchField" type="text" class="form-control" formControlName="searchStringEmail" placeholder="Search Email" />
     </form>
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div style="width:25%; margin-left: 100px">
+  <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
       <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username" />
     </form>
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div style="width:25%; margin-left: 100px">
+  <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
       <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone" />
     </form>
@@ -26,10 +26,10 @@
     </div>
   </div>
   <div class="grid-container" style="width: 200px;">
-    <div class="grid-item" style="width:25%; margin-left: 100px">
+    <div class="grid-item" style="width:25%;">
       <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
     </div>
-    <div class="grid-item" style="width:25%; margin-left: 100px">
+    <div class="grid-item" style="width:25%;">
       <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
     </div>
   </div>
@@ -38,30 +38,10 @@
 </div>
 
 <div class="ds-1-row ds-u-margin-top--3">
-  <div class="ds-1-col--9">
-    <ngb-pagination [collectionSize]="totalUsers"
-                    [(page)]="pageNumber"
-                    [pageSize]="pageSize"
-                    [maxSize]="4"
-                    [boundaryLinks]="true"
-                    (pageChange)="setPage($event)">
-    </ngb-pagination>
-    <select class="custom-select"
-            style="width: auto"
-            name="pageSize"
-            [(ngModel)]="this.pageSize" (change)="searchUsers()">
-      <option [ngValue]="10">10 items per page</option>
-      <option [ngValue]="25">25 items per page</option>
-      <option [ngValue]="50">50 items per page</option>
-    </select>
     <div style="text-align:right; margin-right: 130px">
-      <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create</button>
+      <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create New</button>
     </div>
-  </div>
-
-
 </div>
-
 <div class="ds-1-row ds-u-margin-top--9">
   <h3>List of Users</h3>
   <table class="table">
@@ -82,12 +62,30 @@
         <td class="hideUnder800px">{{user.familyName}}</td>
         <td class="hideUnder550px">{{user.username}}</td>
         <td>{{user.email}}</td>
-        <td>{{user.phone}}</td>
+        <td>{{user.phone | phone}}</td>
         <td> <button id="editButton" class="btn btn-primary" (click)="openModal(userModal, user)">Edit</button> </td>
         <td> <button id="deleteButton" type="button" class="btn btn-danger" (click)="openDeleteModal(null, user.userId)">Delete</button></td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="totalUsers"
+                    [(page)]="pageNumber"
+                    [pageSize]="pageSize"
+                    [maxSize]="4"
+                    [boundaryLinks]="true"
+                    (pageChange)="setPage($event)">
+    </ngb-pagination>
+    <select class="custom-select"
+            style="width: auto"
+            name="pageSize"
+            [(ngModel)]="this.pageSize" (change)="searchUsers()">
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="25">25 items per page</option>
+      <option [ngValue]="50">50 items per page</option>
+    </select>
 </div>
 
 <ng-template #userModal let-c="close" let-d="dismiss">
@@ -139,7 +137,7 @@
 
           <span *ngIf="action === 'Add'">
             <label for="username">Password</label>
-            <input type="text"
+            <input type="password"
                    class="form-control"
                    formControlName="password" />
             <span *ngIf="updateUserFormControls.password.touched && updateUserFormControls.password.errors?.required" class="text-danger">
@@ -155,7 +153,10 @@
             <input type="text"
                    class="form-control"
                    formControlName="email" />
-            <span *ngIf="updateUserFormControls.email.touched && ( updateUserFormControls.email.errors?.required || updateUserFormControls.email.errors?.email)" class="text-danger">
+            <span *ngIf="updateUserFormControls.email.touched && updateUserFormControls.email.errors?.required" class="text-danger">
+              <b>Please enter an email</b>
+            </span>
+            <span *ngIf="updateUserFormControls.email.errors?.pattern" class="text-danger">
               <b>Please enter a valid email</b>
             </span>
             <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
@@ -168,10 +169,10 @@
                    class="form-control"
                    formControlName="phone" />
             <span *ngIf="updateUserFormControls.phone.touched && updateUserFormControls.phone.errors?.required" class="text-danger">
-              <b>Please enter a 10 digit number</b>
+              <b>Please enter a phone number</b>
             </span>
-            <span *ngIf="updateUserFormControls.phone.errors?.maxlength" class="text-danger">
-              <b>Please enter a 10 digit number</b>
+            <span *ngIf="updateUserFormControls.phone.errors?.pattern" class="text-danger">
+              <b>Please enter a valid phone number</b>
             </span>
           </div>
 
@@ -198,7 +199,7 @@
         </div>
         <div class="modal-footer">
           <button id="updateModalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Cancel</button>
-          <button id="updateModalSubmit" type="submit" class="btn btn-primary" [disabled]="updateUserForm.invalid"> {{action}} </button>
+          <button id="updateModalSubmit" type="submit" class="btn btn-primary" [disabled]="updateUserForm.invalid">Save</button>
         </div>
       </div>
     </div>
