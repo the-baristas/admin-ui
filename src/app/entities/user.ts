@@ -6,6 +6,6 @@ export interface User {
   password: string;
   email: string;
   phone: string;
-  role: number;
-  isActive: boolean;
+  role: string;
+  active: boolean;
 }

@@ -1,26 +1,34 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from './entities/user';
 import { LoginService } from './services/login.service';
-import { UsersService } from './services/users.service';
-import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'adminportal';
+    title = 'Admin UI';
 
-  constructor(private loginService: LoginService, private router: Router, private location: Location) { }
+    constructor(
+        private loginService: LoginService,
+        private router: Router,
+        private location: Location
+    ) {}
 
-  ngOnInit(): void {
-    if (location.pathname !=='/login' && !this.loginService.loggedIn()) {
-      this.loginService.setPreviousPage(location.pathname);
-      this.router.navigate(['/login']);
+    ngOnInit(): void {
+        if (
+            this.location.path() !== '/login' &&
+            !this.loginService.loggedIn()
+        ) {
+            this.loginService.setPreviousPage(this.location.path());
+            this.router.navigate(['/login']);
+        }
     }
+<<<<<<< HEAD
   }
 
+=======
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 }

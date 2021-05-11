@@ -1,78 +1,90 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, tap } from 'rxjs/operators'
-import { Observable, throwError } from 'rxjs';
+import jwt_decode from 'jwt-decode';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LoginService {
+    private serverUrl = environment.apiUrl + '/login';
 
-  private serverUrl = environment.apiUrl + '/login';
+    private previousPage: string = '/home';
 
-  private previousPage: string = '/home';
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  public login(username: string, password: string) {
-
-    return this.http.post<any>(`${this.serverUrl}`, JSON.stringify({ username: username, password: password }), { observe: 'response' }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 403 || error.status === 400)
-          return throwError('Invalid username and/or password');
-        else
-          return throwError('There was some sort of problem while trying to establish a connection. Please try again later.');
-      }
-      )
-
-    );
-
-  }
-
-  public getToken() {
-    let token = localStorage.getItem('utopia_token');
-    if (token == null) {
-      return '';
+    public login(username: string, password: string) {
+        return this.http
+            .post<any>(
+                `${this.serverUrl}`,
+                JSON.stringify({ username: username, password: password }),
+                { observe: 'response' }
+            )
+            .pipe(
+                catchError((error: HttpErrorResponse) => {
+                    if (error.status === 403 || error.status === 400)
+                        return throwError('Invalid username and/or password');
+                    else
+                        return throwError(
+                            'There was some sort of problem while trying to establish a connection. Please try again later.'
+                        );
+                })
+            );
     }
-    return token;
-  }
 
-  public getHeadersWithToken() : HttpHeaders {
-    let headers: HttpHeaders = new HttpHeaders({'Authorization': this.getToken()});
+    public getToken() {
+        let token = localStorage.getItem('utopia_token');
+        if (token == null) {
+            return '';
+        }
+        return token;
+    }
 
-    return headers
-  }
+    public getHeadersWithToken(): HttpHeaders {
+        let headers: HttpHeaders = new HttpHeaders({
+            Authorization: this.getToken()
+        });
 
-  public isAdmin(token: string) {
-    let decodedToken: any = jwt_decode<any>(token);
-    return this.hasAdminRole(decodedToken);
-  }
+        return headers;
+    }
 
-  hasAdminRole(decodedToken: any) {
-    let role: String = decodedToken.authorities[0].authority;
-    return role.endsWith('ADMIN');
-  }
+    public isAdmin(token: string) {
+        let decodedToken: any = jwt_decode<any>(token);
+        return this.hasAdminRole(decodedToken);
+    }
 
-  public setSession(token: string) {
-    localStorage.setItem('utopia_token', token);
-  }
+    hasAdminRole(decodedToken: any) {
+        let role: String = decodedToken.authorities[0].authority;
+        return role.endsWith('ADMIN');
+    }
 
-  public loggedIn() {
-    return this.getToken() != '';
-  }
+    public setSession(token: string) {
+        localStorage.setItem('utopia_token', token);
+    }
 
-  public logout() {
-    localStorage.removeItem('utopia_token');
-  }
+    public loggedIn() {
+        return this.getToken() != '';
+    }
 
-  public setPreviousPage(page: string) {
-    this.previousPage = page;
-  }
+    public logout() {
+        localStorage.removeItem('utopia_token');
+    }
 
-  public getPreviousPage(): string {
-    return this.previousPage;
-  }
+    public setPreviousPage(page: string) {
+        this.previousPage = page;
+    }
 
+<<<<<<< HEAD
 }
+=======
+    public getPreviousPage(): string {
+        return this.previousPage;
+    }
+}
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4

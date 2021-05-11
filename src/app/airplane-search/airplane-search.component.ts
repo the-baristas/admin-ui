@@ -1,10 +1,16 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import {
-    debounceTime, distinct, distinctUntilChanged, distinctUntilKeyChanged, filter, map, switchMap
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    switchMap
 } from 'rxjs/operators';
 import { Airplane } from '../entities/airplane';
+<<<<<<< HEAD
+=======
+import { Page } from '../entities/page';
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 import { AirplaneService } from '../services/airplane.service';
 
 @Component({
@@ -13,52 +19,63 @@ import { AirplaneService } from '../services/airplane.service';
     styleUrls: ['./airplane-search.component.css']
 })
 export class AirplaneSearchComponent implements OnInit {
-    @Output() notify = new EventEmitter<string>();
     airplanes$!: Observable<Airplane[]>;
-    selectedAirplane!: Airplane;
-    foundAirplanes: Airplane[] = [];
-
+    selectedAirplane: Airplane = {} as Airplane;
+    @Output() searchResultsDisplay: EventEmitter<string> = new EventEmitter();
+    @Output() allAirplanesDisplay: EventEmitter<void> = new EventEmitter();
     private searchTerms = new Subject<string>();
 
-    constructor(private airplaneService: AirplaneService, private router: Router) { }
+    constructor(private airplaneService: AirplaneService) {}
+
+    ngOnInit(): void {
+        this.initializeSuggestions();
+
+        // An empty search box should show all airplanes.
+        this.searchTerms.subscribe((term: string) => {
+            if (term === '') {
+                this.allAirplanesDisplay.emit();
+            }
+        });
+    }
+
+    updateSearchBox(searchBox: HTMLInputElement, airplane: Airplane): void {
+        searchBox.value = airplane.model;
+        this.selectedAirplane.id = airplane.id;
+        this.selectedAirplane.model = airplane.model;
+        this.initializeSuggestions();
+    }
 
     // Push a search term into the observable stream.
     search(term: string): void {
         this.searchTerms.next(term);
     }
 
-    updateSearchBox(searchBox: HTMLInputElement, airplane: Airplane): void {
-        searchBox.value = airplane.model;
-        this.selectedAirplane.id = airplane.id
-        this.selectedAirplane.model = airplane.model;
-        this.initializeAirplanes$();
+    onSuggestionClick(searchBox: HTMLInputElement, airplane: Airplane): void {
+        this.updateSearchBox(searchBox, airplane);
+        this.searchResultsDisplay.emit(this.selectedAirplane.model);
     }
 
-    delete(airplane: Airplane): void {
-        this.foundAirplanes = this.foundAirplanes.filter(a => a !== airplane);
-        this.airplaneService.deleteAirplane(airplane.id).subscribe();
-    }
-
-    showResults(): void {
-        this.airplaneService.searchAirplanes(this.selectedAirplane.model)
-            .subscribe(airplanes => this.foundAirplanes = airplanes);
-    }
-
-    ngOnInit(): void {
-        this.initializeAirplanes$();
-        this.selectedAirplane = {} as Airplane;
-    }
-
-    initializeAirplanes$(): void {
+    private initializeSuggestions(): void {
+        const pageSize = 5;
         this.airplanes$ = this.searchTerms.pipe(
             // wait 300ms after each keystroke before considering the term
             debounceTime(300),
             // ignore new term if same as previous term
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
-            switchMap((term: string) => this.airplaneService.searchAirplanes(term)),
+            switchMap((term: string) =>
+                this.airplaneService.findDistinctAirplanesByModelContaining(
+                    term,
+                    0,
+                    pageSize
+                )
+            ),
+            // Map the page to an array.
+            map((airplanesPage: Page<Airplane>) => airplanesPage.content),
             // Remove duplicates.
-            map((airplanes: Array<Airplane>) => this.makeArrayUnique(airplanes, 'model'))
+            map((airplanes: Airplane[]) =>
+                this.makeArrayUnique(airplanes, 'model')
+            )
         );
     }
 
@@ -67,11 +84,13 @@ export class AirplaneSearchComponent implements OnInit {
      * @param array
      * @param property
      */
-    private makeArrayUnique(array: Array<any>, property: any): Array<any> {
-        return array.filter(((value: any, index: number) =>
-            index === array.findIndex((element: any) =>
-                element[property] === value[property]
-            )
-        ));
+    private makeArrayUnique(array: any[], property: any): any[] {
+        return array.filter(
+            (value: any, index: number) =>
+                index ===
+                array.findIndex(
+                    (element: any) => element[property] === value[property]
+                )
+        );
     }
 }
