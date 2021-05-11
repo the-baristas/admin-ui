@@ -22,6 +22,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { PhonePipe } from './pipes/phone.pipe';
         AppRoutingModule,
         HttpClientModule,
         NgbModule,
-        ReactiveFormsModule
+      ReactiveFormsModule,
+      NgHttpLoaderModule.forRoot(),
     ],
     providers: [],
     bootstrap: [AppComponent]
