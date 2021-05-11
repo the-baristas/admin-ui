@@ -59,7 +59,7 @@
                         formControlName="originAirport">
                 <option [defaultSelected]=true [ngValue]="this.editRoute.originAirport" >{{this.editRoute.originAirport.iataId}} - {{this.editRoute.originAirport.city}}</option>
                 <option *ngFor="let route of foundRoutes; let i = index"
-                        [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+                        [ngValue]="route.originAirport">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
                 </select>
                 <br />
 
@@ -68,7 +68,7 @@
                         formControlName="destinationAirport">
                 <option [defaultSelected]=true [ngValue]="this.editRoute.destinationAirport" >{{this.editRoute.destinationAirport.iataId}} - {{this.editRoute.destinationAirport.city}}</option>
                 <option *ngFor="let route of foundRoutes; let i = index"
-                        [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+                        [ngValue]="route.destinationAirport">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
                 </select>
                 <br />
     
@@ -99,21 +99,21 @@
           </div>
           <div class="modal-body">
             <p>Enter details to save.</p>
-            <label for="originId">Origin Airport:</label>
+            <label for="originAirport">Origin Airport:</label>
             <select class="form-control"
-                    formControlName="originId">
+                    formControlName="originAirport">
             <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
             <option *ngFor="let route of foundRoutes; let i = index"
-                    [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+                    [ngValue]="route.originAirport">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
             </select>
             <br />
 
-            <label for="destinationId">Destination Airport:</label>
+            <label for="destinationAirport">Destination Airport:</label>
             <select class="form-control"
-                    formControlName="destinationId">
+                    formControlName="destinationAirport">
             <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
             <option *ngFor="let route of foundRoutes; let i = index"
-                    [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+                    [ngValue]="route.destinationAirport">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
             </select>
             <br />
                                               

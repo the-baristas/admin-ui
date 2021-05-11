@@ -66,11 +66,8 @@ export class RouteService {
         );
     }
 
-    public addRoute(route: Route, originIdParam: string, destinationIdParam: string): Observable<Route> {
-        console.log(route);
-        console.log(originIdParam);
-        console.log(destinationIdParam);
-        const url = environment.apiUrl + this.routeServicePath + '?originId=' + originIdParam + '&destinationId=' + destinationIdParam;
+    public addRoute(route: Route): Observable<Route> {
+        const url = environment.apiUrl + this.routeServicePath;
         return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newRoute: Route) => this.log(`added route with id=${newRoute.id}`)),
             catchError(this.handleError<Route>("addRoute"))
