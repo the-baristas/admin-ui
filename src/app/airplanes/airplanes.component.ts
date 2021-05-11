@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<< HEAD
+import { Airplane } from '../entities/airplane';
+=======
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
@@ -6,6 +9,7 @@ import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-
 import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { Airplane } from '../entities/airplane';
 import { Page } from '../entities/page';
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 import { AirplaneService } from '../services/airplane.service';
 
 @Component({

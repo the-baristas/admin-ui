@@ -26,4 +26,9 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     }
+<<<<<<< HEAD
+  }
+
+=======
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 }

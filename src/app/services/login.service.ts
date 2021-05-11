@@ -80,7 +80,11 @@ export class LoginService {
         this.previousPage = page;
     }
 
+<<<<<<< HEAD
+}
+=======
     public getPreviousPage(): string {
         return this.previousPage;
     }
 }
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
