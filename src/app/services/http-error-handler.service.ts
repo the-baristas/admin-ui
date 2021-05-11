@@ -50,4 +50,8 @@ export class HttpErrorHandlerService {
             return of(result);
         };
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4

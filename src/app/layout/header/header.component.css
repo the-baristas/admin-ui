@@ -1,0 +1,10 @@
+.header-nav-buttons {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+}
+
+.header-nav-buttons button {
+    margin: .5em;
+}

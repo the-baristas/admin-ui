@@ -1,0 +1,214 @@
+<div class="flight-search-box">
+      <form class="flight-search-form" [formGroup]="searchFlightsForm" (submit)="searchFlightsByLocation()">
+        <input type="text" placeholder="From: (IATA ID)" class="form-control" formControlName="searchOrigin"/> 
+        <input type="text" placeholder="To: (IATA ID)" class="form-control" formControlName="searchDestination" />
+        <button type="submit" class="btn btn-primary">Find Flights</button>
+    </form>
+</div>
+
+    <div class="ds-1-row ds-u-margin-top--3" id="searchByIdErrorMessage" style="display:none;color:red" >A flight with this ID does not exist.</div>
+
+
+  <div class="create-new-button">
+    <button type="button" id="add-flight-button" class="btn btn-primary" (click)="openTwo(addFlightModal)">Create New</button>
+  </div>
+  
+  <div class="ds-1-row">
+    <table class="table table-responsive table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID:</th>
+          <th scope="col">Airplane ID:</th>
+          <th scope="col">Route:</th>
+          <th scope="col">Departure Time:</th>
+          <th scope="col">Arrival Time:</th>
+          <th scope="col">Price:</th>
+          <th scope="col">Reserved Seats:</th>
+          <th scope="col">Edit:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let page of flights; let i = index">
+          <td>{{page.id}}</td>
+          <td>{{page.airplaneId}}</td>
+          <td>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</td>
+          <td>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}</td>
+          <td>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}</td>
+          <td>First Class: ${{page.firstPrice}}<br /> Business Class: ${{page.businessPrice}}<br /> Economy Class: ${{page.economyPrice}}</td>
+          <td>First Class: {{page.firstReserved}}<br /> Business Class: {{page.businessReserved}}<br /> Economy Class: {{page.economyReserved}}</td>
+          <td><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, page)" data-toggle="modal">Edit</button> </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div id="pagination-top" class="ds-1-row ds-u-margin-top">
+    <div class="ds-1-col">
+      <ngb-pagination [collectionSize]="totalFlights"
+                      (pageChange)="setPage($event)"
+                      [(page)]="pageNumber"
+                      [pageSize]="pageSize">
+      </ngb-pagination>
+
+      <select
+      class="custom-select"
+      style="width: auto"
+      name="pageSize"
+      [(ngModel)]="this.pageSize"
+  >
+  <option [ngValue]="10">10 items per page</option>
+  <option [ngValue]="25">25 items per page</option>
+  <option [ngValue]="50">50 items per page</option>
+</select>
+    </div>
+  </div>
+  
+    <ng-template #saveFlightModal let-c="close" let-d="dismiss">
+
+        <form [formGroup]="updateFlightForm" (submit)="onUpdateFlight()">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Flight Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p>Enter details to save.</p>
+                <label for="airplaneId">Airplane ID:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="airplaneId" />
+      
+                <label for="departureTime">Departure Time:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="departureTime" />
+      
+                <label for="arrivalTime">Arrival Time:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="arrivalTime" />
+      
+                <label for="firstReserved">First Reserved:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="firstReserved" />
+      
+                <label for="firstPrice">First Price:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="firstPrice" />
+                             
+                <label for="businessReserved">Business Reserved:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="businessReserved" />
+                             
+                <label for="businessPrice">Business Price:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="businessPrice" />
+                             
+                <label for="economyReserved">Economy Reserved:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="economyReserved" />
+                             
+                <label for="economyPrice">Economy Price:</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="economyPrice" />
+      
+                <label for="isActive">Disable?</label>
+                <input type="checkbox" 
+                       class="form-control"
+                       formControlName="isActive"
+                       value="1" />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Update</button><br />
+                <button type="button" class="btn btn-primary" (click)="onDeleteFlight()">Delete</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      
+      </ng-template>
+
+ <ng-template #addFlightModal let-c="close" let-d="dismiss">
+    <form [formGroup]="addFlightForm" (submit)="onAddFlight()">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Flight</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <p>Enter details to save.</p>
+              <label for="routeId">Route ID:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="routeId" />
+
+              <label for="airplaneId">Airplane ID:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="airplaneId" />
+    
+              <label for="departureTime">Departure Time:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="departureTime" />
+    
+              <label for="arrivalTime">Arrival Time:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="arrivalTime" />
+    
+              <label for="firstReserved">First Reserved:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="firstReserved" />
+    
+              <label for="firstPrice">First Price:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="firstPrice" />
+                           
+              <label for="businessReserved">Business Reserved:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="businessReserved" />
+                           
+              <label for="businessPrice">Business Price:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="businessPrice" />
+                           
+              <label for="economyReserved">Economy Reserved:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="economyReserved" />
+                           
+              <label for="economyPrice">Economy Price:</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="economyPrice" />
+                                                
+              <label for="isActive">Active?:</label>
+              <input
+                  type="checkbox"
+                  class="form-control"
+                  formControlName="isActive"/>
+                    
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Add</button><br />
+            </div>
+          </div>
+        </div>
+      </form>
+</ng-template>
+  
