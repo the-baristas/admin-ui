@@ -16,10 +16,15 @@ import { HeaderComponent } from './layout/header/header.component';
 import { HomeComponent } from './home/home.component';
 import { FlightComponent } from './flight-list/flight-list.component';
 import { RouteListComponent } from './route-list/route-list.component';
+import { MessagesComponent } from './messages/messages.component';
+import { AirplaneSearchComponent } from './airplane-search/airplane-search.component';
+import { AirplanesComponent } from './airplanes/airplanes.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AirplanesComponent,
+    AirplaneSearchComponent,
     UsersListComponent,
     LoginComponent,
     LayoutComponent,
@@ -27,6 +32,7 @@ import { RouteListComponent } from './route-list/route-list.component';
     HomeComponent,
     FlightComponent,
     RouteListComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
