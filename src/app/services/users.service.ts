@@ -15,10 +15,6 @@ export class UsersService {
 
     constructor(private http: HttpClient, private loginService: LoginService) {}
 
-<<<<<<< HEAD
-  
-  private serverUrl = environment.apiUrl + "/users";
-=======
     public getAllUsers(page: number, size: number) {
         return this.http
             .get<Page<User>>(`${this.serverUrl}?page=${page}&size=${size}`, {
@@ -30,7 +26,6 @@ export class UsersService {
                 })
             );
     }
->>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 
     public getUserByUserId(userId: number): Observable<User> {
         return this.http
@@ -150,17 +145,6 @@ export class UsersService {
             );
     }
 
-<<<<<<< HEAD
-  public deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`${this.serverUrl}/${userId}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError('Unable to delete user')
-      }
-      )
-    )
-  }
-}
-=======
     public deleteUser(userId: number): Observable<void> {
         return this.http
             .delete<void>(`${this.serverUrl}/${userId}`, {
@@ -179,4 +163,3 @@ export class UsersService {
             );
     }
 }
->>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4

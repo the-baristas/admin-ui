@@ -18,7 +18,7 @@
       <thead>
         <tr>
           <th scope="col">ID:</th>
-          <th scope="col">Airplane ID:</th>
+          <th scope="col">Airplane:</th>
           <th scope="col">Route:</th>
           <th scope="col">Departure Time:</th>
           <th scope="col">Arrival Time:</th>
@@ -30,7 +30,7 @@
       <tbody>
         <tr *ngFor="let page of flights; let i = index">
           <td>{{page.id}}</td>
-          <td>{{page.airplaneId}}</td>
+          <td>A{{page.airplane.id}}</td>
           <td>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</td>
           <td>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}</td>
           <td>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}</td>
@@ -74,10 +74,15 @@
               </div>
               <div class="modal-body">
                 <p>Enter details to save.</p>
-                <label for="airplaneId">Airplane ID:</label>
-                <input type="text"
-                       class="form-control"
-                       formControlName="airplaneId" />
+                
+                <label for="airplaneId">Airplane:</label>
+                <select class="form-control"
+                        formControlName="airplaneId">
+                <option [defaultSelected]=true [ngValue]="this.editFlight.airplane.id" >A{{this.editFlight.airplane.id}}</option>
+                <option *ngFor="let flight of flights; let i = index"
+                        [ngValue]="flight.airplane.id">A{{flight.airplane.id}}</option>
+                </select>
+                <br />
       
                 <label for="departureTime">Departure Time:</label>
                 <input type="text"

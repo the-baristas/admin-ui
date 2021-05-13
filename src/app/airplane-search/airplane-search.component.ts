@@ -7,10 +7,7 @@ import {
     switchMap
 } from 'rxjs/operators';
 import { Airplane } from '../entities/airplane';
-<<<<<<< HEAD
-=======
 import { Page } from '../entities/page';
->>>>>>> e2e98dbef79e118ea4118cfbdc61ad30802c56d4
 import { AirplaneService } from '../services/airplane.service';
 
 @Component({
@@ -63,7 +60,7 @@ export class AirplaneSearchComponent implements OnInit {
             // ignore new term if same as previous term
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
-            switchMap((term: string) =>
+            switchMap((term: string) => 
                 this.airplaneService.findDistinctAirplanesByModelContaining(
                     term,
                     0,

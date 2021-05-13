@@ -45,6 +45,14 @@ export class RouteListComponent implements OnInit {
     this.initializeForms();
   }
 
+  updateForm(): void {
+    this.updateRouteForm.patchValue({
+        originAirport: this.editRoute.originAirport.iataId,
+        destinationAirport: this.editRoute.destinationAirport.iataId,
+        isActive: this.editRoute.isActive,
+    });
+}
+
   public getRoutes(): void {
     this.routeService.getAllRoutes().subscribe(
       (response: Route[]) => {
@@ -122,6 +130,10 @@ export class RouteListComponent implements OnInit {
     if (obj != null) {
       this.editRoute = obj;
       this.updateRouteForm = this.formBuilder.group(this.editRoute);
+      this.updateForm();
+      this.updateRouteForm.valueChanges.subscribe((route: Route) => {
+        Object.assign(this.editRoute, route);
+    });
     }
     this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(
@@ -162,18 +174,19 @@ export class RouteListComponent implements OnInit {
     )
   }
 
+  /**  Method to initialize forms! */
   initializeForms() {
     this.updateRouteForm = new FormGroup(
       {
-        originId: new FormControl(this.editRoute),
-        destinationId: new FormControl(this.editRoute),
-        isActive: new FormControl(this.editRoute)
+        originId: new FormControl(''),
+        destinationId: new FormControl(''),
+        isActive: new FormControl('')
 
       });
       this.addRouteForm = new FormGroup(
         {
-          originAirport: new FormControl(this.newRoute),
-          destinationAirport: new FormControl(this.newRoute),
+          originId: new FormControl(this.newRoute),
+          destinationId: new FormControl(this.newRoute),
           isActive: new FormControl(this.newRoute)
         });
   }
