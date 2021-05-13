@@ -85,6 +85,7 @@ export class RouteService {
 
     /** PUT: update the route on the server */
     public updateRoute(route: Route): Observable<any> {
+        console.log(route);
         return this.http.put(environment.apiUrl + this.routeServicePath + `/${route.id}`, route, this.httpOptions).pipe(
             tap(_ => this.log(`updated route id=${route.id}`)),
             catchError(this.handleError<any>("updateRoute"))

@@ -57,7 +57,6 @@
               <label for="originId">Origin Airport:</label>
                 <select class="form-control"
                         formControlName="originId">
-                <option [defaultSelected]=true [ngValue]="this.editRoute.originAirport.iataId" >{{this.editRoute.originAirport.iataId}} - {{this.editRoute.originAirport.city}}</option>
                 <option *ngFor="let route of foundRoutes; let i = index"
                         [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
                 </select>
@@ -66,7 +65,6 @@
                 <label for="destinationId">Destination Airport:</label>
                 <select class="form-control"
                         formControlName="destinationId">
-                <option [defaultSelected]=true [ngValue]="this.editRoute.destinationAirport.iataId" >{{this.editRoute.destinationAirport.iataId}} - {{this.editRoute.destinationAirport.city}}</option>
                 <option *ngFor="let route of foundRoutes; let i = index"
                         [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
                 </select>

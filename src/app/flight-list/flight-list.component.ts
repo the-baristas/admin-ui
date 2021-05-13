@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Flight } from '../entities/flight';
 import { FlightService } from '../services/flights.service';
+import { RouteService } from '../services/routes.service';
+import { AirplaneService } from '../services/airplane.service';
 import { PagerService } from '../services/pager.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Page } from '../entities/page';
 import { Observable } from 'rxjs';
+import { Route } from '../entities/route';
+import { Airplane } from '../entities/airplane';
 
 @Component({
   selector: 'app-flight-list',
@@ -17,6 +21,9 @@ export class FlightComponent implements OnInit {
 
       flights: Flight[] = [];
       foundFlightPages!: Flight[];
+
+      foundRoutes!: Route[];
+      foundAirplanes!: Airplane[];
 
       updateFlightForm!: FormGroup;
       public editFlight!: Flight;
@@ -39,7 +46,7 @@ export class FlightComponent implements OnInit {
 
       confirmation!: boolean;
 
-      constructor(private flightService: FlightService, private modalService: NgbModal, 
+      constructor(private flightService: FlightService, private routeService: RouteService, private airplaneService: AirplaneService, private modalService: NgbModal, 
         private pagerService: PagerService, private formBuilder: FormBuilder, private httpClient: HttpClient) { }
             
       private modalRef!: NgbModalRef;
@@ -60,28 +67,51 @@ export class FlightComponent implements OnInit {
                 }
             );
         this.initializeForms();
+        this.getData();
       }
 
-      // public getFlights(): void {
-      //   this.flightService.getAllFlights().subscribe(
-      //     (response: Flight[]) => {
-      //       this.foundFlights = response;
-      //       this.totalFlights = this.foundFlights.length;
-      //       this.setPage(1);
-      //       console.log(this.foundFlights);
-      //     },
-      //     (error: HttpErrorResponse) => {
-      //       alert(error.message)
-      //     }
-      //   );
-      // }
+      updateForm(): void {
+        this.updateFlightForm.patchValue({
+            airplaneId: this.editFlight.airplane.id,
+            routeId: this.editFlight.route.id,
+            departureTime: this.editFlight.departureTime,
+            arrivalTime: this.editFlight.arrivalTime,
+            firstReserved: this.editFlight.firstReserved,
+            firstPrice: this.editFlight.firstPrice,
+            businessReserved: this.editFlight.businessReserved,
+            businessPrice: this.editFlight.businessPrice,
+            economyReserved: this.editFlight.economyReserved,
+            economyPrice: this.editFlight.economyPrice,
+            isActive: this.editFlight.isActive
+        });
+    }
+
+      public getData(): void {
+        this.routeService.getAllRoutes().subscribe(
+          (response: Route[]) => {
+            this.foundRoutes = response;
+            console.log(this.foundRoutes);
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message)
+          }
+        );
+        this.airplaneService.getAirplanes().subscribe(
+          (response: Airplane[]) => {
+            this.foundAirplanes = response;
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message)
+          }
+        );
+      }
 
       replaceFoundFlights(flights: Flight[]): void {
         this.flights = flights;
     }
 
       public onUpdateFlight() {
-        this.flightService.updateFlight(this.updateFlightForm.value as Flight)
+        this.flightService.updateFlight(this.editFlight as Flight)
           .subscribe(
             (response: any) => {
               const pageIndex = this.pageNumber - 1;
@@ -141,12 +171,21 @@ export class FlightComponent implements OnInit {
         this.confirmation = confirm("Are you sure you want to delete this flight? (For auditing purposes, flights should be disabled rather than deleted.")
 
         if (this.confirmation === true) {
-          console.log(this.updateFlightForm.value.id);
-          this.flightService.deleteFlight(this.updateFlightForm.value.id)
+          console.log(this.editFlight.id);
+          this.flightService.deleteFlight(this.editFlight.id)
           .subscribe(
             (response: any) => {
               const pageIndex = this.pageNumber - 1;
-              this.flightService.getFlightsPage(pageIndex, this.pageSize);
+              this.flightService.getFlightsPage(pageIndex, this.pageSize)
+              .subscribe(
+                (flightsPage: Page<Flight>) => {
+                  this.currentPage = flightsPage;
+                  this.pageNumber = flightsPage.number+1;
+                  this.flights = flightsPage.content;
+                  this.totalFlights = flightsPage.totalElements;
+                  console.log(flightsPage);
+                }
+              );
               this.modalRef.close();
             },
             (error: HttpErrorResponse) => {
@@ -161,7 +200,10 @@ export class FlightComponent implements OnInit {
       open(content: any, obj: any) {
         if (obj != null) {
           this.editFlight = obj;
-          this.updateFlightForm = this.formBuilder.group(this.editFlight);
+          this.updateForm();
+          this.updateFlightForm.valueChanges.subscribe((flight: Flight) => {
+            Object.assign(this.editFlight, flight);
+        });
         }
         this.modalRef = this.modalService.open(content);
         this.modalRef.result.then(
@@ -211,22 +253,22 @@ export class FlightComponent implements OnInit {
       initializeForms() {
         this.searchFlightsForm = new FormGroup(
           {
-            searchOrigin: new FormControl(this.searchOrigin),
-            searchDestination: new FormControl(this.searchDestination)
+            searchOrigin: new FormControl(''),
+            searchDestination: new FormControl('')
           });
         this.updateFlightForm = new FormGroup(
           {
-            airplaneId: new FormControl(this.editFlight),
-            routeId: new FormControl(this.editFlight),
-            departureTime: new FormControl(this.editFlight),
-            arrivalTime: new FormControl(this.editFlight),
-            firstReserved: new FormControl(this.editFlight),
-            firstPrice: new FormControl(this.editFlight),
-            businessReserved: new FormControl(this.editFlight),
-            businessPrice: new FormControl(this.editFlight),
-            economyReserved: new FormControl(this.editFlight),
-            economyPrice: new FormControl(this.editFlight),
-            isActive: new FormControl(this.editFlight)
+            airplaneId: new FormControl(''),
+            routeId: new FormControl(''),
+            departureTime: new FormControl(''),
+            arrivalTime: new FormControl(''),
+            firstReserved: new FormControl(''),
+            firstPrice: new FormControl(''),
+            businessReserved: new FormControl(''),
+            businessPrice: new FormControl(''),
+            economyReserved: new FormControl(''),
+            economyPrice: new FormControl(''),
+            isActive: new FormControl('')
     
           });
           this.addFlightForm = new FormGroup(

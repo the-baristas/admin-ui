@@ -49,7 +49,7 @@ import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.
     UserDeleteModalComponent,
     FlightComponent,
     RouteListComponent,
-    MessagesComponent
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,

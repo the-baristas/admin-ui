@@ -47,8 +47,8 @@ export class RouteListComponent implements OnInit {
 
   updateForm(): void {
     this.updateRouteForm.patchValue({
-        originAirport: this.editRoute.originAirport.iataId,
-        destinationAirport: this.editRoute.destinationAirport.iataId,
+        originId: this.editRoute.originAirport.iataId,
+        destinationId: this.editRoute.destinationAirport.iataId,
         isActive: this.editRoute.isActive,
     });
 }
@@ -68,7 +68,7 @@ export class RouteListComponent implements OnInit {
   }
 
   public onUpdateRoute() {
-    this.routeService.updateRoute(this.updateRouteForm.value as Route)
+    this.routeService.updateRoute(this.editRoute as Route)
       .subscribe(
         (response: any) => {
           this.routeService.getRoute(response);
@@ -110,8 +110,8 @@ export class RouteListComponent implements OnInit {
     this.confirmation = confirm("Are you sure you want to delete this route? (For auditing purposes, routes should be disabled rather than deleted.")
 
     if (this.confirmation === true) {
-      console.log(this.updateRouteForm.value.id);
-      this.routeService.deleteRoute(this.updateRouteForm.value.id)
+      console.log(this.editRoute.id);
+      this.routeService.deleteRoute(this.editRoute.id)
       .subscribe(
         (response: any) => {
           this.getRoutes();
@@ -129,7 +129,7 @@ export class RouteListComponent implements OnInit {
   open(content: any, obj: any) {
     if (obj != null) {
       this.editRoute = obj;
-      this.updateRouteForm = this.formBuilder.group(this.editRoute);
+      console.log(this.updateRouteForm);
       this.updateForm();
       this.updateRouteForm.valueChanges.subscribe((route: Route) => {
         Object.assign(this.editRoute, route);
