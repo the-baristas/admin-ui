@@ -66,6 +66,17 @@ export class RouteService {
         );
     }
 
+    public routeQuery(query: string) {
+        const url = environment.apiUrl + '/routes-query?query=' + query;
+        return this.http.get<Route[]>(url, { headers: this.loginService.getHeadersWithToken() })
+            .pipe(
+                tap(_ => this.log('fetched routes')),
+                catchError((error: HttpErrorResponse) => {
+                    return throwError('Unable to retrieve route data')}
+                )
+            );   
+    }
+
     public addRoute(route: Route): Observable<Route> {
         const url = environment.apiUrl + this.routeServicePath;
         return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken() }).pipe(

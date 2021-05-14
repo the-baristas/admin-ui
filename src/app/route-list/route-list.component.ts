@@ -189,9 +189,14 @@ export class RouteListComponent implements OnInit {
           destinationId: new FormControl(this.newRoute),
           isActive: new FormControl(this.newRoute)
         });
+        this.searchRoutesForm = new FormGroup(
+          {
+            query: new FormControl('')
+          }
+        )
   }
 
-  searchRoutesById() {
+  searchRoutesByAirport() {
     if (this.searchRoutesForm.value.searchString === '') {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
@@ -199,9 +204,10 @@ export class RouteListComponent implements OnInit {
       return;
     }
     
-    this.routeService.getRoute(parseInt(this.searchRoutesForm.value.searchString)).subscribe(
-      (response: Route) => {
-        this.foundRoutes = [response];
+    this.routeService.routeQuery(this.searchRoutesForm.value.query)
+    .subscribe(
+      (response: Route[]) => {
+        this.foundRoutes = response;
         this.totalRoutes = this.foundRoutes.length;
         this.setPage(1);
         let div: any = document.getElementById('searchByIdErrorMessage');
