@@ -60,7 +60,7 @@ export class AirplaneSearchComponent implements OnInit {
             // ignore new term if same as previous term
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
-            switchMap((term: string) =>
+            switchMap((term: string) => 
                 this.airplaneService.findDistinctAirplanesByModelContaining(
                     term,
                     0,

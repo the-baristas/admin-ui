@@ -1,0 +1,139 @@
+<div class="route-search-box">
+  <form class="route-search-form" [formGroup]="searchRoutesForm" (submit)="searchRoutesByAirport()">
+    <input type="text" placeholder="Search By Airport Code" class="form-control" formControlName="query"/>
+    <button type="submit" class="btn btn-primary">Find Routes</button>
+</form>
+</div>
+
+
+<div class="create-new-button">
+  <button type="button" id="add-route-button" class="btn btn-primary" (click)="openTwo(addRouteModal)">Create New</button>
+</div>
+
+<div class="route-container">
+<div class="ds-1-row">
+  <table class="table table-responsive table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID:</th>
+        <th scope="col">Origin Airport:</th>
+        <th scope="col">Origin City:</th>
+        <th scope="col">Destination Airport:</th>
+        <th scope="col">Destination City:</th>
+        <th scope="col">Edit:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let route of foundRoutes; let i = index">
+        <td>{{route.id}}</td>
+        <td>{{route.originAirport.iataId}}</td>
+        <td>{{route.originAirport.city}}</td>
+        <td>{{route.destinationAirport.iataId}}</td>
+        <td>{{route.destinationAirport.city}}</td>
+        <td><button class="btn btn-primary" id="edit-button" (click)="open(saveRouteModal, route)" data-toggle="modal">Edit</button> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div id="pagination-top" class="ds-1-row ds-u-margin-top">
+  <div class="ds-1-col">
+    <ngb-pagination [collectionSize]="totalRoutes"
+                    [(page)]="pager.currentPage"
+                    [maxSize]="10"
+                    [boundaryLinks]="true"
+                    (pageChange)="setPage($event)">
+    </ngb-pagination>
+  </div>
+</div>
+
+  <ng-template #saveRouteModal let-c="close" let-d="dismiss">
+
+      <form [formGroup]="updateRouteForm" (submit)="onUpdateRoute()">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Route Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <p>Enter details to save.</p>
+
+
+              <label for="originId">Origin Airport:</label>
+                <select class="form-control"
+                        formControlName="originId">
+                <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+                </select>
+                <br />
+
+                <label for="destinationId">Destination Airport:</label>
+                <select class="form-control"
+                        formControlName="destinationId">
+                <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+                </select>
+                <br />
+
+              <label for="isActive">Active?</label>
+              <input type="checkbox" 
+                     class="form-control"
+                     formControlName="isActive"
+                     value="1" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Update</button><br />
+              <button type="button" class="btn btn-primary" (click)="onDeleteRoute()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    
+    </ng-template>
+
+<ng-template #addRouteModal let-c="close" let-d="dismiss">
+  <form [formGroup]="addRouteForm" (submit)="onAddRoute()">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Route</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <p>Enter details to save.</p>
+            <label for="originId">Origin Airport:</label>
+            <select class="form-control"
+                    formControlName="originId">
+            <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
+            <option *ngFor="let route of foundRoutes; let i = index"
+                    [ngValue]="route.originAirport.iataId">{{route.originAirport.iataId}} - {{route.originAirport.city}}</option>
+            </select>
+            <br />
+
+            <label for="destinationId">Destination Airport:</label>
+            <select class="form-control"
+                    formControlName="destinationId">
+            <option [defaultSelected]=true disabled selected>Select an origin airport...</option>
+            <option *ngFor="let route of foundRoutes; let i = index"
+                    [ngValue]="route.destinationAirport.iataId">{{route.destinationAirport.iataId}} - {{route.destinationAirport.city}}</option>
+            </select>
+            <br />
+                                              
+            <label for="isActive">Active?:</label>
+            <input
+                type="checkbox"
+                class="form-control"
+                formControlName="isActive"/>
+  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button><br />
+          </div>
+        </div>
+      </div>
+    </form>
+</ng-template>

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
 import { AirplaneDeleteModalComponent } from './airplane-delete-modal/airplane-delete-modal.component';
 import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component';
@@ -19,10 +20,9 @@ import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
+import { PhonePipe } from './pipes/phone.pipe';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { PhonePipe } from './pipes/phone.pipe';
-import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
     declarations: [
@@ -51,8 +51,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
         AppRoutingModule,
         HttpClientModule,
         NgbModule,
-      ReactiveFormsModule,
-      NgHttpLoaderModule.forRoot(),
+        ReactiveFormsModule,
+        NgHttpLoaderModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]
