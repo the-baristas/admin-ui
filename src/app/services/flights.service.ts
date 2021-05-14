@@ -95,7 +95,7 @@ export class FlightService {
 
     public addFlight(flight: Flight): Observable<Flight> {
         console.log(flight);
-        const url = `${environment.apiUrl}/routes/${flight.routeId}/flights`;
+        const url = `${environment.apiUrl}/flights`;
         return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newFlight: Flight) => this.messageService.add(`added flight with id=${newFlight.id}`)),
             catchError(this.handleError<Flight>("addFlight"))

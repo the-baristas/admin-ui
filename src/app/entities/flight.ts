@@ -14,8 +14,15 @@ export interface Flight {
   }
       isActive: number;
     };
-    routeId: number
-    airplaneId: number;
+    airplane: {
+        id: number;
+        firstClassSeatsMax: number;
+        businessClassSeatsMax: number;
+        economyClassSeatsMax: number;
+        model: string;
+    }
+    routeId: string;
+    airplaneId: string;
     departureTime: string;
     arrivalTime: string;
     firstReserved: number;

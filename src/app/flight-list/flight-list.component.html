@@ -18,7 +18,7 @@
       <thead>
         <tr>
           <th scope="col">ID:</th>
-          <th scope="col">Airplane ID:</th>
+          <th scope="col">Airplane:</th>
           <th scope="col">Route:</th>
           <th scope="col">Departure Time:</th>
           <th scope="col">Arrival Time:</th>
@@ -30,7 +30,7 @@
       <tbody>
         <tr *ngFor="let page of flights; let i = index">
           <td>{{page.id}}</td>
-          <td>{{page.airplaneId}}</td>
+          <td>A{{page.airplane.id}}</td>
           <td>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</td>
           <td>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}</td>
           <td>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}</td>
@@ -74,10 +74,23 @@
               </div>
               <div class="modal-body">
                 <p>Enter details to save.</p>
-                <label for="airplaneId">Airplane ID:</label>
-                <input type="text"
-                       class="form-control"
-                       formControlName="airplaneId" />
+                <label for="routeId">Route ID:</label>
+              <select class="form-control"
+                        formControlName="routeId">
+                <option [defaultSelected]=true [ngValue]="this.editFlight.route.id" >{{this.editFlight.route.originAirport.city}} - {{this.editFlight.route.destinationAirport.city}}</option>
+                <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.id">{{route.originAirport.city}} - {{route.destinationAirport.city}}</option>
+                </select>
+                <br />
+
+                <label for="airplaneId">Airplane:</label>
+                <select class="form-control"
+                        formControlName="airplaneId">
+                <option [defaultSelected]=true [ngValue]="this.editFlight.airplane.id" >A{{this.editFlight.airplane.id}}</option>
+                <option *ngFor="let airplane of foundAirplanes; let i = index"
+                        [ngValue]="airplane.id">A{{airplane.id}}</option>
+                </select>
+                <br />
       
                 <label for="departureTime">Departure Time:</label>
                 <input type="text"
@@ -119,7 +132,7 @@
                        class="form-control"
                        formControlName="economyPrice" />
       
-                <label for="isActive">Disable?</label>
+                <label for="isActive">Active?</label>
                 <input type="checkbox" 
                        class="form-control"
                        formControlName="isActive"
@@ -147,19 +160,26 @@
             <div class="modal-body">
               <p>Enter details to save.</p>
               <label for="routeId">Route ID:</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="routeId" />
+              <select class="form-control"
+                        formControlName="routeId">
+              <option *ngFor="let route of foundRoutes; let i = index"
+                        [ngValue]="route.id">{{route.originAirport.city}} - {{route.destinationAirport.city}}</option>
+                </select>
+                <br />
 
-              <label for="airplaneId">Airplane ID:</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="airplaneId" />
+              <label for="airplaneId">Airplane:</label>
+              <select class="form-control"
+                      formControlName="airplaneId">
+              <option *ngFor="let airplane of foundAirplanes; let i = index"
+                      [ngValue]="airplane.id">A{{airplane.id}}</option>
+              </select>
+              <br />
     
               <label for="departureTime">Departure Time:</label>
               <input type="text"
                      class="form-control"
                      formControlName="departureTime" />
+
     
               <label for="arrivalTime">Arrival Time:</label>
               <input type="text"

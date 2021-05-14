@@ -10,6 +10,8 @@ export interface Route {
             city: string;
             isActive: number;
       }
+      originId: string;
+      destinationId: string;
       isActive: number;
 }
   
