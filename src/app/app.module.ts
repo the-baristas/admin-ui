@@ -15,12 +15,14 @@ import { BookingAddModalComponent } from './booking-add-modal/booking-add-modal.
 import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-modal.component';
 import { BookingSearchComponent } from './booking-search/booking-search.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { FlightComponent } from './flight-list/flight-list.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { RouteListComponent } from './route-list/route-list.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
 
@@ -43,7 +45,9 @@ import { UsersListComponent } from './users-list/users-list.component';
         UsersListComponent,
         HeaderComponent,
         UserDeleteModalComponent,
-        PhonePipe
+        PhonePipe,
+        FlightComponent,
+        RouteListComponent
     ],
     imports: [
         BrowserModule,

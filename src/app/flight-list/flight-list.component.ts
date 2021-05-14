@@ -42,19 +42,7 @@ export class FlightComponent implements OnInit {
     updatedFlight!: Observable<Flight>;
 
     public newFlight!: Flight;
-    addFlightForm: FormGroup = new FormGroup({
-        airplaneId: new FormControl(this.newFlight),
-        routeId: new FormControl(this.newFlight),
-        departureTime: new FormControl(this.newFlight),
-        arrivalTime: new FormControl(this.newFlight),
-        firstReserved: new FormControl(this.newFlight),
-        firstPrice: new FormControl(this.newFlight),
-        businessReserved: new FormControl(this.newFlight),
-        businessPrice: new FormControl(this.newFlight),
-        economyReserved: new FormControl(this.newFlight),
-        economyPrice: new FormControl(this.newFlight),
-        isActive: new FormControl(this.newFlight)
-    });
+    addFlightForm!: FormGroup
 
     totalFlights!: number;
     pager: any = {};
