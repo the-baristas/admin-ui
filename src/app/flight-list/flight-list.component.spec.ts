@@ -1,89 +1,65 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Page } from '../entities/page';
+import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FlightService } from '../services/flights.service';
+import { Observable, of } from 'rxjs';
+import { RouteService } from '../services/routes.service';
+import { AirplaneService } from '../services/airplane.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { FlightComponent } from './flight-list.component';
-
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-
-import { of } from 'rxjs/internal/observable/of';
-import { FlightService } from '../services/flights.service';
-
+import { DebugElement } from '@angular/core';
 
 describe('FlightComponent', () => {
   let component: FlightComponent;
   let fixture: ComponentFixture<FlightComponent>;
-  let flightServiceMock: any;
+  let debugElement: DebugElement;
+  let element: Element;
 
-  let flightData: any = {
-    id: 1,
-    airplaneId: 14,
-    departureTime: "2021-04-07T16:15:00.000+00:00",
-    arrivalTime: "2021-04-07T17:33:00.000+00:00",
-    firstReserved: 0,
-    firstPrice: 300.0,
-    businessReserved: 0,
-    businessPrice: 250.53,
-    economyReserved: 0,
-    economyPrice: 200.4,
-    isActive: 1,
-    route: {
-        id: 6,
-        originId: "BOS",
-        destinationId: "MSY",
-        isActive: 1
-        }
-  }
+  let flightServiceMock: jasmine.SpyObj<FlightService>;
 
-  beforeEach(async () => {
-    flightServiceMock = jasmine.createSpyObj('FlightService', ['getAllFlights']);
-    flightServiceMock.getAllFlights.and.returnValue(of([flightData]));
-    await TestBed.configureTestingModule({
-      declarations: [ FlightComponent ],
-      imports: [HttpClientModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [
-        { provide: FlightService, useValue: flightServiceMock }
-      ]
-    })
-    .compileComponents();
+  let formBuilder!: FormBuilder;
+
+
+        beforeEach(waitForAsync (() => {
+          flightServiceMock = jasmine.createSpyObj('FlightService', ['getFlightsPage']);
+
+          TestBed.configureTestingModule({
+            declarations: [ FlightComponent],
+            imports: [HttpClientTestingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+            providers: [
+              { provide: FlightService, useValue: flightServiceMock },
+              NgbModal
+            ]
+          })
+          .compileComponents();
+        }));
+
+        beforeEach(() => {
+          fixture = TestBed.createComponent(FlightComponent);
+          component = fixture.componentInstance;
+          debugElement = fixture.debugElement;
+          element = debugElement.nativeElement;
+
+          formBuilder = TestBed.inject(FormBuilder);
+      });
+
+      it('should create', inject([FlightService], (flightService: FlightService) => {
+        expect(component).toBeTruthy();
+    }));
+
+    it('should have <button> with "Find Flights"', () => {
+      const button = element.querySelector('button');
+      expect(button?.innerText).toEqual('Find Flights');
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FlightComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should render a "List of Flights"', () => {
-    let compiled = fixture.debugElement.nativeElement;
-
-    expect(compiled.querySelector('thead').textContent).toContain('List of Flights');
-  });
-
-  it('List of flights should contain mock flightData', () => {
-    expect(component.totalFlights).toEqual(1);
-    expect(component.foundFlights[0].id).toEqual(1);
-    expect(component.foundFlights[0].airplaneId).toBe(14);
-  });
-
-  it('should be at least one "Add Flight" button', () => {
-    let compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('#add-flight-button').textContent).toBe('Create New');
-  });
-
-  it('should be at least one "Edit" button', () => {
-    let compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('#edit-button').textContent).toBe('Edit');
-  });
-
-  it('Should be at least one button because there is one mock flight', () => {
-    let buttons = fixture.debugElement.queryAll(By.css('button'));
-    expect(buttons.length >= 1).toBeTruthy();
+    it('should have <button> with "Create New"', () => {
+      const button = element.querySelectorAll('button')[1];
+      expect(button?.innerText).toEqual('Create New');
   });
 
 });
