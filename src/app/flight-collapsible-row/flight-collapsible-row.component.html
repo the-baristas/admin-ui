@@ -1,0 +1,14 @@
+<tr>
+    <th>Active</th>
+    <th>Departure Time</th>
+    <th>Arrival Time</th>
+</tr>
+<tr>
+    <td>{{ passenger.flightActive }}</td>
+    <td>
+        {{ passenger.departureTime | date: "short" }}
+    </td>
+    <td>
+        {{ passenger.arrivalTime | date: "short" }}
+    </td>
+</tr>
