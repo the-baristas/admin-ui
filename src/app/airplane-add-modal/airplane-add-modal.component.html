@@ -12,26 +12,92 @@
 
 <div class="modal-body">
     <form [formGroup]="addingForm">
-        <label for="first-class-seats-max">Max First Class Seats: </label>
-        <input
-            type="number"
-            id="first-class-seats-max"
-            formControlName="firstClassSeatsMax"
-        />
-        <label for="business-class-seats-max">Max Business Class Seats: </label>
-        <input
-            type="number"
-            id="business-class-seats-max"
-            formControlName="businessClassSeatsMax"
-        />
-        <label for="economy-class-seats-max">Max Economy Class Seats: </label>
-        <input
-            type="number"
-            id="economy-class-seats-max"
-            formControlName="economyClassSeatsMax"
-        />
-        <label for="model">Model: </label>
-        <input type="text" id="model" formControlName="model" />
+        <div class="form-group">
+            <label for="first-class-seats-max">Max First Class Seats: </label>
+            <input
+                type="number"
+                id="first-class-seats-max"
+                class="form-control"
+                formControlName="firstClassSeatsMax"
+            />
+            <div
+                *ngIf="
+                    firstClassSeatsMax?.invalid &&
+                    (firstClassSeatsMax?.dirty || firstClassSeatsMax?.touched)
+                "
+                class="alert alert-danger"
+            >
+                <ng-container *ngIf="firstClassSeatsMax?.errors?.required">
+                    Max First Class Seats is required.
+                </ng-container>
+                <ng-container *ngIf="firstClassSeatsMax?.errors?.min">
+                    Max First Clas Seats must be 0 or greater.
+                </ng-container>
+            </div>
+            <label for="business-class-seats-max"
+                >Max Business Class Seats:
+            </label>
+            <input
+                type="number"
+                id="business-class-seats-max"
+                class="form-control"
+                formControlName="businessClassSeatsMax"
+            />
+            <div
+                *ngIf="
+                    businessClassSeatsMax?.invalid &&
+                    (businessClassSeatsMax?.dirty ||
+                        businessClassSeatsMax?.touched)
+                "
+                class="alert alert-danger"
+            >
+                <ng-container *ngIf="businessClassSeatsMax?.errors?.required">
+                    Max Business Class Seats is required.
+                </ng-container>
+                <ng-container *ngIf="businessClassSeatsMax?.errors?.min">
+                    Max Business Clas Seats must be 0 or greater.
+                </ng-container>
+            </div>
+            <label for="economy-class-seats-max"
+                >Max Economy Class Seats:
+            </label>
+            <input
+                type="number"
+                id="economy-class-seats-max"
+                class="form-control"
+                formControlName="economyClassSeatsMax"
+            />
+            <div
+                *ngIf="
+                    economyClassSeatsMax?.invalid &&
+                    (economyClassSeatsMax?.dirty ||
+                        economyClassSeatsMax?.touched)
+                "
+                class="alert alert-danger"
+            >
+                <ng-container *ngIf="economyClassSeatsMax?.errors?.required">
+                    Max Economy Class Seats is required.
+                </ng-container>
+                <ng-container *ngIf="economyClassSeatsMax?.errors?.min">
+                    Max Economy Clas Seats must be 0 or greater.
+                </ng-container>
+            </div>
+            <label for="model">Model: </label>
+            <input
+                type="text"
+                id="model"
+                class="form-control"
+                formControlName="model"
+            />
+            <div
+                *ngIf="model?.invalid && (model?.dirty || model?.touched)"
+                class="alert alert-danger"
+            >
+                <ng-container *ngIf="model?.errors?.required">
+                    Model is required.
+                </ng-container>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -43,5 +109,12 @@
     >
         Cancel
     </button>
-    <button type="button" class="btn btn-light" (click)="add()">Add</button>
+    <button
+        type="button"
+        class="btn btn-light"
+        [disabled]="addingForm.invalid"
+        (click)="add()"
+    >
+        Add
+    </button>
 </div>

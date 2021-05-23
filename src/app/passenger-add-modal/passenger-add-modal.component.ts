@@ -10,12 +10,10 @@ import { PassengerService } from '../services/passenger.service';
     styleUrls: ['./passenger-add-modal.component.css']
 })
 export class PassengerAddModalComponent implements OnInit {
-    addingForm: FormGroup = new FormGroup(
-        {
-            bookingConfirmationCode: new FormControl('')
-        },
-        [Validators.required]
-    );
+    addingForm: FormGroup = new FormGroup({
+        bookingConfirmationCode: new FormControl('', [Validators.required]),
+        bookingActive: new FormControl(true, [Validators.requiredTrue])
+    });
 
     constructor(
         public activeModal: NgbActiveModal,
