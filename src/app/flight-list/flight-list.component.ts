@@ -59,7 +59,7 @@ export class FlightComponent implements OnInit {
             .getFlightsPage(pageIndex, this.pageSize)
             .subscribe(
                 (flightsPage: Page<Flight>) => {
-                  this.currentPage = flightsPage;
+                  this.currentPage = flightsPage; // the page object
                   this.pageNumber = flightsPage.number+1;
                   this.flights = flightsPage.content;
                   this.totalFlights = flightsPage.totalElements;
@@ -105,10 +105,6 @@ export class FlightComponent implements OnInit {
           }
         );
       }
-
-      replaceFoundFlights(flights: Flight[]): void {
-        this.flights = flights;
-    }
 
       public onUpdateFlight() {
         this.flightService.updateFlight(this.editFlight as Flight)
@@ -242,9 +238,9 @@ export class FlightComponent implements OnInit {
             (flightsPage: Page<Flight>) => {
               this.currentPage = flightsPage;
               this.pageNumber = flightsPage.number+1;
+              console.log(this.pageNumber)
               this.flights = flightsPage.content;
               this.totalFlights = flightsPage.totalElements;
-              console.log(flightsPage);
             }
           )
         }
@@ -301,7 +297,6 @@ export class FlightComponent implements OnInit {
           (response: Flight) => {
             this.flights = [response];
             this.totalFlights = this.flights.length;
-            this.setPage(1);
             let div: any = document.getElementById('searchByIdErrorMessage');
             div.style.display = "none";
           },
@@ -321,11 +316,13 @@ export class FlightComponent implements OnInit {
           return;
         }
     
-        this.flightService.getFlightByLocation(this.searchFlightsForm.value.searchOrigin, this.searchFlightsForm.value.searchDestination).subscribe(
-          (response: Flight[]) => {
-            this.flights = response;
-            this.totalFlights = this.flights.length;
-            this.setPage(1);
+        const pageIndex = this.pageNumber - 1;
+        this.flightService.getFlightByLocation(this.searchFlightsForm.value.searchOrigin, this.searchFlightsForm.value.searchDestination, pageIndex, this.pageSize).subscribe(
+          (flightsPage: Page<Flight>) => {
+              this.currentPage = flightsPage;
+              this.pageNumber = flightsPage.number+1;
+              this.flights = flightsPage.content;
+              this.totalFlights = flightsPage.totalElements;
             let div: any = document.getElementById('searchByIdErrorMessage');
             div.style.display = "none";
             console.log(this.flights);

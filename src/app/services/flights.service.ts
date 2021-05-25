@@ -61,13 +61,15 @@ export class FlightService {
             );
  }
 
-    public getFlightByLocation(originId: string, destinationId: string): Observable<Flight[]> {
+    public getFlightByLocation(originId: string, destinationId: string, pageIndex: number, pageSize: number): Observable<Page<Flight>> {
         console.log("Origin ID:" + originId + "Destination ID:" + destinationId);
-        const url = `${environment.apiUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}`;
+        const url = `${environment.apiUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
         console.log(url);
-        return this.httpClient.get<Flight[]>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
-            tap(_ => this.messageService.add(`fetched flight(s) traveling from ${originId} to ${destinationId}`)),
-            catchError(this.handleError<Flight[]>(`getFlightByLocation originId=${originId} destinationId=${destinationId}`, []))
+        return this.httpClient.get<Page<Flight>>(
+            url, { headers: this.loginService.getHeadersWithToken() }).pipe(
+            tap(() => this.messageService.add(`fetched flight(s) traveling from ${originId} to ${destinationId}`)),
+            catchError(this.handleError<Page<Flight>>(`getFlightByLocation originId=${originId} destinationId=${destinationId} `, {} as Page<Flight>)
+        )
         );
     }
 

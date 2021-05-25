@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouteConfigLoadEnd } from '@angular/router';
+import { Page } from '../entities/page';
 
 @Component({
   selector: 'app-route-list',
@@ -25,7 +26,11 @@ export class RouteListComponent implements OnInit {
 
   totalRoutes!: number;
   pager: any = {};
-  pagedRoutes!: any[];
+  currentPage!: Page<Route>;
+  totalElements: number = 0;
+  page: number = 1;
+  pageNumber: number = 1;
+  pageSize: number = 10;
 
   searchRoutesForm!: FormGroup;
   searchOrigin!: string;
@@ -40,10 +45,23 @@ export class RouteListComponent implements OnInit {
   errMsg: any;
   closeResult: any;
 
-  ngOnInit(): void {
-    this.getRoutes();
-    this.initializeForms();
-  }
+  
+
+        ngOnInit(): void {
+          const pageIndex = this.pageNumber - 1;
+          this.routeService
+              .getRoutesPage(pageIndex, this.pageSize)
+              .subscribe(
+                  (routesPage: Page<Route>) => {
+                    this.currentPage = routesPage;
+                    this.pageNumber = routesPage.number+1;
+                    this.foundRoutes = routesPage.content;
+                    this.totalRoutes = routesPage.totalElements;
+                    console.log(routesPage);
+                }
+            );
+          this.initializeForms();
+        }
 
   updateForm(): void {
     this.updateRouteForm.patchValue({
@@ -166,12 +184,18 @@ export class RouteListComponent implements OnInit {
     if (pageNo < 1 || pageNo > this.totalRoutes) {
       return;
     }
-
-    this.pager = this.pagerService.getPager(this.totalRoutes, pageNo, 10);
-    this.pagedRoutes = this.foundRoutes.slice(
-      this.pager.startIndex,
-      this.pager.endIndex + 1
-    )
+    else {
+      console.log(pageNo);
+      this.routeService.getRoutesPage(pageNo - 1, this.pageSize).subscribe(
+        (routesPage: Page<Route>) => {
+            this.currentPage = routesPage;
+            this.pageNumber = routesPage.number+1;
+            console.log(this.pageNumber);
+            this.foundRoutes = routesPage.content;
+            this.totalRoutes = routesPage.totalElements;
+        }
+      )
+    }
   }
 
   /**  Method to initialize forms! */
@@ -197,21 +221,25 @@ export class RouteListComponent implements OnInit {
   }
 
   searchRoutesByAirport() {
-    if (this.searchRoutesForm.value.searchString === '') {
+    if (this.searchRoutesForm.value.query === '') {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
       this.getRoutes();
       return;
     }
     
-    this.routeService.routeQuery(this.searchRoutesForm.value.query)
+    console.log(this.searchRoutesForm.value.query);
+    const pageIndex = this.pageNumber - 1;
+    this.routeService.routeQuery(this.searchRoutesForm.value.query, pageIndex, this.pageSize)
     .subscribe(
-      (response: Route[]) => {
-        this.foundRoutes = response;
-        this.totalRoutes = this.foundRoutes.length;
-        this.setPage(1);
+      (routesPage: Page<Route>) => {
+        this.currentPage = routesPage;
+        this.pageNumber = routesPage.number+1;
+        this.foundRoutes = routesPage.content;
+        this.totalRoutes = routesPage.totalElements;
         let div: any = document.getElementById('searchByIdErrorMessage');
         div.style.display = "none";
+        console.log(this.foundRoutes);
       },
       (error: HttpErrorResponse) => {
         let div: any = document.getElementById('searchByIdErrorMessage');
