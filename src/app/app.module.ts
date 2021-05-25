@@ -47,7 +47,7 @@ import { UsersListComponent } from './users-list/users-list.component';
         UserDeleteModalComponent,
         PhonePipe,
         FlightComponent,
-        RouteListComponent
+        RouteListComponent,
     ],
     imports: [
         BrowserModule,
