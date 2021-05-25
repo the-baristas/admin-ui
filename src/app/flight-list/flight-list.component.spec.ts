@@ -1,4 +1,3 @@
-
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Page } from '../entities/page';
