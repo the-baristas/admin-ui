@@ -224,11 +224,11 @@ export class RouteListComponent implements OnInit {
     if (this.searchRoutesForm.value.query === '') {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
-      this.getRoutes();
+      const pageIndex = this.pageNumber - 1;
+      this.routeService.getRoutesPage(pageIndex, this.pageSize);
       return;
     }
-    
-    console.log(this.searchRoutesForm.value.query);
+  
     const pageIndex = this.pageNumber - 1;
     this.routeService.routeQuery(this.searchRoutesForm.value.query, pageIndex, this.pageSize)
     .subscribe(
