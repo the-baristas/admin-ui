@@ -5,7 +5,7 @@ pipeline {
         S3_BUCKET = 'utopiaadminportal'
     }
     stages {
-        stage('Build') {
+        stage('npm install') {
             steps {
                 sh 'npm install'
             }
