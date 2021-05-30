@@ -5,9 +5,11 @@ pipeline {
         S3_BUCKET = 'utopiaadminportal'
     }
     stages {
+        stage('npm install'){
+            sh 'npm install'
+        }
         stage('Build') {
             steps {
-                sh "npm install --save-dev @angular-devkit/build-angular"
                 sh 'ng build'
             }
         }
