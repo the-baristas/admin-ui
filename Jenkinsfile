@@ -5,14 +5,14 @@ pipeline {
         S3_BUCKET = 'utopiaadminportal'
     }
     stages {
-        stage('npm install') {
-            steps {
-                sh 'npm install'
-            }
-        }
+        // stage('npm install') {
+        //     steps {
+        //         sh 'npm install'
+        //     }
+        // }
         stage('Build') {
             steps {
-                sh 'ng build'
+                sh 'ng build --prod'
             }
         }
             stage('Deploy to S3') {
