@@ -12,7 +12,7 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                sh 'ng build --prod'
+                sh 'ng build --configuration production'
             }
         }
             stage('Deploy to S3') {
