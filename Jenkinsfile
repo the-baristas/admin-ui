@@ -7,8 +7,8 @@ pipeline {
     stages {
         stage('installs') {
             steps {
-                export NG_CLI_ANALYTICS=false
-                npm install
+                sh 'export NG_CLI_ANALYTICS=false'
+                sh 'npm install'
             }
         }
         stage('Build') {
