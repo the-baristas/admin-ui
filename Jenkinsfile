@@ -7,13 +7,13 @@ pipeline {
     stages {
         stage('installs') {
             steps {
-                sh 'npm install @angular/compiler-cli'
-                sh 'npm install @angular/compiler'
+                export NG_CLI_ANALYTICS=false
+                npm install
             }
         }
         stage('Build') {
             steps {
-                sh 'ng build --prod'
+                sh 'ng build --configuration production'
             }
         }
             stage('Deploy to S3') {
@@ -22,7 +22,7 @@ pipeline {
                 echo 'Clearing current contents'
                 sh "aws s3 rm s3://${S3_BUCKET} --recursive"
                 echo 'S3 cleared'
-                sh "aws s3 cp ./dist/ --recursive s3://${S3_BUCKET} --acl public-read"
+                sh "aws s3 cp ./dist/ s3://utopiaadminportal --recursive --acl public-read"
                 echo 'Finished'              }
             }
     }
