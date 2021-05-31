@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('installs') {
             steps {
-                echo 'install'
+                sh 'npm install @angular/compiler-cli'
             }
         }
         stage('Build') {
