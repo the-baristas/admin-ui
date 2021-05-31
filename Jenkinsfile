@@ -8,6 +8,7 @@ pipeline {
         stage('installs') {
             steps {
                 sh 'npm install @angular/compiler-cli'
+                sh 'npm install @angular/compiler'
             }
         }
         stage('Build') {
