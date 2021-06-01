@@ -1,20 +1,18 @@
-import { TestBed } from '@angular/core/testing';
+import {
+    HttpClient,
+    HttpClientXsrfModule
+} from '@angular/common/http';
 import {
     HttpClientTestingModule,
     HttpTestingController
 } from '@angular/common/http/testing';
-
-import { UsersService } from './users.service';
-import { User } from '../entities/user';
-import {
-    HttpClient,
-    HttpClientXsrfModule,
-    HttpEvent,
-    HttpEventType
-} from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 import { Data } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Page } from '../entities/page';
+import { User } from '../entities/user';
+import { UsersService } from './users.service';
+
 
 describe('UsersService', () => {
     let service: UsersService;
@@ -75,8 +73,8 @@ describe('UsersService', () => {
             imports: [
                 HttpClientTestingModule,
                 HttpClientXsrfModule.withOptions({
-                    cookieName: 'My-Xsrf-Cookie',
-                    headerName: 'My-Xsrf-Header'
+                    cookieName: 'XSRF-TOKEN',
+                    headerName: 'X-XSRF-TOKEN'
                 })
             ],
             providers: [UsersService]
@@ -237,10 +235,12 @@ describe('UsersService', () => {
         mockRequest.flush(userAdmin);
     });
 
-    xit('POST response should match XSRF header', () => {
-        service.createUser(userAdmin).subscribe();
+    fit('POST response should match XSRF header', () => {
+        const url = '/users'
+        httpClient.post(url, {}, { withCredentials: true }).subscribe();
 
-        const testRequest = httpTestingController.expectOne(apiUrl);
+        const testRequest = httpTestingController.expectOne(url);
+        console.log(testRequest.request.headers);
         expect(testRequest.request.headers.has('X-XSRF-TOKEN')).toEqual(true);
     });
 

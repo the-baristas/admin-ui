@@ -13,10 +13,10 @@ export interface Passenger {
     routeActive: boolean;
     originAirportCode: string;
     originAirportActive: boolean;
-    originCity: string;
+    originAirportCity: string;
     destinationAirportCode: string;
     destinationAirportActive: boolean;
-    destinationCity: string;
+    destinationAirportCity: string;
     discountType: string;
     discountRate: number;
     givenName: string;
@@ -28,4 +28,5 @@ export interface Passenger {
     seatNumber: number;
     checkInGroup: number;
     username: string;
+    airplaneModel: string;
 }

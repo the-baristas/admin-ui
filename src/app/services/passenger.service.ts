@@ -22,13 +22,13 @@ export class PassengerService {
 
     constructor(
         private httpClient: HttpClient,
-        private loginService: LoginService,
         private messageService: MessageService,
+        loginService: LoginService,
         httpErrorHandlerService: HttpErrorHandlerService
     ) {
         this.httpOptions = {
             headers: new HttpHeaders({
-                Authorization: this.loginService.getToken()
+                Authorization: loginService.getToken()
             })
         };
         this.handleError =
@@ -49,6 +49,14 @@ export class PassengerService {
                     totalPages: 0
                 } as Page<Passenger>)
             )
+        );
+    }
+
+    findById(id: number): Observable<Passenger> {
+        const url = `${environment.apiUrl}${this.passengersPath}/${id}`;
+        return this.httpClient.get<Passenger>(url, this.httpOptions).pipe(
+            tap(() => this.messageService.add('Successfully found Passenger.')),
+            catchError(this.handleError<Passenger>('findById', {} as Passenger))
         );
     }
 
