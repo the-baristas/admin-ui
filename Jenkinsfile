@@ -21,8 +21,8 @@ pipeline {
                 echo 'Clearing current contents'
                 sh "aws s3 rm s3://${S3_BUCKET} --recursive"
                 echo 'S3 cleared'
-                sh "aws s3 cp ./dist/adminportal/ s3://utopiaadminportal --recursive"
-                echo 'Finished'              
+                sh "aws s3 cp ./dist/adminportal s3://utopiaadminportal --recursive"
+                echo 'Finished'
             }
         }
     }
