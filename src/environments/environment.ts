@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'utopia-load-balancer-1166047770.us-east-2.elb.amazonaws.com'
+    apiUrl: 'http://utopia-load-balancer-1166047770.us-east-2.elb.amazonaws.com'
 };
 
 /*
