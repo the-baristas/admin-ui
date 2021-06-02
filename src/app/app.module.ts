@@ -12,29 +12,29 @@ import { AirplanesComponent } from './airplanes/airplanes.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookingAddModalComponent } from './booking-add-modal/booking-add-modal.component';
+import { BookingCollapsibleRowComponent } from './booking-collapsible-row/booking-collapsible-row.component';
 import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-modal.component';
 import { BookingSearchComponent } from './booking-search/booking-search.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { FlightCollapsibleRowComponent } from './flight-collapsible-row/flight-collapsible-row.component';
 import { FlightComponent } from './flight-list/flight-list.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
+import { PassengerAddModalComponent } from './passenger-add-modal/passenger-add-modal.component';
+import { PassengerDeleteModalComponent } from './passenger-delete-modal/passenger-delete-modal.component';
 import { PassengerEditModalComponent } from './passenger-edit-modal/passenger-edit-modal.component';
 import { PassengerSearchComponent } from './passenger-search/passenger-search.component';
 import { PassengersComponent } from './passengers/passengers.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { RouteCollapsibleRowComponent } from './route-collapsible-row/route-collapsible-row.component';
 import { RouteListComponent } from './route-list/route-list.component';
+import { TicketCollapsibleRowComponent } from './ticket-collapsible-row/ticket-collapsible-row.component';
+import { UserCollapsibleRowComponent } from './user-collapsible-row/user-collapsible-row.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { PassengerAddModalComponent } from './passenger-add-modal/passenger-add-modal.component';
-import { PassengerDeleteModalComponent } from './passenger-delete-modal/passenger-delete-modal.component';
-import { BookingCollapsibleRowComponent } from './booking-collapsible-row/booking-collapsible-row.component';
-import { FlightCollapsibleRowComponent } from './flight-collapsible-row/flight-collapsible-row.component';
-import { RouteCollapsibleRowComponent } from './route-collapsible-row/route-collapsible-row.component';
-import { UserCollapsibleRowComponent } from './user-collapsible-row/user-collapsible-row.component';
-import { TicketCollapsibleRowComponent } from './ticket-collapsible-row/ticket-collapsible-row.component';
 
 @NgModule({
     declarations: [

@@ -5,6 +5,9 @@
 </form>
 </div>
 
+<div class="ds-1-row ds-u-margin-top--3" id="searchByIdErrorMessage" style="display:none;color:red" >A flight with this ID does not exist.</div>
+
+
 
 <div class="create-new-button">
   <button type="button" id="add-route-button" class="btn btn-primary" (click)="openTwo(addRouteModal)">Create New</button>
@@ -40,11 +43,20 @@
 <div id="pagination-top" class="ds-1-row ds-u-margin-top">
   <div class="ds-1-col">
     <ngb-pagination [collectionSize]="totalRoutes"
-                    [(page)]="pager.currentPage"
-                    [maxSize]="10"
-                    [boundaryLinks]="true"
-                    (pageChange)="setPage($event)">
+                      (pageChange)="setPage($event)"
+                      [(page)]="pageNumber"
+                      [pageSize]="pageSize">
     </ngb-pagination>
+    <select
+    class="custom-select"
+    style="width: auto"
+    name="pageSize"
+    [(ngModel)]="this.pageSize"
+>
+<option [ngValue]="10">10 items per page</option>
+<option [ngValue]="25">25 items per page</option>
+<option [ngValue]="50">50 items per page</option>
+</select>
   </div>
 </div>
 

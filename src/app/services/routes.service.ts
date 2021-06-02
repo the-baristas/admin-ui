@@ -13,6 +13,7 @@ import { HandleError,HttpErrorHandlerService } from './http-error-handler.servic
 import { Route } from '../entities/route';
 import { MessageService } from './message.service';
 import { LoginService } from './login.service';
+import { Page } from '../entities/page';
 
 // specifies that Angular should provide the service in the root injector
 @Injectable({ providedIn: "root" })
@@ -44,6 +45,20 @@ export class RouteService {
             );   
     }
 
+    public getRoutesPage(pageIndex: number, pageSize: number): Observable<Page<Route>> {
+        return this.http.get<Page<Route>>(
+            `${environment.apiUrl}/routes?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+              tap(() =>
+              this.messageService.add(
+                'Successfully found routes page.'
+              )
+              ),
+              catchError(
+                this.handleError<Page<Route>>('getFlightsPage', {} as Page<Route>)
+              )
+            );
+ }
+
     /** GET route by id. Return `undefined` when id not found */
     public getRouteNo404<Data>(id: number): Observable<Route> {
         const url = `${environment.apiUrl + this.routeServicePath}/?id=${id}`;
@@ -66,9 +81,9 @@ export class RouteService {
         );
     }
 
-    public routeQuery(query: string) {
-        const url = environment.apiUrl + '/routes-query?query=' + query;
-        return this.http.get<Route[]>(url, { headers: this.loginService.getHeadersWithToken() })
+    public routeQuery(query: string, pageIndex: number, pageSize: number) {
+        const url = environment.apiUrl + '/routes-query?query=' + query + `&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+        return this.http.get<Page<Route>>(url, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.log('fetched routes')),
                 catchError((error: HttpErrorResponse) => {
