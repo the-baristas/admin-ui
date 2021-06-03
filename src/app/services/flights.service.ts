@@ -63,7 +63,7 @@ export class FlightService {
 
     public getFlightByLocation(originId: string, destinationId: string, pageIndex: number, pageSize: number): Observable<Page<Flight>> {
         console.log("Origin ID:" + originId + "Destination ID:" + destinationId);
-        const url = `${environment.apiUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+        const url = `${environment.apiUrl}/flights/search?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
         console.log(url);
         return this.httpClient.get<Page<Flight>>(
             url, { headers: this.loginService.getHeadersWithToken() }).pipe(

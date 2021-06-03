@@ -122,3 +122,14 @@
     width: 15%;
     padding: 10px;
   }
+
+  .cdk-global-overlay-wrapper, .cdk-overlay-container {
+    position: fixed;
+    z-index: 1090 !important;
+  }
+
+  .owl-dateTime-dialog { width: auto !important; }
+
+  table {
+    display: inline-table;
+  }

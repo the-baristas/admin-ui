@@ -12,6 +12,16 @@
   <div class="create-new-button">
     <button type="button" id="add-flight-button" class="btn btn-primary" (click)="openTwo(addFlightModal)">Create New</button>
   </div>
+
+  <div id="pagination-top" class="ds-1-row ds-u-margin-top">
+    <div class="ds-1-col">
+      <ngb-pagination [collectionSize]="totalFlights"
+                      (pageChange)="setPage($event)"
+                      [(page)]="pageNumber"
+                      [pageSize]="pageSize">
+      </ngb-pagination>
+    </div>
+  </div>
   
   <div class="ds-1-row">
     <table class="table table-responsive table-striped">
@@ -49,17 +59,6 @@
                       [(page)]="pageNumber"
                       [pageSize]="pageSize">
       </ngb-pagination>
-
-      <select
-      class="custom-select"
-      style="width: auto"
-      name="pageSize"
-      [(ngModel)]="this.pageSize"
-  >
-  <option [ngValue]="10">10 items per page</option>
-  <option [ngValue]="25">25 items per page</option>
-  <option [ngValue]="50">50 items per page</option>
-</select>
     </div>
   </div>
   
@@ -95,12 +94,20 @@
                 <label for="departureTime">Departure Time:</label>
                 <input type="text"
                        class="form-control"
-                       formControlName="departureTime" />
+                       formControlName="departureTime"
+                       [owlDateTime]="dt2"
+                       [owlDateTimeTrigger]="dt2"
+                       placeholder="Choose Date/Time" />
+                       <owl-date-time #dt2></owl-date-time>
       
                 <label for="arrivalTime">Arrival Time:</label>
                 <input type="text"
                        class="form-control"
-                       formControlName="arrivalTime" />
+                       formControlName="arrivalTime"
+                       [owlDateTime]="dt3"
+                       [owlDateTimeTrigger]="dt3"
+                       placeholder="Choose Date/Time" />
+                <owl-date-time #dt3></owl-date-time>
       
                 <label for="firstReserved">First Reserved:</label>
                 <input type="text"
@@ -176,15 +183,23 @@
               <br />
     
               <label for="departureTime">Departure Time:</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="departureTime" />
+                <input type="text"
+                       class="form-control"
+                       formControlName="departureTime"
+                       [owlDateTime]="dt2"
+                       [owlDateTimeTrigger]="dt2"
+                       placeholder="Choose Date/Time" />
+                <owl-date-time #dt2></owl-date-time>
 
     
               <label for="arrivalTime">Arrival Time:</label>
               <input type="text"
-                     class="form-control"
-                     formControlName="arrivalTime" />
+                      class="form-control"
+                      formControlName="arrivalTime"
+                      [owlDateTime]="dt3"
+                      [owlDateTimeTrigger]="dt3"
+                      placeholder="Choose Date/Time" />
+              <owl-date-time #dt3></owl-date-time>
     
               <label for="firstReserved">First Reserved:</label>
               <input type="text"

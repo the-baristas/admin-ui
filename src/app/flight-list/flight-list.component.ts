@@ -4,7 +4,7 @@ import { FlightService } from '../services/flights.service';
 import { RouteService } from '../services/routes.service';
 import { AirplaneService } from '../services/airplane.service';
 import { PagerService } from '../services/pager.service';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ControlValueAccessor } from '@angular/forms';
 import { NgbModal, NgbModalRef, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Page } from '../entities/page';
@@ -33,12 +33,17 @@ export class FlightComponent implements OnInit {
       public newFlight!: Flight;
     
       totalFlights!: number;
+      totalRoutes!: number;
       pager: any = {};
       currentPage!: Page<Flight>;
+      currentRoutesPage!: Page<Route>;
       totalElements: number = 0;
       page: number = 1;
       pageNumber: number = 1;
       pageSize: number = 10;
+      routesPageIndex: number = 1;
+
+      selectedMoment1 = new Date();
     
       searchFlightsForm!: FormGroup;
       searchOrigin!: string;
@@ -87,10 +92,14 @@ export class FlightComponent implements OnInit {
     }
 
       public getData(): void {
-        this.routeService.getAllRoutes().subscribe(
-          (response: Route[]) => {
-            this.foundRoutes = response;
-            console.log(this.foundRoutes);
+        this.routeService.getRoutesPage(this.routesPageIndex, this.pageSize)
+        .subscribe(
+            (routesPage: Page<Route>) => {
+              this.currentRoutesPage = routesPage;
+              this.pageNumber = routesPage.number+1;
+              this.foundRoutes = routesPage.content;
+              this.totalRoutes = routesPage.totalElements;
+              console.log(routesPage);
           },
           (error: HttpErrorResponse) => {
             alert(error.message)

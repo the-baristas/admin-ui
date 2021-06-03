@@ -25,6 +25,8 @@ import { PhonePipe } from './pipes/phone.pipe';
 import { RouteListComponent } from './route-list/route-list.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
     declarations: [
@@ -47,7 +49,7 @@ import { UsersListComponent } from './users-list/users-list.component';
         UserDeleteModalComponent,
         PhonePipe,
         FlightComponent,
-        RouteListComponent,
+        RouteListComponent
     ],
     imports: [
         BrowserModule,
@@ -56,7 +58,10 @@ import { UsersListComponent } from './users-list/users-list.component';
         HttpClientModule,
         NgbModule,
         ReactiveFormsModule,
-        NgHttpLoaderModule.forRoot()
+        NgHttpLoaderModule.forRoot(),
+        BrowserAnimationsModule,
+        OwlDateTimeModule, 
+        OwlNativeDateTimeModule
     ],
     providers: [],
     bootstrap: [AppComponent]
