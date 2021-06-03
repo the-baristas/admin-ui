@@ -26,7 +26,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { PassengerAddModalComponent } from './passenger-add-modal/passenger-add-modal.component';
 import { PassengerDeleteModalComponent } from './passenger-delete-modal/passenger-delete-modal.component';
 import { PassengerEditModalComponent } from './passenger-edit-modal/passenger-edit-modal.component';
-import { PassengerSearchComponent } from './passenger-search/passenger-search.component';
 import { PassengersComponent } from './passengers/passengers.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { RouteCollapsibleRowComponent } from './route-collapsible-row/route-collapsible-row.component';
@@ -59,7 +58,6 @@ import { UsersListComponent } from './users-list/users-list.component';
         FlightComponent,
         RouteListComponent,
         PassengersComponent,
-        PassengerSearchComponent,
         PassengerEditModalComponent,
         PassengerAddModalComponent,
         PassengerDeleteModalComponent,

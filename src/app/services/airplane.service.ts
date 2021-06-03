@@ -229,10 +229,6 @@ export class AirplaneService {
 
     /** PUT: update the airplane on the server */
     updateAirplane(airplane: Airplane): Observable<any> {
-        this.httpOptions.headers = this.httpOptions.headers.append(
-            'Content-Type',
-            'application/json'
-        );
         return this.httpClient
             .put(
                 `${environment.apiUrl + this.airplanesPath}/${airplane.id}`,
