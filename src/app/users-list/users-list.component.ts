@@ -31,7 +31,7 @@ export class UsersListComponent implements OnInit {
     pageNumber!: number;
 
     searchUsersForm!: FormGroup;
-    searchStringId!: string;
+    searchString!: string;
     searchStringEmail: string = '';
     searchStringUsername: string = '';
     searchStringPhone: string = '';
@@ -49,23 +49,32 @@ export class UsersListComponent implements OnInit {
     public action: String = '';
 
     ngOnInit() {
-        this.getUsers(0, this.pageSize);
-        this.initializeForms();
+      this.initializeForms();
+      this.getUsers(0, this.pageSize);
     }
 
-    public getUsers(page: number, size: number): void {
-        this.usersService.getAllUsers(page, size).subscribe(
-            (response: Page<User>) => {
-                this.currentPage = response;
-                this.pageNumber = response.number + 1;
-                this.users = response.content;
-                this.totalUsers = response.totalElements;
-            },
-            (error: HttpErrorResponse) => {
-                alert(error.message);
-            }
-        );
+  public getUsers(page: number, size: number): void {
+    console.log(this.searchUsersForm.value.searchString);
+
+    if (this.searchUsersForm.value.searchString) {
+      this.handleSearch(page, size);
     }
+    else {
+      console.log(this.searchUsersForm.value.searchString);
+            this.usersService.getAllUsers(page, size).subscribe(
+        (response: Page<User>) => {
+          this.currentPage = response;
+          this.pageNumber = response.number + 1;
+          this.users = response.content;
+          this.totalUsers = response.totalElements;
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+      
+  }
 
     public userModalPerformAction() {
         if (this.action === 'Add') {
@@ -156,7 +165,7 @@ export class UsersListComponent implements OnInit {
 
     initializeForms() {
         this.searchUsersForm = new FormGroup({
-            searchStringId: new FormControl(this.searchStringId, [
+            searchString: new FormControl(this.searchString, [
                 Validators.maxLength(45)
             ]),
             searchStringEmail: new FormControl(this.searchStringEmail, [
@@ -204,23 +213,32 @@ export class UsersListComponent implements OnInit {
         });
     }
 
-    searchUsers() {
-        if (
-            this.searchUsersForm.value.searchStringEmail === '' &&
-            this.searchUsersForm.value.searchStringUsername === '' &&
-            this.searchUsersForm.value.searchStringPhone === ''
-        ) {
+  searchUsers() {
+    
+        if (this.searchUsersForm.value.searchString === '')
+        {
             this.getUsers(0, this.pageSize);
         } else {
             this.users = [];
         }
+      
+      this.handleSearch(0,this.pageSize);
+  }
 
-        this.searchByEmail();
+  handleSearch(page: number, size: number) {
+    this.usersService.findUsersBySearchTerm(this.searchUsersForm.value.searchString, page, size).subscribe(
+      (response: Page<User>) => {
+        this.currentPage = response;
+        this.pageNumber = response.number + 1;
+        this.users = response.content;
+        this.totalUsers = response.totalElements;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
 
-        this.searchByUsername();
-
-        this.searchByPhoneNumber();
-    }
+  }
 
     searchByEmail() {
         if (this.searchUsersForm.value.searchStringEmail !== '')

@@ -1,41 +1,14 @@
 <div class="ds-1-row ds-u-margin-top--3">
   <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringEmail" placeholder="Search Email" />
+      <input id="userSearchField" type="text" class="form-control" formControlName="searchString" placeholder="Search" />
     </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByEmailErrorMessage" style="display:none;color:red">
-      A user with this email does not exist.
-    </div>
   </div>
-
-  <div style="width:25%;">
-    <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username" />
-    </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByUsernameErrorMessage" style="display:none;color:red">
-      A user with this username does not exist.
-    </div>
-  </div>
-
-  <div style="width:25%;">
-    <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone" />
-    </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByPhoneErrorMessage" style="display:none;color:red">
-      A user with this phone number does not exist.
-    </div>
-  </div>
-  <div class="grid-container" style="width: 200px;">
-    <div class="grid-item" style="width:25%;">
-      <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
-    </div>
     <div class="grid-item" style="width:25%;">
       <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
     </div>
   </div>
 
-
-</div>
 
 <div class="ds-1-row ds-u-margin-top--3">
     <div style="text-align:right; margin-right: 130px">

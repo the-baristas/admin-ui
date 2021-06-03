@@ -25,7 +25,19 @@ export class UsersService {
                     return throwError('Unable to retrieve user data');
                 })
             );
-    }
+  }
+
+  public findUsersBySearchTerm(searchTerm: string, page: number, size: number) {
+    return this.http
+      .get<Page<User>>(`${this.serverUrl}/search?term=${searchTerm}&page=${page}&size=${size}`, {
+        headers: this.loginService.getHeadersWithToken()
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError('Unable to retrieve user data');
+        })
+      );
+  }
 
     public getUserByUserId(userId: number): Observable<User> {
         return this.http
