@@ -1,13 +1,13 @@
 <div class="ds-1-row ds-u-margin-top--3">
   <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchString" placeholder="Search" />
+      <input id="userSearchField" type="text" class="form-control" (input)="searchUsers()" formControlName="searchString" placeholder="Search (Name, email, username, phone)" />
     </form>
   </div>
-    <div class="grid-item" style="width:25%;">
-      <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
-    </div>
+  <div class="grid-item" style="width:25%;">
+    <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
   </div>
+</div>
 
 
 <div class="ds-1-row ds-u-margin-top--3">

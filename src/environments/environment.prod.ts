@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://52.15.153.242:8080'
+    production: true,
+    apiUrl: 'http://utopia-load-balancer-1166047770.us-east-2.elb.amazonaws.com'
 };

@@ -8,9 +8,10 @@ export class MessageService {
 
     add(message: string) {
         this.message = message;
-        this.timerSubscription = timer(4000).subscribe(() => {
-            this.clear();
-        })
+        // TODO: Uncomment.
+        // this.timerSubscription = timer(4000).subscribe(() => {
+        //     this.clear();
+        // })
     }
 
     clear() {

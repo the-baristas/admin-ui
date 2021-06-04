@@ -1,0 +1,228 @@
+<div class="container-fluid">
+    <div class="row" id="search-component">
+        <div class="col">
+            <label for="search-box">Confirmation Code | Username</label>
+            <input
+                #searchBox
+                id="search-box"
+                autocomplete="off"
+                (input)="search(searchBox.value)"
+            />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col align-self-end">
+            <button
+                class="btn btn-lg btn-primary"
+                id="create-new-button"
+                type="button"
+                (click)="openAddModal()"
+            >
+                Create New
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Booking</th>
+                        <th scope="col">Flight</th>
+                        <th scope="col">Route</th>
+                        <th scope="col">Ticket</th>
+                        <th scope="col">User</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container
+                        *ngFor="let passenger of foundPassengers; index as i"
+                    >
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark"
+                                    (click)="
+                                        toggleCollapsibleRow(
+                                            'bookingDetails',
+                                            i
+                                        )
+                                    "
+                                >
+                                    <ngb-highlight
+                                        [result]="
+                                            passenger.bookingConfirmationCode
+                                        "
+                                        [term]="searchTerm"
+                                    ></ngb-highlight>
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark"
+                                    (click)="
+                                        toggleCollapsibleRow('flightDetails', i)
+                                    "
+                                >
+                                    {{
+                                        passenger.departureTime
+                                            | date: "shortDate"
+                                    }}
+                                    to
+                                    {{
+                                        passenger.arrivalTime
+                                            | date: "shortDate"
+                                    }}
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark"
+                                    (click)="
+                                        toggleCollapsibleRow('routeDetails', i)
+                                    "
+                                >
+                                    {{ passenger.originAirportCode }} to
+                                    {{ passenger.destinationAirportCode }}
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark"
+                                    (click)="
+                                        toggleCollapsibleRow('ticketInfo', i)
+                                    "
+                                >
+                                    <td>
+                                        {{ passenger.familyName }},
+                                        {{ passenger.givenName }}
+                                    </td>
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark"
+                                    (click)="
+                                        toggleCollapsibleRow('userInfo', i)
+                                    "
+                                >
+                                    <ngb-highlight
+                                        [result]="passenger.username"
+                                        [term]="searchTerm"
+                                    ></ngb-highlight>
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="openEditModal(passenger)"
+                                >
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="openDeleteModal(passenger)"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="
+                                selectedTable === 'bookingDetails' &&
+                                passengerIndex === i &&
+                                rowExpanded
+                            "
+                        >
+                            <td colspan="9">
+                                <app-booking-collapsible-row
+                                    [passenger]="passenger"
+                                ></app-booking-collapsible-row>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="
+                                selectedTable === 'flightDetails' &&
+                                passengerIndex === i &&
+                                rowExpanded
+                            "
+                        >
+                            <td colspan="9">
+                                <app-flight-collapsible-row
+                                    [passenger]="passenger"
+                                ></app-flight-collapsible-row>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="
+                                selectedTable === 'routeDetails' &&
+                                passengerIndex === i &&
+                                rowExpanded
+                            "
+                        >
+                            <td colspan="9">
+                                <app-route-collapsible-row
+                                    [passenger]="passenger"
+                                ></app-route-collapsible-row>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="
+                                selectedTable === 'ticketInfo' &&
+                                passengerIndex === i &&
+                                rowExpanded
+                            "
+                        >
+                            <td colspan="9">
+                                <app-ticket-collapsible-row
+                                    [passenger]="passenger"
+                                ></app-ticket-collapsible-row>
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="
+                                selectedTable === 'userInfo' &&
+                                passengerIndex === i &&
+                                rowExpanded
+                            "
+                        >
+                            <td colspan="9">
+                                <app-user-collapsible-row
+                                    [passenger]="passenger"
+                                ></app-user-collapsible-row>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+        [collectionSize]="totalElements"
+        [(page)]="pageNumber"
+        [pageSize]="pageSizeControl.value"
+        (pageChange)="onPageChange()"
+    ></ngb-pagination>
+
+    <select
+        class="custom-select"
+        name="pageSize"
+        [formControl]="pageSizeControl"
+    >
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="25">25 items per page</option>
+        <option [ngValue]="50">50 items per page</option>
+    </select>
+</div>

@@ -1,0 +1,32 @@
+export interface Passenger {
+    id: number;
+    bookingId: number;
+    bookingConfirmationCode: string;
+    bookingActive: boolean;
+    layoverCount: number;
+    bookingTotalPrice: number;
+    flightId: number;
+    flightActive: boolean;
+    departureTime: string;
+    arrivalTime: string;
+    routeId: number;
+    routeActive: boolean;
+    originAirportCode: string;
+    originAirportActive: boolean;
+    originAirportCity: string;
+    destinationAirportCode: string;
+    destinationAirportActive: boolean;
+    destinationAirportCity: string;
+    discountType: string;
+    discountRate: number;
+    givenName: string;
+    familyName: string;
+    dateOfBirth: string;
+    gender: string;
+    address: string;
+    seatClass: string;
+    seatNumber: number;
+    checkInGroup: number;
+    username: string;
+    airplaneModel: string;
+}

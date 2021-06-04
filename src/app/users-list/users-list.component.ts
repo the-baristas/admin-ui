@@ -54,13 +54,10 @@ export class UsersListComponent implements OnInit {
     }
 
   public getUsers(page: number, size: number): void {
-    console.log(this.searchUsersForm.value.searchString);
-
     if (this.searchUsersForm.value.searchString) {
       this.handleSearch(page, size);
     }
     else {
-      console.log(this.searchUsersForm.value.searchString);
             this.usersService.getAllUsers(page, size).subscribe(
         (response: Page<User>) => {
           this.currentPage = response;
@@ -217,8 +214,12 @@ export class UsersListComponent implements OnInit {
     
         if (this.searchUsersForm.value.searchString === '')
         {
-            this.getUsers(0, this.pageSize);
-        } else {
+          this.getUsers(0, this.pageSize);
+          return;
+        }
+        else if (this.searchUsersForm.value.searchString.length < 3)
+          return;
+        else {
             this.users = [];
         }
       
@@ -240,117 +241,9 @@ export class UsersListComponent implements OnInit {
 
   }
 
-    searchByEmail() {
-        if (this.searchUsersForm.value.searchStringEmail !== '')
-            if (
-                this.searchUsersForm.controls.searchStringEmail.dirty &&
-                this.searchUsersForm.controls.searchStringEmail.errors === null
-            ) {
-                this.usersService
-                    .getUserByEmail(
-                        this.searchUsersForm.value.searchStringEmail
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByEmailErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByEmailErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByEmailErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
-
-    searchByUsername() {
-        if (this.searchUsersForm.value.searchStringUsername !== '')
-            if (
-                this.searchUsersForm.controls.searchStringUsername.dirty &&
-                this.searchUsersForm.controls.searchStringUsername.errors ===
-                    null
-            ) {
-                this.usersService
-                    .getUserByUsername(
-                        this.searchUsersForm.value.searchStringUsername
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByUsernameErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByUsernameErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByUsernameErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
-
-    searchByPhoneNumber() {
-        if (this.searchUsersForm.value.searchStringPhone !== '')
-            if (
-                this.searchUsersForm.controls.searchStringPhone.dirty &&
-                this.searchUsersForm.controls.searchStringPhone.errors === null
-            ) {
-                this.usersService
-                    .getUserByPhoneNumber(
-                        this.searchUsersForm.value.searchStringPhone
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByPhoneErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByPhoneErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByPhoneErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
-
     clearSearchForm() {
         this.searchUsersForm.reset();
-        this.searchUsersForm.value.searchStringEmail = '';
-        this.searchUsersForm.value.searchStringUsername = '';
-        this.searchUsersForm.value.searchStringPhone = '';
+        this.searchUsersForm.value.searchString = '';
         this.searchUsers();
     }
 
