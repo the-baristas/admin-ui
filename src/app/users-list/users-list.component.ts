@@ -32,9 +32,6 @@ export class UsersListComponent implements OnInit {
 
     searchUsersForm!: FormGroup;
     searchString!: string;
-    searchStringEmail: string = '';
-    searchStringUsername: string = '';
-    searchStringPhone: string = '';
 
     constructor(
         private usersService: UsersService,
@@ -82,23 +79,23 @@ export class UsersListComponent implements OnInit {
         }
     }
 
-    createUser() {
+  createUser() {
         this.usersService.createUser(this.updateUserForm.value).subscribe(
-            (response: any) => {
-                this.searchUsers();
-                this.modalRef.close();
-                this.updateUserForm.reset();
-                alert('User created successfully');
+          (response: any) => {
+            console.log("ff");
+
+            this.modalRef.close();
+            console.log("ss");
+            this.updateUserForm.reset();
+            console.log("aa");
+            alert('User created successfully');
+            console.log("zz");
+            this.searchUsers();
+            console.log("dd");
             },
-            (error: HttpErrorResponse) => {
-                if (error.status === 404) {
-                    alert('One or more fields are invalid.');
-                } else if (error.status === 409) {
-                    alert(
-                        'Username, email, and/or phone number already exists.'
-                    );
-                }
-            }
+          (error: Error) => {
+            alert(error);
+          }
         );
     }
 
@@ -106,21 +103,14 @@ export class UsersListComponent implements OnInit {
         this.usersService
             .updateUser(this.updateUserForm.value, this.editUser.userId)
             .subscribe(
-                (response: any) => {
-                    this.getUsers(this.currentPage.number, this.pageSize);
-
-                    this.modalRef.close();
-                    alert('User updated successfully');
-                },
+              (response: any) => {
+                this.getUsers(this.currentPage.number, this.pageSize);
+                this.modalRef.close();
+                alert('User updated successfully');
+              },
                 (error: HttpErrorResponse) => {
-                    if (error.status === 404) {
-                        alert('One or more fields are invalid.');
-                    } else if (error.status === 409) {
-                        alert(
-                            'Username, email, and/or phone number already exists.'
-                        );
-                    }
-                }
+                  alert(error);
+              }
             );
     }
 
@@ -164,18 +154,6 @@ export class UsersListComponent implements OnInit {
         this.searchUsersForm = new FormGroup({
             searchString: new FormControl(this.searchString, [
                 Validators.maxLength(45)
-            ]),
-            searchStringEmail: new FormControl(this.searchStringEmail, [
-                Validators.minLength(1),
-                Validators.email
-            ]),
-            searchStringUsername: new FormControl(this.searchStringUsername, [
-                Validators.minLength(1),
-                Validators.maxLength(45)
-            ]),
-            searchStringPhone: new FormControl(this.searchStringPhone, [
-                Validators.minLength(1),
-                Validators.maxLength(10)
             ])
         });
 
@@ -255,7 +233,6 @@ export class UsersListComponent implements OnInit {
 
         delModalRef.result.then((result) => {
             if (result === 1) {
-                console.log('result is ' + result);
                 //if there's only one element left on the page we delete from, then we should be sent to the previous page
                 if (this.currentPage.numberOfElements > 1)
                     this.getUsers(this.currentPage.number, this.pageSize);

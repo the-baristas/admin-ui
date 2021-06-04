@@ -261,25 +261,6 @@ describe('UsersService', () => {
         ).toBeTruthy();
     });
 
-    it('Create user 409 should give error message', () => {
-        let error!: string;
-        service.createUser(userAdmin).subscribe(null, (e) => {
-            error = e;
-        });
-
-        let request = httpTestingController.expectOne(apiUrl);
-        request.flush('Username, email, and/or phone number already exists.', {
-            status: 409,
-            statusText: 'Username, email, and/or phone number already exists.'
-        });
-
-        expect(
-            error.indexOf(
-                'Username, email, and/or phone number already exists.'
-            ) >= 0
-        ).toBeTruthy();
-    });
-
     it('Create user 500 should give error message', () => {
         let error!: string;
         service.createUser(userAdmin).subscribe(null, (e) => {
@@ -331,26 +312,6 @@ describe('UsersService', () => {
         expect(error.indexOf('This user does not exist') >= 0).toBeTruthy();
     });
 
-    it('Update user 409 should give error message', () => {
-        let error!: string;
-        service.updateUser(userAdmin, userAdmin.userId).subscribe(null, (e) => {
-            error = e;
-        });
-
-        let request = httpTestingController.expectOne(
-            apiUrl + '/' + userAdmin.userId
-        );
-        request.flush('Username, email, and/or phone number already exists.', {
-            status: 409,
-            statusText: 'Username, email, and/or phone number already exists.'
-        });
-
-        expect(
-            error.indexOf(
-                'Username, email, and/or phone number already exists.'
-            ) >= 0
-        ).toBeTruthy();
-    });
 
     it('Update user 500 should give error message', () => {
         let error!: string;

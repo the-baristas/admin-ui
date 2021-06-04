@@ -181,12 +181,8 @@ describe('UsersListComponent', () => {
 
     component.action = 'Add';
     component.userModalPerformAction();
-    expect(component.updateUserForm.controls.givenName.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.familyName.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.email.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.username.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.password.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.phone.dirty).toBeFalsy();
+    expect(usersServiceMock.createUser).toHaveBeenCalled();
+
   });
 
 
