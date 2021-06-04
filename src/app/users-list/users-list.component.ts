@@ -31,10 +31,7 @@ export class UsersListComponent implements OnInit {
     pageNumber!: number;
 
     searchUsersForm!: FormGroup;
-    searchStringId!: string;
-    searchStringEmail: string = '';
-    searchStringUsername: string = '';
-    searchStringPhone: string = '';
+    searchString!: string;
 
     constructor(
         private usersService: UsersService,
@@ -49,23 +46,29 @@ export class UsersListComponent implements OnInit {
     public action: String = '';
 
     ngOnInit() {
-        this.getUsers(0, this.pageSize);
-        this.initializeForms();
+      this.initializeForms();
+      this.getUsers(0, this.pageSize);
     }
 
-    public getUsers(page: number, size: number): void {
-        this.usersService.getAllUsers(page, size).subscribe(
-            (response: Page<User>) => {
-                this.currentPage = response;
-                this.pageNumber = response.number + 1;
-                this.users = response.content;
-                this.totalUsers = response.totalElements;
-            },
-            (error: HttpErrorResponse) => {
-                alert(error.message);
-            }
-        );
+  public getUsers(page: number, size: number): void {
+    if (this.searchUsersForm.value.searchString) {
+      this.handleSearch(page, size);
     }
+    else {
+            this.usersService.getAllUsers(page, size).subscribe(
+        (response: Page<User>) => {
+          this.currentPage = response;
+          this.pageNumber = response.number + 1;
+          this.users = response.content;
+          this.totalUsers = response.totalElements;
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+      
+  }
 
     public userModalPerformAction() {
         if (this.action === 'Add') {
@@ -76,23 +79,23 @@ export class UsersListComponent implements OnInit {
         }
     }
 
-    createUser() {
+  createUser() {
         this.usersService.createUser(this.updateUserForm.value).subscribe(
-            (response: any) => {
-                this.searchUsers();
-                this.modalRef.close();
-                this.updateUserForm.reset();
-                alert('User created successfully');
+          (response: any) => {
+            console.log("ff");
+
+            this.modalRef.close();
+            console.log("ss");
+            this.updateUserForm.reset();
+            console.log("aa");
+            alert('User created successfully');
+            console.log("zz");
+            this.searchUsers();
+            console.log("dd");
             },
-            (error: HttpErrorResponse) => {
-                if (error.status === 404) {
-                    alert('One or more fields are invalid.');
-                } else if (error.status === 409) {
-                    alert(
-                        'Username, email, and/or phone number already exists.'
-                    );
-                }
-            }
+          (error: Error) => {
+            alert(error);
+          }
         );
     }
 
@@ -100,21 +103,14 @@ export class UsersListComponent implements OnInit {
         this.usersService
             .updateUser(this.updateUserForm.value, this.editUser.userId)
             .subscribe(
-                (response: any) => {
-                    this.getUsers(this.currentPage.number, this.pageSize);
-
-                    this.modalRef.close();
-                    alert('User updated successfully');
-                },
+              (response: any) => {
+                this.getUsers(this.currentPage.number, this.pageSize);
+                this.modalRef.close();
+                alert('User updated successfully');
+              },
                 (error: HttpErrorResponse) => {
-                    if (error.status === 404) {
-                        alert('One or more fields are invalid.');
-                    } else if (error.status === 409) {
-                        alert(
-                            'Username, email, and/or phone number already exists.'
-                        );
-                    }
-                }
+                  alert(error);
+              }
             );
     }
 
@@ -156,20 +152,8 @@ export class UsersListComponent implements OnInit {
 
     initializeForms() {
         this.searchUsersForm = new FormGroup({
-            searchStringId: new FormControl(this.searchStringId, [
+            searchString: new FormControl(this.searchString, [
                 Validators.maxLength(45)
-            ]),
-            searchStringEmail: new FormControl(this.searchStringEmail, [
-                Validators.minLength(1),
-                Validators.email
-            ]),
-            searchStringUsername: new FormControl(this.searchStringUsername, [
-                Validators.minLength(1),
-                Validators.maxLength(45)
-            ]),
-            searchStringPhone: new FormControl(this.searchStringPhone, [
-                Validators.minLength(1),
-                Validators.maxLength(10)
             ])
         });
 
@@ -204,135 +188,40 @@ export class UsersListComponent implements OnInit {
         });
     }
 
-    searchUsers() {
-        if (
-            this.searchUsersForm.value.searchStringEmail === '' &&
-            this.searchUsersForm.value.searchStringUsername === '' &&
-            this.searchUsersForm.value.searchStringPhone === ''
-        ) {
-            this.getUsers(0, this.pageSize);
-        } else {
+  searchUsers() {
+    
+        if (this.searchUsersForm.value.searchString === '')
+        {
+          this.getUsers(0, this.pageSize);
+          return;
+        }
+        else if (this.searchUsersForm.value.searchString.length < 3)
+          return;
+        else {
             this.users = [];
         }
+      
+      this.handleSearch(0,this.pageSize);
+  }
 
-        this.searchByEmail();
+  handleSearch(page: number, size: number) {
+    this.usersService.findUsersBySearchTerm(this.searchUsersForm.value.searchString, page, size).subscribe(
+      (response: Page<User>) => {
+        this.currentPage = response;
+        this.pageNumber = response.number + 1;
+        this.users = response.content;
+        this.totalUsers = response.totalElements;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
 
-        this.searchByUsername();
-
-        this.searchByPhoneNumber();
-    }
-
-    searchByEmail() {
-        if (this.searchUsersForm.value.searchStringEmail !== '')
-            if (
-                this.searchUsersForm.controls.searchStringEmail.dirty &&
-                this.searchUsersForm.controls.searchStringEmail.errors === null
-            ) {
-                this.usersService
-                    .getUserByEmail(
-                        this.searchUsersForm.value.searchStringEmail
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByEmailErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByEmailErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByEmailErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
-
-    searchByUsername() {
-        if (this.searchUsersForm.value.searchStringUsername !== '')
-            if (
-                this.searchUsersForm.controls.searchStringUsername.dirty &&
-                this.searchUsersForm.controls.searchStringUsername.errors ===
-                    null
-            ) {
-                this.usersService
-                    .getUserByUsername(
-                        this.searchUsersForm.value.searchStringUsername
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByUsernameErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByUsernameErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByUsernameErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
-
-    searchByPhoneNumber() {
-        if (this.searchUsersForm.value.searchStringPhone !== '')
-            if (
-                this.searchUsersForm.controls.searchStringPhone.dirty &&
-                this.searchUsersForm.controls.searchStringPhone.errors === null
-            ) {
-                this.usersService
-                    .getUserByPhoneNumber(
-                        this.searchUsersForm.value.searchStringPhone
-                    )
-                    .subscribe(
-                        (response: User) => {
-                            this.users.push(response);
-                            this.totalUsers = this.users.length;
-                            this.pageNumber = 1;
-                            let div: any = document.getElementById(
-                                'searchByPhoneErrorMessage'
-                            );
-                            div.style.display = 'none';
-                        },
-                        (error: HttpErrorResponse) => {
-                            let div: any = document.getElementById(
-                                'searchByPhoneErrorMessage'
-                            );
-                            div.style.display = 'block';
-                        }
-                    );
-            } else {
-                let div: any = document.getElementById(
-                    'searchByPhoneErrorMessage'
-                );
-                div.style.display = 'none';
-            }
-    }
+  }
 
     clearSearchForm() {
         this.searchUsersForm.reset();
-        this.searchUsersForm.value.searchStringEmail = '';
-        this.searchUsersForm.value.searchStringUsername = '';
-        this.searchUsersForm.value.searchStringPhone = '';
+        this.searchUsersForm.value.searchString = '';
         this.searchUsers();
     }
 
@@ -344,7 +233,6 @@ export class UsersListComponent implements OnInit {
 
         delModalRef.result.then((result) => {
             if (result === 1) {
-                console.log('result is ' + result);
                 //if there's only one element left on the page we delete from, then we should be sent to the previous page
                 if (this.currentPage.numberOfElements > 1)
                     this.getUsers(this.currentPage.number, this.pageSize);

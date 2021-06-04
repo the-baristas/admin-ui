@@ -25,7 +25,19 @@ export class UsersService {
                     return throwError('Unable to retrieve user data');
                 })
             );
-    }
+  }
+
+  public findUsersBySearchTerm(searchTerm: string, page: number, size: number) {
+    return this.http
+      .get<Page<User>>(`${this.serverUrl}/search?term=${searchTerm}&page=${page}&size=${size}`, {
+        headers: this.loginService.getHeadersWithToken()
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError('Unable to retrieve user data');
+        })
+      );
+  }
 
     public getUserByUserId(userId: number): Observable<User> {
         return this.http
@@ -105,13 +117,11 @@ export class UsersService {
                 headers: this.loginService.getHeadersWithToken()
             })
             .pipe(
-                catchError((error: HttpErrorResponse) => {
+              catchError((error: HttpErrorResponse) => {
                     if (error.status === 400) {
                         return throwError('One or more fields are invalid.');
                     } else if (error.status === 409) {
-                        return throwError(
-                            'Username, email, and/or phone number already exists.'
-                        );
+                        return throwError(error.error.message);
                     } else if (error.status === 500) {
                         return throwError('Database error');
                     } else {
@@ -121,21 +131,20 @@ export class UsersService {
             );
     }
 
-    public updateUser(user: User, userId: number): Observable<void> {
+  public updateUser(user: User, userId: number): Observable<void> {
+
         return this.http
             .put<void>(`${this.serverUrl}/${userId}`, user, {
                 headers: this.loginService.getHeadersWithToken()
             })
             .pipe(
-                catchError((error: HttpErrorResponse) => {
+              catchError((error: HttpErrorResponse) => {
                     if (error.status === 400) {
                         return throwError('One or more fields are invalid.');
                     } else if (error.status === 404) {
                         return throwError('This user does not exist');
                     } else if (error.status === 409) {
-                        return throwError(
-                            'Username, email, and/or phone number already exists.'
-                        );
+                        return throwError(error.error.message);
                     } else if (error.status === 500) {
                         return throwError('Database error');
                     } else {

@@ -5,8 +5,9 @@
     "\\src\\app",
     "\\src\\app\\airplanes",
     "\\src\\app\\pipes",
-    "\\src\\app\\users-list"
+    "\\src\\app\\users-list",
+    "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\users-list\\users-list.component.spec.ts",
+  "SelectedNode": "\\src\\environments\\environment.ts",
   "PreviewInSolutionExplorer": false
 }
