@@ -1,47 +1,29 @@
 <div class="ds-1-row ds-u-margin-top--3">
   <div style="width:25%;">
     <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringEmail" placeholder="Search Email" />
+      <input id="userSearchField" type="text" class="form-control" (input)="searchUsers()" formControlName="searchString" placeholder="Search (Name, email, username, phone)" />
     </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByEmailErrorMessage" style="display:none;color:red">
-      A user with this email does not exist.
-    </div>
   </div>
-
-  <div style="width:25%;">
-    <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringUsername" placeholder="Search Username" />
-    </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByUsernameErrorMessage" style="display:none;color:red">
-      A user with this username does not exist.
-    </div>
+  <div class="grid-item" style="width:25%;">
+    <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
   </div>
-
-  <div style="width:25%;">
-    <form [formGroup]="searchUsersForm">
-      <input id="userSearchField" type="text" class="form-control" formControlName="searchStringPhone" placeholder="Search Phone" />
-    </form>
-    <div class="ds-1-row ds-u-margin-top--3" id="searchByPhoneErrorMessage" style="display:none;color:red">
-      A user with this phone number does not exist.
-    </div>
-  </div>
-  <div class="grid-container" style="width: 200px;">
-    <div class="grid-item" style="width:25%;">
-      <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
-    </div>
-    <div class="grid-item" style="width:25%;">
-      <button id="searchButton" class="btn btn-primary" (click)="searchUsers()">Search</button>
-    </div>
-  </div>
-
-
 </div>
 
-<div class="ds-1-row ds-u-margin-top--3">
-    <div style="text-align:right; margin-right: 130px">
-      <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create New</button>
-    </div>
+
+<div class="d-flex justify-content-between p-2">
+  <select class="custom-select"
+          style="width: auto"
+          name="pageSize"
+          [(ngModel)]="this.pageSize" (change)="getUsers(0,pageSize)">
+    <option [ngValue]="10">10 items per page</option>
+    <option [ngValue]="25">25 items per page</option>
+    <option [ngValue]="50">50 items per page</option>
+  </select>
+  <div style="text-align:right; margin-right: 130px">
+    <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create New</button>
+  </div>
 </div>
+
 <div class="ds-1-row ds-u-margin-top--9">
   <h3>List of Users</h3>
   <table class="table">
@@ -76,16 +58,9 @@
                     [pageSize]="pageSize"
                     [maxSize]="4"
                     [boundaryLinks]="true"
+                    [rotate]="true"
                     (pageChange)="setPage($event)">
     </ngb-pagination>
-    <select class="custom-select"
-            style="width: auto"
-            name="pageSize"
-            [(ngModel)]="this.pageSize" (change)="searchUsers()">
-      <option [ngValue]="10">10 items per page</option>
-      <option [ngValue]="25">25 items per page</option>
-      <option [ngValue]="50">50 items per page</option>
-    </select>
 </div>
 
 <ng-template #userModal let-c="close" let-d="dismiss">

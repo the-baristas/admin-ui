@@ -132,11 +132,10 @@ describe('UsersListComponent', () => {
   });
 
 
-  it('should be Clear, Search and Create buttons', () => {
+  it('should be Clear and Create buttons', () => {
     let compiled = fixture.debugElement.nativeElement;
 
     expect(compiled.querySelector('#clearButton').textContent).toContain('Clear');
-    expect(compiled.querySelector('#searchButton').textContent).toContain('Search');
     expect(compiled.querySelector('#createButton').textContent).toContain('Create');
   });
 
@@ -182,67 +181,28 @@ describe('UsersListComponent', () => {
 
     component.action = 'Add';
     component.userModalPerformAction();
-    expect(component.updateUserForm.controls.givenName.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.familyName.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.email.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.username.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.password.dirty).toBeFalsy();
-    expect(component.updateUserForm.controls.phone.dirty).toBeFalsy();
+    expect(usersServiceMock.createUser).toHaveBeenCalled();
+
   });
 
 
 
-  it('Test after searching by email, the users list only contains one', () => {
+  xit('Test after searching by email, the users list only contains one', () => {
     component.searchUsersForm.value.searchStringEmail = userData[0].email;
     component.searchUsersForm.controls.searchStringEmail.markAsDirty();
 
     component.searchUsers();
     expect(component.users.length).toEqual(1);
 
-  });
-
-  it('Test after searching by email, the users list only contains one', () => {
-    component.searchUsersForm.value.searchStringEmail = userData[0].email;
-    component.searchUsersForm.controls.searchStringEmail.markAsDirty();
-
-    component.searchUsers();
-    expect(component.users[0]).toBe(userData[0])
-    expect(component.users.length).toEqual(1);
-
-  });
-
-  it('Test after searching by username, the users list only contains one', () => {
-    component.searchUsersForm.value.searchStringUsername = userData[1].username;
-    component.searchUsersForm.controls.searchStringUsername.markAsDirty();
-
-    component.searchUsers();
-    expect(component.users[0]).toBe(userData[1])
-    expect(component.users.length).toEqual(1);
-
-  });
-
-  it('Test after searching by phone number, the users list only contains one', () => {
-    component.searchUsersForm.value.searchStringPhone = userData[0].phone;
-    component.searchUsersForm.controls.searchStringPhone.markAsDirty();
-
-    component.searchUsers();
-    expect(component.users[0]).toBe(userData[0])
-    expect(component.users.length).toEqual(1);
   });
 
   it('Clear button should clearn search form', () => {
     let button = fixture.debugElement.nativeElement.querySelector('#clearButton');
-    component.searchUsersForm.value.searchStringEmail = userData[0].email;
-    component.searchUsersForm.controls.searchStringEmail.markAsDirty();
-    component.searchUsersForm.value.searchStringUsername = userData[1].username;
-    component.searchUsersForm.controls.searchStringUsername.markAsDirty();
-    component.searchUsersForm.value.searchStringPhone = userData[0].phone;
-    component.searchUsersForm.controls.searchStringPhone.markAsDirty();
+    component.searchUsersForm.value.searchString = userData[0].email;
+    component.searchUsersForm.controls.searchString.markAsDirty();
 
     component.clearSearchForm();
-    expect(component.searchUsersForm.controls.searchStringEmail.dirty).toBeFalsy();
-    expect(component.searchUsersForm.controls.searchStringUsername.dirty).toBeFalsy();
-    expect(component.searchUsersForm.controls.searchStringPhone.dirty).toBeFalsy();
+    expect(component.searchUsersForm.controls.searchString.dirty).toBeFalsy();
   });
 
   it('should be at least one "Edit" button', () => {
