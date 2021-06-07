@@ -43,7 +43,8 @@ export class FlightComponent implements OnInit {
       pageSize: number = 10;
       routesPageIndex: number = 1;
 
-      selectedMoment1 = new Date();
+      public min = new Date();
+      public max = new Date(2022, 6, 4, 0, 0);
     
       searchFlightsForm!: FormGroup;
       searchOrigin!: string;
@@ -342,6 +343,10 @@ export class FlightComponent implements OnInit {
           }
         );
       }
+
+      closeModal() {
+        this.modalRef.close();
+    }
 
       get updateFlightFormControls() {
         return this.updateFlightForm.controls;

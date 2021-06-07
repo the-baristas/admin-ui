@@ -7,11 +7,19 @@
   
   input {
     display: block;
-    /* width: 25%; */
     padding: .5rem;
     margin: 1rem 0;
     box-sizing: border-box;
   }
+
+.calendar { position: relative; }
+.calendar input { text-indent: 30px;}
+.calendar .fa-calendar { 
+  position: absolute;
+  top: 30%;
+  left: 2%;
+  font-size: 15px;
+}
 
 
   .flight-search-form {
@@ -132,4 +140,11 @@
 
   table {
     display: inline-table;
+  }
+
+  .form-group a i {
+    font-family: FontAwesome;
+    margin: 0 auto;
+    font-size: 5rem;
+    font-style: normal;
   }

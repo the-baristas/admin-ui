@@ -87,7 +87,7 @@ export class RouteService {
             .pipe(
                 tap(_ => this.log('fetched routes')),
                 catchError((error: HttpErrorResponse) => {
-                    return throwError('Unable to retrieve route data')}
+                    return throwError('Unable to retrieve route data.')}
                 )
             );   
     }

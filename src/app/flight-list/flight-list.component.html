@@ -1,7 +1,8 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="flight-search-box">
       <form class="flight-search-form" [formGroup]="searchFlightsForm" (submit)="searchFlightsByLocation()">
-        <input type="text" placeholder="From: (IATA ID)" class="form-control" formControlName="searchOrigin"/> 
-        <input type="text" placeholder="To: (IATA ID)" class="form-control" formControlName="searchDestination" />
+        <input type="text" placeholder="From: (Airport Code or City)" class="form-control" formControlName="searchOrigin"/> 
+        <input type="text" placeholder="To: (Airport Code or City)" class="form-control" formControlName="searchDestination" />
         <button type="submit" class="btn btn-primary">Find Flights</button>
     </form>
 </div>
@@ -18,7 +19,9 @@
       <ngb-pagination [collectionSize]="totalFlights"
                       (pageChange)="setPage($event)"
                       [(page)]="pageNumber"
-                      [pageSize]="pageSize">
+                      [pageSize]="pageSize"
+                      [boundaryLinks]="true"
+                      [maxSize]="5">
       </ngb-pagination>
     </div>
   </div>
@@ -57,7 +60,9 @@
       <ngb-pagination [collectionSize]="totalFlights"
                       (pageChange)="setPage($event)"
                       [(page)]="pageNumber"
-                      [pageSize]="pageSize">
+                      [pageSize]="pageSize"
+                      [boundaryLinks]="true"
+                      [maxSize]="5">
       </ngb-pagination>
     </div>
   </div>
@@ -68,19 +73,20 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Edit Flight Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Edit Flight Details</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" (click)="closeModal()">&times;</span></button>
               </div>
               <div class="modal-body">
                 <p>Enter details to save.</p>
-                <label for="routeId">Route ID:</label>
+                <label for="routeId">Choose A Route:</label>
               <select class="form-control"
                         formControlName="routeId">
                 <option [defaultSelected]=true [ngValue]="this.editFlight.route.id" >{{this.editFlight.route.originAirport.city}} - {{this.editFlight.route.destinationAirport.city}}</option>
                 <option *ngFor="let route of foundRoutes; let i = index"
                         [ngValue]="route.id">{{route.originAirport.city}} - {{route.destinationAirport.city}}</option>
                 </select>
-                <br />
+                To create a new route first, click <a href="http://localhost:4200/routes">here</a>.
+                <br /><br />
 
                 <label for="airplaneId">Airplane:</label>
                 <select class="form-control"
@@ -92,23 +98,32 @@
                 <br />
       
                 <label for="departureTime">Departure Time:</label>
+                <div class="calendar">
                 <input type="text"
                        class="form-control"
                        formControlName="departureTime"
                        [owlDateTime]="dt2"
                        [owlDateTimeTrigger]="dt2"
                        placeholder="Choose Date/Time" />
+                       <span class="fa fa-calendar" [owlDateTimeTrigger]="dt2"></span>
                        <owl-date-time #dt2></owl-date-time>
+                      </div>
       
+                
+
                 <label for="arrivalTime">Arrival Time:</label>
+                <div class="calendar">
                 <input type="text"
                        class="form-control"
                        formControlName="arrivalTime"
                        [owlDateTime]="dt3"
                        [owlDateTimeTrigger]="dt3"
-                       placeholder="Choose Date/Time" />
+                       placeholder="Choose Date/Time"
+                       /> <span class="fa fa-calendar" [owlDateTimeTrigger]="dt3"></span>
+                 
                 <owl-date-time #dt3></owl-date-time>
-      
+                  </div>
+
                 <label for="firstReserved">First Reserved:</label>
                 <input type="text"
                        class="form-control"
@@ -146,7 +161,7 @@
                        value="1" />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
                 <button type="submit" class="btn btn-primary">Update</button><br />
                 <button type="button" class="btn btn-primary" (click)="onDeleteFlight()">Delete</button>
               </div>
@@ -162,7 +177,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Add New Flight</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" (click)="closeModal()">&times;</span></button>
             </div>
             <div class="modal-body">
               <p>Enter details to save.</p>
@@ -183,23 +198,33 @@
               <br />
     
               <label for="departureTime">Departure Time:</label>
+              <div class="calendar">
                 <input type="text"
                        class="form-control"
                        formControlName="departureTime"
                        [owlDateTime]="dt2"
                        [owlDateTimeTrigger]="dt2"
-                       placeholder="Choose Date/Time" />
+                       placeholder="Choose Date/Time"
+                       [min]="min" [max]="max" />
+                       <span class="fa fa-calendar" [owlDateTimeTrigger]="dt2"></span>
+
                 <owl-date-time #dt2></owl-date-time>
+                </div>
 
     
               <label for="arrivalTime">Arrival Time:</label>
+              <div class="calendar">
               <input type="text"
                       class="form-control"
                       formControlName="arrivalTime"
                       [owlDateTime]="dt3"
                       [owlDateTimeTrigger]="dt3"
-                      placeholder="Choose Date/Time" />
+                      placeholder="Choose Date/Time"
+                      [min]="min" [max]="max" />
+                      <span class="fa fa-calendar" [owlDateTimeTrigger]="dt3"></span>
+
               <owl-date-time #dt3></owl-date-time>
+              </div>
     
               <label for="firstReserved">First Reserved:</label>
               <input type="text"
@@ -207,7 +232,8 @@
                      formControlName="firstReserved" />
     
               <label for="firstPrice">First Price:</label>
-              <input type="text"
+              <input type="number"
+                     step="0.01"
                      class="form-control"
                      formControlName="firstPrice" />
                            
@@ -217,7 +243,8 @@
                      formControlName="businessReserved" />
                            
               <label for="businessPrice">Business Price:</label>
-              <input type="text"
+              <input type="number"
+                     step="0.01"
                      class="form-control"
                      formControlName="businessPrice" />
                            
@@ -227,7 +254,8 @@
                      formControlName="economyReserved" />
                            
               <label for="economyPrice">Economy Price:</label>
-              <input type="text"
+              <input type="number"
+                     step="0.01"
                      class="form-control"
                      formControlName="economyPrice" />
                                                 
@@ -239,7 +267,7 @@
                     
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
               <button type="submit" class="btn btn-primary">Add</button><br />
             </div>
           </div>

@@ -1,6 +1,6 @@
 <div class="route-search-box">
   <form class="route-search-form" [formGroup]="searchRoutesForm" (submit)="searchRoutesByAirport()">
-    <input type="text" placeholder="Search By Airport Code" class="form-control" formControlName="query"/>
+    <input type="text" placeholder="Search By Airport Code or City" class="form-control" formControlName="query"/>
     <button type="submit" class="btn btn-primary">Find Routes</button>
 </form>
 </div>
@@ -18,11 +18,13 @@
     <ngb-pagination [collectionSize]="totalRoutes"
                       (pageChange)="setPage($event)"
                       [(page)]="pageNumber"
-                      [pageSize]="pageSize">
+                      [pageSize]="pageSize"
+                      [boundaryLinks]="true"
+                      [maxSize]="5">
     </ngb-pagination>
   </div>
   </div>
-  
+
 <div class="route-container">
 <div class="ds-1-row">
   <table class="table table-responsive table-striped">
@@ -55,7 +57,9 @@
     <ngb-pagination [collectionSize]="totalRoutes"
                       (pageChange)="setPage($event)"
                       [(page)]="pageNumber"
-                      [pageSize]="pageSize">
+                      [pageSize]="pageSize"
+                      [boundaryLinks]="true"
+                      [maxSize]="5">
     </ngb-pagination>
   </div>
 </div>
