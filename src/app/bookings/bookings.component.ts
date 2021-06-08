@@ -9,7 +9,7 @@ import { BookingService } from '../services/booking.service';
 @Component({
     selector: 'app-bookings',
     templateUrl: './bookings.component.html',
-    styleUrls: ['./bookings.component.css'],
+    styleUrls: ['./bookings.component.css']
 })
 export class BookingsComponent implements OnInit {
     foundBookings: Booking[] = [];
@@ -34,14 +34,17 @@ export class BookingsComponent implements OnInit {
     replaceFoundBookings(bookings: Booking[]): void {
         this.foundBookings = bookings;
     }
+
     toggleActive(booking: Booking) {
         booking.active = !booking.active;
         this.bookingService.updateBooking(booking).subscribe();
     }
 
     openAddModal(): void {
+        // TODO
+        console.log(this.foundBookings);
         const modalRef = this.modalService.open(BookingAddModalComponent, {
-            centered: true,
+            centered: true
         });
         modalRef.result.then((booking: Booking) => {
             this.foundBookings.push(booking);
@@ -53,7 +56,7 @@ export class BookingsComponent implements OnInit {
      */
     openEditModal(selectedBooking: Booking): void {
         const modalRef = this.modalService.open(BookingEditModalComponent, {
-            centered: true,
+            centered: true
         });
         // The selected booking in the foundBookings array is cloned and
         // passed it to the modal component so that changes made in the modal
@@ -73,7 +76,7 @@ export class BookingsComponent implements OnInit {
 
     openDeleteModal(bookingToDelete: Booking): void {
         const modalRef = this.modalService.open(AirplaneDeleteModalComponent, {
-            centered: true,
+            centered: true
         });
         modalRef.componentInstance.entityToDelete = bookingToDelete;
         modalRef.componentInstance.entityName = 'Booking';
