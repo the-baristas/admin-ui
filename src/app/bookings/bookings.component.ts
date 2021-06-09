@@ -35,7 +35,7 @@ export class BookingsComponent implements OnInit {
         this.foundBookings = bookings;
     }
 
-    toggleActive(booking: Booking) {
+    toggleActive(booking: Booking): void {
         booking.active = !booking.active;
         this.bookingService.updateBooking(booking).subscribe();
     }

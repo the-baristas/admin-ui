@@ -7,7 +7,7 @@ import { BookingService } from '../services/booking.service';
 @Component({
     selector: 'app-booking-add-modal',
     templateUrl: './booking-add-modal.component.html',
-    styleUrls: ['./booking-add-modal.component.css'],
+    styleUrls: ['./booking-add-modal.component.css']
 })
 export class BookingAddModalComponent implements OnInit {
     addingForm: FormGroup = new FormGroup(
@@ -15,7 +15,7 @@ export class BookingAddModalComponent implements OnInit {
             confirmationCode: new FormControl(''),
             layoverCount: new FormControl(''),
             totalPrice: new FormControl(''),
-            active: new FormControl(''),
+            active: new FormControl('')
         },
         [Validators.required]
     );
@@ -29,7 +29,8 @@ export class BookingAddModalComponent implements OnInit {
     ngOnInit(): void {}
 
     add(): void {
-        const confirmationCode = this.addingForm.controls.confirmationCode.value.trim();
+        const confirmationCode =
+            this.addingForm.controls.confirmationCode.value.trim();
         const layoverCount = this.addingForm.controls.layoverCount.value;
         const totalPrice = this.addingForm.controls.totalPrice.value;
         const active = this.addingForm.controls.active.value;
@@ -45,7 +46,7 @@ export class BookingAddModalComponent implements OnInit {
             confirmationCode,
             layoverCount,
             totalPrice,
-            active,
+            active
         } as Booking;
         this.bookingService
             .addBooking(booking)

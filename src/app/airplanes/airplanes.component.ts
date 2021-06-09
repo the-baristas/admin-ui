@@ -64,7 +64,7 @@ export class AirplanesComponent implements OnInit {
             });
     }
 
-    findAirplanesByModelContaining() {
+    findAirplanesByModelContaining(): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
             .findByModelContaining(
