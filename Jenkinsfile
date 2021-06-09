@@ -19,8 +19,10 @@ pipeline {
         stage('Deploy to S3') {
             steps {
                 echo 'Beginning Deployment
-              sh "aws s3 sync ./dist/adminportal s3://${S3_BUCKET}"
+                sh "aws s3 sync ./dist/adminportal s3://${S3_BUCKET}"
                 echo 'Finished'
+                echo 'DEBUG'
+                sh 'ls -R'
             }
         }
     }
