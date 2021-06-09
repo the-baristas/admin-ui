@@ -2,15 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const enum ServiceName {
-    USER_SERVICE = 'USER_SERVICE',
-    FLIGHT_SERVICE = 'FLIGHT_SERVICE',
-    BOOKING_SERVICE = 'BOOKING_SERVICE'
-}
+import ServiceName from './service-name';
+
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:8080',
-    getApiUrl: (serviceName: ServiceName) => {
+    getApiUrl: (serviceName: ServiceName): string => {
         let apiUrl;
         switch (serviceName) {
             case ServiceName.USER_SERVICE:

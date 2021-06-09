@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { environment, ServiceName } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
+import ServiceName from 'src/environments/service-name';
 import { Page } from '../entities/page';
 import { Passenger } from '../entities/passenger';
 import {
@@ -37,7 +38,6 @@ export class PassengerService {
     }
 
     findAll(pageIndex: number, pageSize: number): Observable<Page<Passenger>> {
-        // const url = `${environment.apiUrl}${this.passengersPath}?index=${pageIndex}&size=${pageSize}`;
         const url = `${PassengerService.PASSENGERS_PATH}?index=${pageIndex}&size=${pageSize}`;
         return this.httpClient.get<Page<Passenger>>(url, this.httpOptions).pipe(
             tap(() =>
