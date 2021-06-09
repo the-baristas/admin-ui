@@ -2,26 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import ServiceName from './service-name';
-
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:8080',
-    getApiUrl: (serviceName: ServiceName): string => {
-        let apiUrl;
-        switch (serviceName) {
-            case ServiceName.USER_SERVICE:
-                apiUrl = 'http://localhost:8081';
-                break;
-            case ServiceName.FLIGHT_SERVICE:
-                apiUrl = 'http://localhost:8090';
-                break;
-            case ServiceName.BOOKING_SERVICE:
-                apiUrl = 'http://localhost:8091';
-                break;
-        }
-        return apiUrl;
-    }
+    userServiceUrl: 'http://localhost:8081',
+    flightServiceUrl: 'http://localhost:8090',
+    bookingServiceUrl: 'http://localhost:8091',
 };
 
 /*

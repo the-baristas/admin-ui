@@ -38,7 +38,10 @@ export class BookingService {
 
     getBookings(): Observable<Booking[]> {
         return this.httpClient
-            .get<Booking[]>(environment.apiUrl + this.bookingServicePath, this.httpOptions)
+            .get<Booking[]>(
+                environment.bookingServiceUrl + this.bookingServicePath,
+                this.httpOptions
+            )
             .pipe(
                 tap(() =>
                     this.messageService.add('Successfully found bookings.')
@@ -49,7 +52,7 @@ export class BookingService {
 
     findByConfirmationCode(confirmationCode: string): Observable<Booking> {
         const url = `${
-            environment.apiUrl + this.bookingServicePath
+            environment.bookingServiceUrl + this.bookingServicePath
         }/${confirmationCode}`;
         return this.httpClient.get<Booking>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add('Successfully found Booking.')),
@@ -63,7 +66,7 @@ export class BookingService {
     }
 
     existsByConfirmationCode(confirmationCode: string): Observable<boolean> {
-        const url = `${environment.apiUrl}${this.bookingServicePath}/${confirmationCode}`;
+        const url = `${environment.bookingServiceUrl}${this.bookingServicePath}/${confirmationCode}`;
         return this.httpClient.get<boolean>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
@@ -83,7 +86,7 @@ export class BookingService {
         return this.httpClient
             .get<Booking[]>(
                 `${
-                    environment.apiUrl + this.bookingServicePath
+                    environment.bookingServiceUrl + this.bookingServicePath
                 }/?confirmation_code=${term}`
             )
             .pipe(
@@ -103,7 +106,7 @@ export class BookingService {
     addBooking(booking: Booking): Observable<Booking> {
         return this.httpClient
             .post<Booking>(
-                environment.apiUrl + this.bookingServicePath,
+                environment.bookingServiceUrl + this.bookingServicePath,
                 booking,
                 httpOptions
             )
@@ -118,7 +121,7 @@ export class BookingService {
     }
 
     deleteBooking(id: number): Observable<Booking> {
-        const url = `${environment.apiUrl + this.bookingServicePath}/${id}`;
+        const url = `${environment.bookingServiceUrl + this.bookingServicePath}/${id}`;
 
         return this.httpClient.delete<Booking>(url, httpOptions).pipe(
             tap(() =>
@@ -133,7 +136,7 @@ export class BookingService {
     updateBooking(booking: Booking): Observable<any> {
         return this.httpClient
             .put(
-                environment.apiUrl + this.bookingServicePath + '/' + booking.id,
+                environment.bookingServiceUrl + this.bookingServicePath + '/' + booking.id,
                 booking,
                 httpOptions
             )
