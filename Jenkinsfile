@@ -18,10 +18,8 @@ pipeline {
         }
         stage('Deploy to S3') {
             steps {
-                echo 'Clearing current contents'
-                sh "aws s3 rm s3://${S3_BUCKET} --recursive"
-                echo 'S3 cleared'
-                sh "aws s3 cp ./dist/adminportal s3://utopiaadminportal --recursive"
+                echo 'Beginning Deployment
+              sh "aws s3 sync ./dist/adminportal s3://${S3_BUCKET}"
                 echo 'Finished'
             }
         }
