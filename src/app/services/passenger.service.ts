@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment, ServiceName } from 'src/environments/environment';
 import { Page } from '../entities/page';
 import { Passenger } from '../entities/passenger';
 import {
@@ -16,7 +16,8 @@ import { MessageService } from './message.service';
     providedIn: 'root'
 })
 export class PassengerService {
-    private passengersPath: string = '/passengers';
+    private static readonly PASSENGERS_PATH: string =
+        environment.getApiUrl(ServiceName.BOOKING_SERVICE) + '/passengers';
     private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
@@ -36,7 +37,8 @@ export class PassengerService {
     }
 
     findAll(pageIndex: number, pageSize: number): Observable<Page<Passenger>> {
-        const url = `${environment.apiUrl}${this.passengersPath}?index=${pageIndex}&size=${pageSize}`;
+        // const url = `${environment.apiUrl}${this.passengersPath}?index=${pageIndex}&size=${pageSize}`;
+        const url = `${PassengerService.PASSENGERS_PATH}?index=${pageIndex}&size=${pageSize}`;
         return this.httpClient.get<Page<Passenger>>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add('Successfully found Passengers page.')
@@ -53,7 +55,7 @@ export class PassengerService {
     }
 
     findById(id: number): Observable<Passenger> {
-        const url = `${environment.apiUrl}${this.passengersPath}/${id}`;
+        const url = `${PassengerService.PASSENGERS_PATH}/${id}`;
         return this.httpClient.get<Passenger>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add('Successfully found Passenger.')),
             catchError(this.handleError<Passenger>('findById', {} as Passenger))
@@ -68,7 +70,7 @@ export class PassengerService {
         if (searchTerm.trim() === '') {
             return of({ content: [] as Passenger[] } as Page<Passenger>);
         }
-        const url = `${environment.apiUrl}${this.passengersPath}/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`;
+        const url = `${PassengerService.PASSENGERS_PATH}/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`;
         return this.httpClient.get<Page<Passenger>>(url, this.httpOptions).pipe(
             tap((page: Page<Passenger>) =>
                 page.totalPages
@@ -95,7 +97,7 @@ export class PassengerService {
         if (searchTerm.trim() === '') {
             return of({ content: [] as Passenger[] } as Page<Passenger>);
         }
-        const url = `${environment.apiUrl}${this.passengersPath}/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`;
+        const url = `${PassengerService.PASSENGERS_PATH}/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`;
         return this.httpClient.get<Page<Passenger>>(url, this.httpOptions).pipe(
             tap((page: Page<Passenger>) =>
                 page.totalPages
@@ -121,7 +123,7 @@ export class PassengerService {
         );
         return this.httpClient
             .post<Passenger>(
-                environment.apiUrl + this.passengersPath,
+                PassengerService.PASSENGERS_PATH,
                 passenger,
                 this.httpOptions
             )
