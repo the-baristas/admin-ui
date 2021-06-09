@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import ServiceName from 'src/environments/service-name';
 import { Page } from '../entities/page';
 import { Passenger } from '../entities/passenger';
 import {
@@ -18,7 +17,7 @@ import { MessageService } from './message.service';
 })
 export class PassengerService {
     private static readonly PASSENGERS_PATH: string =
-        environment.getApiUrl(ServiceName.BOOKING_SERVICE) + '/passengers';
+        environment.bookingServiceUrl + '/passengers';
     private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
