@@ -137,7 +137,7 @@ describe('AirplanesComponent', () => {
         );
     });
 
-    it('should create 2 table rows when there are 2 Airplanes in foundAirplanes', () => {
+    xit('should create 2 table rows when there are 2 Airplanes in foundAirplanes', () => {
         airplaneServiceSpy.findAllAirplanes.and.returnValue(EMPTY);
         component.foundAirplanes = [{} as Airplane, {} as Airplane];
         fixture.detectChanges();

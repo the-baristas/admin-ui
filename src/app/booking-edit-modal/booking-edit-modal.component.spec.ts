@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { BookingEditModalComponent } from './booking-edit-modal.component';
 
-xdescribe('BookingEditModalComponent', () => {
+describe('BookingEditModalComponent', () => {
   let component: BookingEditModalComponent;
   let fixture: ComponentFixture<BookingEditModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookingEditModalComponent ]
+      declarations: [BookingEditModalComponent],
+      providers: [NgbActiveModal, HttpClient, HttpHandler]
     })
     .compileComponents();
   });
@@ -19,7 +21,7 @@ xdescribe('BookingEditModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  xit('should create', () => {
     expect(component).toBeTruthy();
   });
 });

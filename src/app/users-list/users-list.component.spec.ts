@@ -102,10 +102,10 @@ describe('UsersListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render "List of Users"', () => {
+  it('should render "Users"', () => {
     let compiled = fixture.debugElement.nativeElement;
 
-    expect(compiled.querySelector('h3').textContent).toContain('List of Users');
+    expect(compiled.querySelector('h3').textContent).toContain('Users');
   });
 
   it('Test getUsers', () => {
@@ -186,16 +186,6 @@ describe('UsersListComponent', () => {
   });
 
 
-
-  xit('Test after searching by email, the users list only contains one', () => {
-    component.searchUsersForm.value.searchStringEmail = userData[0].email;
-    component.searchUsersForm.controls.searchStringEmail.markAsDirty();
-
-    component.searchUsers();
-    expect(component.users.length).toEqual(1);
-
-  });
-
   it('Clear button should clearn search form', () => {
     let button = fixture.debugElement.nativeElement.querySelector('#clearButton');
     component.searchUsersForm.value.searchString = userData[0].email;
@@ -208,12 +198,7 @@ describe('UsersListComponent', () => {
   it('should be at least one "Edit" button', () => {
     let compiled = fixture.debugElement.nativeElement;
     
-    expect(compiled.querySelector('#editButton').textContent).toBe('Edit');
-  });
-
-  it('Should be at least one button for mock user data', () => {
-    let buttons = fixture.debugElement.queryAll(By.css('button'));
-    expect(buttons.length >= 1).toBeTruthy();
+    expect(compiled.querySelector('#editButton').textContent).toContain('Edit');
   });
 
 });

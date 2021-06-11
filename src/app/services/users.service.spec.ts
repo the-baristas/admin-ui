@@ -18,7 +18,7 @@ describe('UsersService', () => {
     let service: UsersService;
     let httpTestingController: HttpTestingController;
     let httpClient: HttpClient;
-    let apiUrl = environment.apiUrl + '/users';
+    let apiUrl = environment.userServiceUrl + '/users';
     let userData: User[] = [
         {
             userId: 1,
