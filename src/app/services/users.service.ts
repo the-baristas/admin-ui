@@ -11,7 +11,7 @@ import { LoginService } from './login.service';
     providedIn: 'root'
 })
 export class UsersService {
-    private serverUrl = environment.apiUrl + '/users';
+    private serverUrl = environment.userServiceUrl + '/users';
 
     constructor(private http: HttpClient, private loginService: LoginService) {}
 

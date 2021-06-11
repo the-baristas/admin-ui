@@ -14,7 +14,7 @@ import { MessageService } from './message.service';
 
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
-    private airplanesPath: string = '/airplanes';
+    private airplanesPath: string = environment.flightServiceUrl + '/airplanes';
     private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
@@ -37,7 +37,7 @@ export class AirplaneService {
     getAirplanes(): Observable<Airplane[]> {
         return this.httpClient
             .get<Airplane[]>(
-                environment.apiUrl + this.airplanesPath,
+                this.airplanesPath,
                 this.httpOptions
             )
             .pipe(
@@ -55,7 +55,7 @@ export class AirplaneService {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplanesPath
+                    this.airplanesPath
                 }/page?index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
@@ -78,7 +78,7 @@ export class AirplaneService {
 
     /** GET airplane by id. Return `undefined` when id not found */
     getAirplaneNo404<Data>(id: number): Observable<Airplane> {
-        const url = `${environment.apiUrl + this.airplanesPath}/?id=${id}`;
+        const url = `${this.airplanesPath}/?id=${id}`;
         return this.httpClient.get<Airplane[]>(url, this.httpOptions).pipe(
             map((airplanes: Airplane[]) => airplanes[0]), // returns a {0|1} element array
             tap((a: Airplane) => {
@@ -91,7 +91,7 @@ export class AirplaneService {
 
     /** GET airplane by id. Will 404 if id not found */
     getAirplaneById(id: number): Observable<Airplane> {
-        const url = `${environment.apiUrl + this.airplanesPath}/${id}`;
+        const url = `${this.airplanesPath}/${id}`;
         return this.httpClient.get<Airplane>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add(`fetched airplane id=${id}`)),
             catchError(this.handleError<Airplane>(`getAirplane id=${id}`))
@@ -107,7 +107,7 @@ export class AirplaneService {
         return this.httpClient
             .get<Airplane[]>(
                 `${
-                    environment.apiUrl + this.airplanesPath
+                    this.airplanesPath
                 }/search?term=${term}`,
                 this.httpOptions
             )
@@ -136,7 +136,7 @@ export class AirplaneService {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplanesPath
+                    this.airplanesPath
                 }/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
@@ -169,7 +169,7 @@ export class AirplaneService {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${
-                    environment.apiUrl + this.airplanesPath
+                    this.airplanesPath
                 }/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
@@ -201,7 +201,7 @@ export class AirplaneService {
         );
         return this.httpClient
             .post<Airplane>(
-                environment.apiUrl + this.airplanesPath,
+                this.airplanesPath,
                 airplane,
                 this.httpOptions
             )
@@ -216,7 +216,7 @@ export class AirplaneService {
     }
 
     deleteAirplane(id: number): Observable<Airplane> {
-        const url = `${environment.apiUrl + this.airplanesPath}/${id}`;
+        const url = `${this.airplanesPath}/${id}`;
         return this.httpClient.delete<Airplane>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
@@ -231,7 +231,7 @@ export class AirplaneService {
     updateAirplane(airplane: Airplane): Observable<any> {
         return this.httpClient
             .put(
-                `${environment.apiUrl + this.airplanesPath}/${airplane.id}`,
+                `${this.airplanesPath}/${airplane.id}`,
                 airplane,
                 this.httpOptions
             )

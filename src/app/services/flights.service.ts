@@ -38,7 +38,7 @@ export class FlightService {
         }
 
     public getAllFlights(): Observable<Flight[]> {
-        return this.httpClient.get<Flight[]>(environment.apiUrl + this.flightServicePath, { headers: this.loginService.getHeadersWithToken() })
+        return this.httpClient.get<Flight[]>(environment.flightServiceUrl + this.flightServicePath, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.messageService.add('fetched flights')),
                 catchError((error: HttpErrorResponse) => {
@@ -49,7 +49,7 @@ export class FlightService {
 
     public getFlightsPage(pageIndex: number, pageSize: number): Observable<Page<Flight>> {
         return this.httpClient.get<Page<Flight>>(
-            `${environment.apiUrl}/flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+          `${environment.flightServiceUrl}/flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
               tap(() =>
               this.messageService.add(
                 'Successfully found flights page.'
@@ -63,7 +63,7 @@ export class FlightService {
 
     public getFlightByLocation(originId: string, destinationId: string, pageIndex: number, pageSize: number): Observable<Page<Flight>> {
         console.log("Origin ID:" + originId + "Destination ID:" + destinationId);
-        const url = `${environment.apiUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+      const url = `${environment.flightServiceUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
         console.log(url);
         return this.httpClient.get<Page<Flight>>(
             url, { headers: this.loginService.getHeadersWithToken() }).pipe(
@@ -75,7 +75,7 @@ export class FlightService {
 
     /** GET airplane by id. Return `undefined` when id not found */
     public getFlightNo404<Data>(id: number): Observable<Flight> {
-        const url = `${environment.apiUrl + this.flightServicePath}/?id=${id}`;
+      const url = `${environment.flightServiceUrl + this.flightServicePath}/?id=${id}`;
         return this.httpClient.get<Flight[]>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             map(flights => flights[0]), // returns a {0|1} element array
             tap(a => {
@@ -88,7 +88,7 @@ export class FlightService {
 
     /** GET flight by id. Will 404 if id not found */
     public getFlight(id: number): Observable<Flight> {
-        const url = `${environment.apiUrl + this.flightServicePath}/${id}`;
+      const url = `${environment.flightServiceUrl + this.flightServicePath}/${id}`;
         return this.httpClient.get<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`fetched flight id=${id}`)),
             catchError(this.handleError<Flight>(`getFlight id=${id}`))
@@ -97,7 +97,7 @@ export class FlightService {
 
     public addFlight(flight: Flight): Observable<Flight> {
         console.log(flight);
-        const url = `${environment.apiUrl}/flights`;
+      const url = `${environment.flightServiceUrl}/flights`;
         return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newFlight: Flight) => this.messageService.add(`added flight with id=${newFlight.id}`)),
             catchError(this.handleError<Flight>("addFlight"))
@@ -105,7 +105,7 @@ export class FlightService {
     }
 
     public deleteFlight(id: number): Observable<Flight> {
-        const url = `${environment.apiUrl + this.flightServicePath}/${id}`;
+      const url = `${environment.flightServiceUrl + this.flightServicePath}/${id}`;
         console.log(id);
         return this.httpClient.delete<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`deleted flight id=${id}`)),
@@ -115,7 +115,7 @@ export class FlightService {
 
     /** PUT: update the flight on the server */
     public updateFlight(flight: Flight): Observable<any> {
-        return this.httpClient.put(environment.apiUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
+      return this.httpClient.put(environment.flightServiceUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`updated flight id=${flight.id}`)),
             catchError(this.handleError<any>("updateFlight"))
         );

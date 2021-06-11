@@ -36,7 +36,7 @@ export class RouteService {
         }
 
     public getAllRoutes() {
-        return this.http.get<Route[]>(environment.apiUrl + this.routeServicePath, { headers: this.loginService.getHeadersWithToken() })
+      return this.http.get<Route[]>(environment.flightServiceUrl + this.routeServicePath, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.log('fetched routes')),
                 catchError((error: HttpErrorResponse) => {
@@ -47,7 +47,7 @@ export class RouteService {
 
     public getRoutesPage(pageIndex: number, pageSize: number): Observable<Page<Route>> {
         return this.http.get<Page<Route>>(
-            `${environment.apiUrl}/routes?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+          `${environment.flightServiceUrl}/routes?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
               tap(() =>
               this.messageService.add(
                 'Successfully found routes page.'
@@ -61,7 +61,7 @@ export class RouteService {
 
     /** GET route by id. Return `undefined` when id not found */
     public getRouteNo404<Data>(id: number): Observable<Route> {
-        const url = `${environment.apiUrl + this.routeServicePath}/?id=${id}`;
+      const url = `${environment.flightServiceUrl + this.routeServicePath}/?id=${id}`;
         return this.http.get<Route[]>(url, this.httpOptions).pipe(
             map(routes => routes[0]), // returns a {0|1} element array
             tap(a => {
@@ -74,7 +74,7 @@ export class RouteService {
 
     /** GET route by id. Will 404 if id not found */
     public getRoute(id: number): Observable<Route> {
-        const url = `${environment.apiUrl + this.routeServicePath}/${id}`;
+      const url = `${environment.flightServiceUrl + this.routeServicePath}/${id}`;
         return this.http.get<Route>(url, this.httpOptions).pipe(
             tap(_ => this.log(`fetched route id=${id}`)),
             catchError(this.handleError<Route>(`getRoute id=${id}`))
@@ -82,7 +82,7 @@ export class RouteService {
     }
 
     public routeQuery(query: string, pageIndex: number, pageSize: number) {
-        const url = environment.apiUrl + '/routes-query?query=' + query + `&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+      const url = environment.flightServiceUrl + '/routes-query?query=' + query + `&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
         return this.http.get<Page<Route>>(url, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.log('fetched routes')),
@@ -93,7 +93,7 @@ export class RouteService {
     }
 
     public addRoute(route: Route): Observable<Route> {
-        const url = environment.apiUrl + this.routeServicePath;
+      const url = environment.flightServiceUrl + this.routeServicePath;
         return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newRoute: Route) => this.log(`added route with id=${newRoute.id}`)),
             catchError(this.handleError<Route>("addRoute"))
@@ -101,7 +101,7 @@ export class RouteService {
     }
 
     public deleteRoute(id: number): Observable<Route> {
-        const url = `${environment.apiUrl + this.routeServicePath}/${id}`;
+      const url = `${environment.flightServiceUrl + this.routeServicePath}/${id}`;
         console.log(id);
         return this.http.delete<Route>(url, this.httpOptions).pipe(
             tap(_ => this.log(`deleted route id=${id}`)),
@@ -112,7 +112,7 @@ export class RouteService {
     /** PUT: update the route on the server */
     public updateRoute(route: Route): Observable<any> {
         console.log(route);
-        return this.http.put(environment.apiUrl + this.routeServicePath + `/${route.id}`, route, this.httpOptions).pipe(
+      return this.http.put(environment.flightServiceUrl + this.routeServicePath + `/${route.id}`, route, this.httpOptions).pipe(
             tap(_ => this.log(`updated route id=${route.id}`)),
             catchError(this.handleError<any>("updateRoute"))
         );

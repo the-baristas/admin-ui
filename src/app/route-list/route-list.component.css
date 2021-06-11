@@ -34,17 +34,17 @@
   }
 
   .route-search-form input, .route-search-form button {
-    height: 25%;
+    height: 30%;
     display: inline-block;
     margin: .5em .5em .5em .5em;
   }
 
   .route-search-form input {
-    width: 25%;
+    width: 300px;
   }
 
   .route-search-form button {
-    width: 20%;
+    width: 30%;
   }
   
   .routes li {
@@ -128,8 +128,11 @@
     padding: 10px;
   }
 
+.col-sm {
+  min-width: 160px
+}
+
   #pagination-top {
     margin: auto;
-    width: 15%;
     padding: 10px;
   }

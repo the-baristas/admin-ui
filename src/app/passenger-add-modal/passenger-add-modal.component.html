@@ -1,210 +1,167 @@
-<div class="modal-header">
-    <h4 class="modal-title">Add</h4>
-    <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="activeModal.dismiss('Times sign click')"
-    >
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Add</h4>
+      <button type="button"
+              class="close"
+              aria-label="Close"
+              (click)="activeModal.dismiss('Times sign click')">
         <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+      </button>
+    </div>
 
-<div class="modal-body">
-    <form [formGroup]="addingForm">
+    <div class="modal-body">
+      <form [formGroup]="addingForm">
         <div class="form-group">
-            <div class="form-group" formGroupName="bookingForm">
-                <label for="booking-confirmation-code"
-                    >Booking Confirmation Code:
-                </label>
-                <input
-                    type="text"
-                    id="booking-confirmation-code"
-                    class="form-control"
-                    formControlName="bookingConfirmationCode"
-                />
-                <div
-                    *ngIf="
+          <div class="form-group" formGroupName="bookingForm">
+            <label for="booking-confirmation-code">
+              Booking Confirmation Code:
+            </label>
+            <input type="text"
+                   id="booking-confirmation-code"
+                   class="form-control"
+                   formControlName="bookingConfirmationCode" />
+            <div *ngIf="
                         bookingConfirmationCode?.invalid &&
                         (bookingConfirmationCode?.dirty ||
                             bookingConfirmationCode?.touched)
                     "
-                    class="alert alert-danger"
-                >
-                    <ng-container
-                        *ngIf="bookingConfirmationCode?.errors?.required"
-                        >Booking Confirmation is required.
-                    </ng-container>
-                    <ng-container
-                        *ngIf="bookingConfirmationCode?.errors?.uniqueBooking"
-                        >Booking with Confirmation Code does not exist.
-                    </ng-container>
-                    <ng-container
-                        *ngIf="bookingActive === false"
-                        >Booking with Confirmation Code is not active.
-                    </ng-container>
-                </div>
-                <label for="username">Username: </label>
-                <input
-                    text="text"
-                    class="form-control"
-                    id="username"
-                    formControlName="username"
-                />
-                <label for="email">Email: </label>
-                <input
-                    text="text"
-                    class="form-control"
-                    id="email"
-                    formControlName="email"
-                />
-                <label for="phone">Phone: </label>
-                <input
-                    text="text"
-                    class="form-control"
-                    id="phone"
-                    formControlName="phone"
-                />
-                <label for="layover-count">Layover Count: </label>
-                <input
-                    type="number"
-                    id="layover-count"
-                    class="form-control"
-                    formControlName="layoverCount"
-                />
-                <label for="booking-total-price"
-                    >Total Price of Booking:
-                </label>
-                <input
-                    type="number"
-                    id="booking-total-price"
-                    class="form-control"
-                    formControlName="bookingTotalPrice"
-                />
-                <label for="flight">Flight: </label>
-                <select
-                    class="form-control"
+                 class="alert alert-danger">
+              <ng-container *ngIf="bookingConfirmationCode?.errors?.required">
+                Booking Confirmation is required.
+              </ng-container>
+              <ng-container *ngIf="bookingConfirmationCode?.errors?.uniqueBooking">
+                Booking with Confirmation Code does not exist.
+              </ng-container>
+              <ng-container *ngIf="bookingActive === false">
+                Booking with Confirmation Code is not active.
+              </ng-container>
+            </div>
+            <label for="username">Username: </label>
+            <input text="text"
+                   class="form-control"
+                   id="username"
+                   formControlName="username" />
+            <label for="email">Email: </label>
+            <input text="text"
+                   class="form-control"
+                   id="email"
+                   formControlName="email" />
+            <label for="phone">Phone: </label>
+            <input text="text"
+                   class="form-control"
+                   id="phone"
+                   formControlName="phone" />
+            <label for="layover-count">Layover Count: </label>
+            <input type="number"
+                   id="layover-count"
+                   class="form-control"
+                   formControlName="layoverCount" />
+            <label for="booking-total-price">
+              Total Price of Booking:
+            </label>
+            <input type="number"
+                   id="booking-total-price"
+                   class="form-control"
+                   formControlName="bookingTotalPrice" />
+            <label for="flight">Flight: </label>
+            <select class="form-control"
                     id="flight"
-                    formControlName="flight"
-                >
-                    <option *ngFor="let flight of bookingFlights" [ngValue]="flight">
-                        <ng-container *ngIf="flight.active">
-                            {{ flight.originAirportCode }} to
-                            {{ flight.destinationAirportCode }} ({{
+                    formControlName="flight">
+              <option *ngFor="let flight of bookingFlights" [ngValue]="flight">
+                <ng-container *ngIf="flight.active">
+                  {{ flight.originAirportCode }} to
+                  {{ flight.destinationAirportCode }} ({{
                                 flight.departureTime | date: "short"
-                            }}
-                            to {{ flight.arrivalTime | date: "short" }})
-                        </ng-container>
-                    </option>
-                </select>
-            </div>
-            <label for="given-name">First Name: </label>
-            <input
-                class="form-control"
-                id="given-name"
-                formControlName="givenName"
-                type="text"
-            />
-            <label for="family-name">Last Name: </label>
-            <input
-                class="form-control"
-                id="family-name"
-                formControlName="familyName"
-                type="text"
-            />
-            <label for="date-of-birth">Date of Birth: </label>
-            <input
-                class="form-control"
-                id="date-of-birth"
-                formControlName="dateOfBirth"
-                type="date"
-            />
-            <label for="gender">Gender: </label>
-            <select class="form-control" id="gender" formControlName="gender">
-                <option>Male</option>
-                <option>Female</option>
+                  }}
+                  to {{ flight.arrivalTime | date: "short" }})
+                </ng-container>
+              </option>
             </select>
-            <label for="street-address">Street Address: </label>
-            <input
-                text="text"
-                class="form-control"
-                id="street-address"
-                formControlName="streetAddress"
-            />
-            <label for="city">City: </label>
-            <input
-                text="text"
-                class="form-control"
-                id="city"
-                formControlName="city"
-            />
-            <label for="state">State: </label>
-            <input
-                text="text"
-                class="form-control"
-                id="state"
-                formControlName="state"
-                maxlength="2"
-                (input)="state?.setValue(state?.value.toUpperCase())"
-            />
-            <div
-                *ngIf="state?.invalid && (state?.dirty || state?.touched)"
-                class="alert alert-danger"
-            >
-                <ng-container *ngIf="state?.errors?.pattern"
-                    >State must be a valid state.</ng-container
-                >
-            </div>
-            <label for="zip-code">ZIP Code: </label>
-            <input
-                type="text"
-                class="form-control"
-                id="zip-code"
-                formControlName="zipCode"
-                maxlength="5"
-            />
-            <label for="seat-class">Seat Class: </label>
-            <select
-                class="form-control"
-                id="seat-class"
-                formControlName="seatClass"
-            >
-                <option>Economy Class</option>
-                <option>Business Class</option>
-                <option>First Class</option>
-            </select>
-            <label for="seat-number">Seat Number: </label>
-            <input
-                text="number"
-                class="form-control"
-                id="seat-number"
-                formControlName="seatNumber"
-            />
-            <label for="check-in-group">Check-In Group: </label>
-            <input
-                text="number"
-                class="form-control"
-                id="check-in-group"
-                formControlName="checkInGroup"
-            />
+          </div>
+          <label for="given-name">First Name: </label>
+          <input class="form-control"
+                 id="given-name"
+                 formControlName="givenName"
+                 type="text" />
+          <label for="family-name">Last Name: </label>
+          <input class="form-control"
+                 id="family-name"
+                 formControlName="familyName"
+                 type="text" />
+          <label for="date-of-birth">Date of Birth: </label>
+          <input class="form-control"
+                 id="date-of-birth"
+                 formControlName="dateOfBirth"
+                 type="date" />
+          <label for="gender">Gender: </label>
+          <select class="form-control" id="gender" formControlName="gender">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+          <label for="street-address">Street Address: </label>
+          <input text="text"
+                 class="form-control"
+                 id="street-address"
+                 formControlName="streetAddress" />
+          <label for="city">City: </label>
+          <input text="text"
+                 class="form-control"
+                 id="city"
+                 formControlName="city" />
+          <label for="state">State: </label>
+          <input text="text"
+                 class="form-control"
+                 id="state"
+                 formControlName="state"
+                 maxlength="2"
+                 (input)="state?.setValue(state?.value.toUpperCase())" />
+          <div *ngIf="state?.invalid && (state?.dirty || state?.touched)"
+               class="alert alert-danger">
+            <ng-container *ngIf="state?.errors?.pattern">State must be a valid state.</ng-container>
+          </div>
+          <label for="zip-code">ZIP Code: </label>
+          <input type="text"
+                 class="form-control"
+                 id="zip-code"
+                 formControlName="zipCode"
+                 maxlength="5" />
+          <label for="seat-class">Seat Class: </label>
+          <select class="form-control"
+                  id="seat-class"
+                  formControlName="seatClass">
+            <option>Economy Class</option>
+            <option>Business Class</option>
+            <option>First Class</option>
+          </select>
+          <label for="seat-number">Seat Number: </label>
+          <input text="number"
+                 class="form-control"
+                 id="seat-number"
+                 formControlName="seatNumber" />
+          <label for="check-in-group">Check-In Group: </label>
+          <input text="number"
+                 class="form-control"
+                 id="check-in-group"
+                 formControlName="checkInGroup" />
         </div>
-    </form>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button"
+              class="btn btn-light"
+              (click)="activeModal.close('Close click')">
+        Cancel
+      </button>
+      <button type="button"
+              class="btn btn-light"
+              [disabled]="addingForm.invalid"
+              (click)="add()">
+        Add
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="modal-footer">
-    <button
-        type="button"
-        class="btn btn-light"
-        (click)="activeModal.close('Close click')"
-    >
-        Cancel
-    </button>
-    <button
-        type="button"
-        class="btn btn-light"
-        [disabled]="addingForm.invalid"
-        (click)="add()"
-    >
-        Add
-    </button>
-</div>
+

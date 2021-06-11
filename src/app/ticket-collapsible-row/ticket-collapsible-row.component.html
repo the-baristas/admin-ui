@@ -1,22 +1,14 @@
-<tr>
-    <th>Name</th>
-    <th>Date of Birth</th>
-    <th>Gender</th>
-    <th>Address</th>
-    <th>Seat Class</th>
-    <th>Seat Number</th>
-    <th>Check-In Group</th>
-    <th>Discount Type</th>
-    <th>Discount Rate</th>
-</tr>
-<tr>
-    <td>{{ passenger.familyName }}, {{ passenger.givenName }}</td>
-    <td>{{ passenger.dateOfBirth }}</td>
-    <td>{{ passenger.gender }}</td>
-    <td>{{ passenger.address }}</td>
-    <td>{{ passenger.seatClass }}</td>
-    <td>{{ passenger.seatNumber }}</td>
-    <td>{{ passenger.checkInGroup }}</td>
-    <td>{{ passenger.discountType }}</td>
-    <td>{{ passenger.discountRate }}</td>
-</tr>
+
+<div class="container">
+  <div class="row" style="border: 1px dotted gray">
+    <div class="col-sm"><b>Name: </b>{{ passenger.familyName }}, {{ passenger.givenName }}</div>
+    <div class="col-sm"><b>Date of Birth: </b>{{ passenger.dateOfBirth }}</div>
+    <div class="col-sm"><b>Gender: </b>{{ passenger.gender }}</div>
+    <div class="col-sm"><b>Address: </b>{{ passenger.address }}</div>
+    <div class="col-sm"><b>Seat Class: </b>{{ passenger.seatClass }}</div>
+    <div class="col-sm"><b>Seat Number: </b>{{ passenger.seatNumber }}</div>
+    <div class="col-sm"><b>Check-In Group: </b>{{ passenger.checkInGroup }}</div>
+    <div class="col-sm"><b>Discount Type: </b>{{ passenger.discountType }}</div>
+    <div class="col-sm"><b>Discount Rate: </b>{{ passenger.discountRate }}</div>
+  </div>
+</div>
