@@ -24,12 +24,6 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'Admin UI'`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app.title).toEqual('Admin UI');
-    });
-
     it('should render title', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();

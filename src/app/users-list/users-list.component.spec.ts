@@ -18,7 +18,7 @@ import { UsersListComponent } from './users-list.component';
 describe('UsersListComponent', () => {
   let component: UsersListComponent;
   let fixture: ComponentFixture<UsersListComponent>;
-  let usersServiceMock: any;
+  let usersServiceMock: jasmine.SpyObj<UsersService>;
 
   let userData: User[] = [{
     userId: 1,
@@ -85,11 +85,11 @@ describe('UsersListComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
-        AppRoutingModule,
-        NgbModule
+        AppRoutingModule
       ],
       providers: [
-        { provide: UsersService, useValue: usersServiceMock }
+        { provide: UsersService, useValue: usersServiceMock },
+        NgbModule
       ]
     })
       .compileComponents();
