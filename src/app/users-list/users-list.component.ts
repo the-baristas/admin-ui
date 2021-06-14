@@ -9,7 +9,6 @@ import {
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Page } from '../entities/page';
 import { User } from '../entities/user';
-import { PagerService } from '../services/pager.service';
 import { UsersService } from '../services/users.service';
 import { UserDeleteModalComponent } from '../user-delete-modal/user-delete-modal.component';
 
@@ -36,7 +35,6 @@ export class UsersListComponent implements OnInit {
     constructor(
         private usersService: UsersService,
         private modalService: NgbModal,
-        private pagerService: PagerService,
         private formBuilder: FormBuilder
     ) {}
 
@@ -70,28 +68,14 @@ export class UsersListComponent implements OnInit {
       
   }
 
-    public userModalPerformAction() {
-        if (this.action === 'Add') {
-            this.createUser();
-        } else {
-            //then this.action is "Edit"
-            this.updateUser();
-        }
-    }
-
   createUser() {
         this.usersService.createUser(this.updateUserForm.value).subscribe(
           (response: any) => {
-            console.log("ff");
 
             this.modalRef.close();
-            console.log("ss");
             this.updateUserForm.reset();
-            console.log("aa");
             alert('User created successfully');
-            console.log("zz");
             this.searchUsers();
-            console.log("dd");
             },
           (error: Error) => {
             alert(error);
@@ -140,7 +124,16 @@ export class UsersListComponent implements OnInit {
             this.errMsg = '';
             this.closeResult = 'Close with ${result}';
         });
+  }
+
+  public userModalPerformAction() {
+    if (this.action === 'Add') {
+      this.createUser();
+    } else {
+      //then this.action is "Edit"
+      this.updateUser();
     }
+  }
 
     setPage(page: number) {
         if (page < 1 || page > this.currentPage.totalPages) {

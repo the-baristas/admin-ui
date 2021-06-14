@@ -7,11 +7,10 @@ export class MessageService {
     timerSubscription!: Subscription;
 
     add(message: string) {
-        this.message = message;
-        // TODO: Uncomment.
-        // this.timerSubscription = timer(4000).subscribe(() => {
-        //     this.clear();
-        // })
+         this.message = message;
+         this.timerSubscription = timer(4000).subscribe(() => {
+             this.clear();
+         })
     }
 
     clear() {

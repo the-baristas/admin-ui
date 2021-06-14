@@ -13,7 +13,7 @@ describe('LoginService', () => {
   let loginService: LoginService;
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClientTestingModule;
-  let loginUrl = environment.apiUrl + '/login';
+  let loginUrl = environment.userServiceUrl + '/login';
 
   let header: HttpHeaders = new HttpHeaders;
   header = header.set('Authorization', mockToken);

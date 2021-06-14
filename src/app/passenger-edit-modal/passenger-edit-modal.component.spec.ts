@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { PassengerEditModalComponent } from './passenger-edit-modal.component';
 
@@ -8,7 +11,9 @@ describe('PassengerEditModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassengerEditModalComponent ]
+      declarations: [PassengerEditModalComponent],
+      imports: [HttpClientTestingModule],
+      providers: [NgbActiveModal, FormBuilder]
     })
     .compileComponents();
   });
@@ -19,7 +24,7 @@ describe('PassengerEditModalComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

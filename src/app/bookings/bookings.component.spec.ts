@@ -1,14 +1,16 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingsComponent } from './bookings.component';
 
-xdescribe('BookingsComponent', () => {
+describe('BookingsComponent', () => {
   let component: BookingsComponent;
   let fixture: ComponentFixture<BookingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookingsComponent ]
+      declarations: [BookingsComponent],
+      imports: [HttpClientModule]
     })
     .compileComponents();
   });

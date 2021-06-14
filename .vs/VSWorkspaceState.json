@@ -3,11 +3,12 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\airplanes",
-    "\\src\\app\\pipes",
+    "\\src\\app\\login",
+    "\\src\\app\\services",
+    "\\src\\app\\user-delete-modal",
     "\\src\\app\\users-list",
     "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\environments\\environment.ts",
+  "SelectedNode": "\\src\\app\\users-list\\users-list.component.spec.ts",
   "PreviewInSolutionExplorer": false
 }

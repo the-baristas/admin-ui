@@ -11,7 +11,7 @@ describe('FlightsService', () => {
   let service: FlightService;
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
-  let apiUrl = environment.apiUrl + "/flights";  
+  let apiUrl = environment.flightServiceUrl + "/flights";  
   let flightData: any = [{
     id: 1,
     airplaneId: 14,

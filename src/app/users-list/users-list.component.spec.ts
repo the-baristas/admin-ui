@@ -68,12 +68,15 @@ describe('UsersListComponent', () => {
 
   beforeEach(async () => {
     usersServiceMock = jasmine.createSpyObj('UsersService', ['getAllUsers', 'getUserByEmail',
-                                                              'getUserByUsername', 'getUserByPhoneNumber', 'createUser']);
+                                            'getUserByUsername', 'getUserByPhoneNumber',
+                                            'createUser', 'findUsersBySearchTerm']);
     usersServiceMock.getAllUsers.and.returnValue(of(userPage));
     usersServiceMock.getUserByEmail.and.returnValue(of(userData[0]));
     usersServiceMock.getUserByUsername.and.returnValue(of(userData[1]));
     usersServiceMock.getUserByPhoneNumber.and.returnValue(of(userData[0]));
     usersServiceMock.createUser.and.returnValue(of(userAdmin));
+    usersServiceMock.findUsersBySearchTerm.and.returnValue(of(userPage));
+
     await TestBed.configureTestingModule({
       declarations: [UsersListComponent, HeaderComponent, PhonePipe],
       imports: [
@@ -102,10 +105,10 @@ describe('UsersListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render "List of Users"', () => {
+  it('should render "Users"', () => {
     let compiled = fixture.debugElement.nativeElement;
 
-    expect(compiled.querySelector('h3').textContent).toContain('List of Users');
+    expect(compiled.querySelector('h3').textContent).toContain('Users');
   });
 
   it('Test getUsers', () => {
@@ -144,6 +147,22 @@ describe('UsersListComponent', () => {
     let button = fixture.debugElement.nativeElement.querySelector('#createButton');
     button.click();
     expect(component.openModal).toHaveBeenCalled();
+    expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
+  });
+
+  it('Edit button should open modal', () => {
+    spyOn(component, 'openModal').and.callThrough();
+    let button = fixture.debugElement.nativeElement.querySelector('#editButton');
+    button.click();
+    expect(component.openModal).toHaveBeenCalled();
+    expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
+  });
+
+  it('Delete button should open modal', () => {
+    spyOn(component, 'openDeleteModal').and.callThrough();
+    let button = fixture.debugElement.nativeElement.querySelector('#deleteButton');
+    button.click();
+    expect(component.openDeleteModal).toHaveBeenCalled();
     expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
   });
 
@@ -186,16 +205,6 @@ describe('UsersListComponent', () => {
   });
 
 
-
-  xit('Test after searching by email, the users list only contains one', () => {
-    component.searchUsersForm.value.searchStringEmail = userData[0].email;
-    component.searchUsersForm.controls.searchStringEmail.markAsDirty();
-
-    component.searchUsers();
-    expect(component.users.length).toEqual(1);
-
-  });
-
   it('Clear button should clearn search form', () => {
     let button = fixture.debugElement.nativeElement.querySelector('#clearButton');
     component.searchUsersForm.value.searchString = userData[0].email;
@@ -205,15 +214,28 @@ describe('UsersListComponent', () => {
     expect(component.searchUsersForm.controls.searchString.dirty).toBeFalsy();
   });
 
-  it('should be at least one "Edit" button', () => {
+  xit('should be at least one "Edit" button', () => {
     let compiled = fixture.debugElement.nativeElement;
     
-    expect(compiled.querySelector('#editButton').textContent).toBe('Edit');
+    expect(compiled.querySelector('#editButton').textContent).toContain('Edit');
   });
 
-  it('Should be at least one button for mock user data', () => {
-    let buttons = fixture.debugElement.queryAll(By.css('button'));
-    expect(buttons.length >= 1).toBeTruthy();
-  });
+  it('test searchUsers()', () => {
+    component.searchUsersForm.value.searchString = "user";
+    component.searchUsersForm.controls.searchString.markAsDirty();
+
+    component.searchUsers();
+
+    expect(usersServiceMock.findUsersBySearchTerm).toHaveBeenCalled();
+  })
+
+  it('test clearSearchForm()', () => {
+    component.searchUsersForm.value.searchString = "";
+    component.searchUsersForm.controls.searchString.markAsDirty();
+
+    component.clearSearchForm();
+
+    expect(usersServiceMock.getAllUsers).toHaveBeenCalled();
+  })
 
 });
