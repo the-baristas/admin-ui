@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
     providedIn: 'root'
 })
 export class LoginService {
-    private serverUrl = environment.apiUrl + '/login';
+  private serverUrl = environment.userServiceUrl + '/login';
 
     private previousPage: string = '/home';
 

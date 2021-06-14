@@ -1,14 +1,16 @@
-<tr>
-    <th>Active</th>
-    <th>Departure Time</th>
-    <th>Arrival Time</th>
-</tr>
-<tr>
-    <td>{{ passenger.flightActive }}</td>
-    <td>
-        {{ passenger.departureTime | date: "short" }}
-    </td>
-    <td>
-        {{ passenger.arrivalTime | date: "short" }}
-    </td>
-</tr>
+<div class="container">
+  <div class="row" style="border: 1px dotted gray">
+    <div class="col-sm">
+      <b>Active: </b>
+      {{ passenger.flightActive }}
+    </div>
+    <div class="col-sm">
+      <b>Departure Time: </b>
+      {{ passenger.departureTime | date: "short" }}
+    </div>
+    <div class="col-sm">
+      <b>Arrival Time: </b>
+      {{ passenger.arrivalTime | date: "short" }}
+    </div>
+  </div>
+</div>

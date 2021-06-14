@@ -23,13 +23,13 @@
   }
 
   .flight-search-form input, .flight-search-form button {
-    height: 25%;
+    height: 30%;
     display: inline-block;
-    margin: .5em .5em .5em .5em;
+    margin: .3em .3em .3em .3em;
   }
 
   .flight-search-form input {
-    width: 25%;
+    width: 130px;
   }
 
   .flight-search-form button {
@@ -119,6 +119,5 @@
 
   #pagination-top {
     margin: auto;
-    width: 15%;
     padding: 10px;
   }
