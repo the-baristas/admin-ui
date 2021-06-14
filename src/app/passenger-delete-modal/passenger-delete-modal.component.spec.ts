@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { PassengerDeleteModalComponent } from './passenger-delete-modal.component';
 
@@ -8,7 +10,9 @@ describe('PassengerDeleteModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassengerDeleteModalComponent ]
+      declarations: [PassengerDeleteModalComponent],
+      imports: [HttpClientTestingModule],
+      providers: [NgbActiveModal]
     })
     .compileComponents();
   });

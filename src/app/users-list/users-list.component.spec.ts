@@ -68,12 +68,15 @@ describe('UsersListComponent', () => {
 
   beforeEach(async () => {
     usersServiceMock = jasmine.createSpyObj('UsersService', ['getAllUsers', 'getUserByEmail',
-                                                              'getUserByUsername', 'getUserByPhoneNumber', 'createUser']);
+                                            'getUserByUsername', 'getUserByPhoneNumber',
+                                            'createUser', 'findUsersBySearchTerm']);
     usersServiceMock.getAllUsers.and.returnValue(of(userPage));
     usersServiceMock.getUserByEmail.and.returnValue(of(userData[0]));
     usersServiceMock.getUserByUsername.and.returnValue(of(userData[1]));
     usersServiceMock.getUserByPhoneNumber.and.returnValue(of(userData[0]));
     usersServiceMock.createUser.and.returnValue(of(userAdmin));
+    usersServiceMock.findUsersBySearchTerm.and.returnValue(of(userPage));
+
     await TestBed.configureTestingModule({
       declarations: [UsersListComponent, HeaderComponent, PhonePipe],
       imports: [
@@ -147,6 +150,22 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
   });
 
+  it('Edit button should open modal', () => {
+    spyOn(component, 'openModal').and.callThrough();
+    let button = fixture.debugElement.nativeElement.querySelector('#editButton');
+    button.click();
+    expect(component.openModal).toHaveBeenCalled();
+    expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
+  });
+
+  it('Delete button should open modal', () => {
+    spyOn(component, 'openDeleteModal').and.callThrough();
+    let button = fixture.debugElement.nativeElement.querySelector('#deleteButton');
+    button.click();
+    expect(component.openDeleteModal).toHaveBeenCalled();
+    expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
+  });
+
   it('Test items per page dropdown', () => {
     let select: HTMLSelectElement = fixture.debugElement.nativeElement.querySelector('select');
 
@@ -195,10 +214,28 @@ describe('UsersListComponent', () => {
     expect(component.searchUsersForm.controls.searchString.dirty).toBeFalsy();
   });
 
-  it('should be at least one "Edit" button', () => {
+  xit('should be at least one "Edit" button', () => {
     let compiled = fixture.debugElement.nativeElement;
     
     expect(compiled.querySelector('#editButton').textContent).toContain('Edit');
   });
+
+  it('test searchUsers()', () => {
+    component.searchUsersForm.value.searchString = "user";
+    component.searchUsersForm.controls.searchString.markAsDirty();
+
+    component.searchUsers();
+
+    expect(usersServiceMock.findUsersBySearchTerm).toHaveBeenCalled();
+  })
+
+  it('test clearSearchForm()', () => {
+    component.searchUsersForm.value.searchString = "";
+    component.searchUsersForm.controls.searchString.markAsDirty();
+
+    component.clearSearchForm();
+
+    expect(usersServiceMock.getAllUsers).toHaveBeenCalled();
+  })
 
 });

@@ -96,7 +96,6 @@ export class FlightService {
     }
 
     public addFlight(flight: Flight): Observable<Flight> {
-        console.log(flight);
       const url = `${environment.flightServiceUrl}/flights`;
         return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newFlight: Flight) => this.messageService.add(`added flight with id=${newFlight.id}`)),
@@ -106,7 +105,6 @@ export class FlightService {
 
     public deleteFlight(id: number): Observable<Flight> {
       const url = `${environment.flightServiceUrl + this.flightServicePath}/${id}`;
-        console.log(id);
         return this.httpClient.delete<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`deleted flight id=${id}`)),
             catchError(this.handleError<Flight>("deleteFlight"))

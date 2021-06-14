@@ -1,14 +1,18 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BookingAddModalComponent } from './booking-add-modal.component';
 
-xdescribe('BookingAddModalComponent', () => {
+describe('BookingAddModalComponent', () => {
   let component: BookingAddModalComponent;
   let fixture: ComponentFixture<BookingAddModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookingAddModalComponent ]
+      declarations: [BookingAddModalComponent],
+      imports: [HttpClientModule],
+      providers: [NgbActiveModal]
     })
     .compileComponents();
   });

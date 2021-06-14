@@ -17,9 +17,10 @@ import { LoginService } from './login.service';
 import { MessageService } from './message.service';
 
 describe('AirplaneService', () => {
-    let httpTestingController: HttpTestingController;
-    let airplaneService: AirplaneService;
-    const airplanesPath: string = '/airplanes';
+  let httpTestingController: HttpTestingController;
+  let airplaneService: AirplaneService;
+  const airplanesPath: string = '/airplanes';
+  const airplane: Airplane = { id: 1 } as Airplane;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -275,11 +276,37 @@ describe('AirplaneService', () => {
         });
     });
 
-    describe('#searchAirplanes', () => {});
+  it('#searchAirplanes', () => {
+    airplaneService.searchAirplanes("word").subscribe((data) => {
+      expect(data).toEqual([airplane]);
+    });
+    let mockRequest = httpTestingController.expectOne(
+      environment.flightServiceUrl + airplanesPath + '/search?term=word'
+    );
+    expect(mockRequest.cancelled).toBeFalsy();
+    expect(mockRequest.request.responseType).toEqual('json');
+    mockRequest.flush([airplane]);
+  });
 
-    describe('#addAirplanes', () => {});
+  it('#addAirplanes', () => {
+    airplaneService.addAirplane(airplane).subscribe((data) => {
+      expect(data).toEqual(airplane);
+    });
+    let mockRequest = httpTestingController.expectOne(environment.flightServiceUrl + airplanesPath);
+    expect(mockRequest.cancelled).toBeFalsy();
+    expect(mockRequest.request.responseType).toEqual('json');
+    mockRequest.flush(airplane);
+  });
 
-    describe('#deleteAirplanes', () => {});
+  it('#deleteAirplanes', () => {
+    airplaneService.deleteAirplane(1).subscribe((data) => {
+      expect(data).toEqual(airplane);
+    });
+    let mockRequest = httpTestingController.expectOne(environment.flightServiceUrl + airplanesPath + "/" + airplane.id);
+    expect(mockRequest.cancelled).toBeFalsy();
+    expect(mockRequest.request.responseType).toEqual('json');
+    mockRequest.flush(airplane);
+  });
 });
 
 xdescribe('AirplaneService (Angular CLI)', () => {

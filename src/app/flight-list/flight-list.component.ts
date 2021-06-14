@@ -3,7 +3,6 @@ import { Flight } from '../entities/flight';
 import { FlightService } from '../services/flights.service';
 import { RouteService } from '../services/routes.service';
 import { AirplaneService } from '../services/airplane.service';
-import { PagerService } from '../services/pager.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
@@ -47,7 +46,7 @@ export class FlightComponent implements OnInit {
       confirmation!: boolean;
 
       constructor(private flightService: FlightService, private routeService: RouteService, private airplaneService: AirplaneService, private modalService: NgbModal, 
-        private pagerService: PagerService, private formBuilder: FormBuilder, private httpClient: HttpClient) { }
+        private formBuilder: FormBuilder, private httpClient: HttpClient) { }
             
       private modalRef!: NgbModalRef;
       errMsg: any;
@@ -63,7 +62,6 @@ export class FlightComponent implements OnInit {
                   this.pageNumber = flightsPage.number+1;
                   this.flights = flightsPage.content;
                   this.totalFlights = flightsPage.totalElements;
-                  console.log(flightsPage);
                 }
             );
         this.initializeForms();
@@ -150,7 +148,6 @@ export class FlightComponent implements OnInit {
                   this.pageNumber = flightsPage.number+1;
                   this.flights = flightsPage.content;
                   this.totalFlights = flightsPage.totalElements;
-                  console.log(flightsPage);
                 });
               this.modalRef.close();
             },
@@ -163,11 +160,10 @@ export class FlightComponent implements OnInit {
           );
       }
 
-      public onDeleteFlight() {
+  public onDeleteFlight() {
         this.confirmation = confirm("Are you sure you want to delete this flight? (For auditing purposes, flights should be disabled rather than deleted.")
 
         if (this.confirmation === true) {
-          console.log(this.editFlight.id);
           this.flightService.deleteFlight(this.editFlight.id)
           .subscribe(
             (response: any) => {
@@ -179,7 +175,6 @@ export class FlightComponent implements OnInit {
                   this.pageNumber = flightsPage.number+1;
                   this.flights = flightsPage.content;
                   this.totalFlights = flightsPage.totalElements;
-                  console.log(flightsPage);
                 }
               );
               this.modalRef.close();
@@ -233,7 +228,6 @@ export class FlightComponent implements OnInit {
           return;
         }
         else {
-          console.log(pageNo);
           this.flightService.getFlightsPage(pageNo - 1, this.pageSize).subscribe(
             (flightsPage: Page<Flight>) => {
               this.currentPage = flightsPage;
@@ -325,7 +319,6 @@ export class FlightComponent implements OnInit {
               this.totalFlights = flightsPage.totalElements;
             let div: any = document.getElementById('searchByIdErrorMessage');
             div.style.display = "none";
-            console.log(this.flights);
           },
           (error: HttpErrorResponse) => {
             let div: any = document.getElementById('searchByIdErrorMessage');

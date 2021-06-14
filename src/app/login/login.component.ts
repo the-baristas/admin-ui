@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   username!: string;
   password!: string;
-  private jwtToken!: string;
+  jwtToken!: string;
 
   constructor(private loginService: LoginService, private formBuilder: FormBuilder, private router: Router) { }
 

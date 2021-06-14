@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route } from '../entities/route';
 import { RouteService } from '../services/routes.service';
-import { PagerService } from '../services/pager.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -39,7 +38,7 @@ export class RouteListComponent implements OnInit {
   confirmation!: boolean;
 
   constructor(private routeService: RouteService, private modalService: NgbModal, 
-    private pagerService: PagerService, private formBuilder: FormBuilder) { }
+     private formBuilder: FormBuilder) { }
         
   private modalRef!: NgbModalRef;
   errMsg: any;

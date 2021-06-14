@@ -37,7 +37,7 @@ export class BookingEditModalComponent implements OnInit {
     updateForm(): void {
         this.editingForm.setValue({
             confirmationCode: this.selectedBooking.confirmationCode,
-            layOverCount: this.selectedBooking.layoverCount,
+            layoverCount: this.selectedBooking.layoverCount,
             totalPrice: this.selectedBooking.totalPrice
         });
     }

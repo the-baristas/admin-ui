@@ -3,14 +3,12 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\layout",
-    "\\src\\app\\layout\\header",
-    "\\src\\app\\pipes",
-    "\\src\\app\\route-list",
-    "\\src\\app\\ticket-collapsible-row",
+    "\\src\\app\\login",
+    "\\src\\app\\services",
+    "\\src\\app\\user-delete-modal",
     "\\src\\app\\users-list",
     "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\layout\\layout.component.html",
+  "SelectedNode": "\\src\\app\\users-list\\users-list.component.spec.ts",
   "PreviewInSolutionExplorer": false
 }
