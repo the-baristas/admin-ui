@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'ng test --no-watch --code-coverage'
+                sh 'ng test --browsers ChromeHeadless --no-watch --code-coverage'
             }
         }
         stage('Sonarqube') {
