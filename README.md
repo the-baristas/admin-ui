@@ -28,6 +28,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Packages Added
 
+### @material-ui/core
+### @material-ui/lab
+###@material-ui/icons
+
 ### prettier  
 Used to maintain a consistent code style.
 
