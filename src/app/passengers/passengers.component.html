@@ -37,7 +37,7 @@
                                             'bookingDetails',
                                             i
                                         )
-                                    ">
+                                    "><div><b>Confirmation Code </b></div>
                 <ngb-highlight [result]="
                                             passenger.bookingConfirmationCode
                                         "
@@ -50,15 +50,18 @@
                       (click)="
                                         toggleCollapsibleRow('flightDetails', i)
                                     ">
-                {{
+                <b>Flight Departure/Arrival</b>
+                <div>
+                  {{
                                         passenger.departureTime
                                             | date: "shortDate"
-                }}
-                to
-                {{
+                  }}
+                  to
+                  {{
                                         passenger.arrivalTime
                                             | date: "shortDate"
-                }}
+                  }}
+                </div>
               </button>
             </div>
             <div class="col-sm">
@@ -67,8 +70,11 @@
                       (click)="
                                         toggleCollapsibleRow('routeDetails', i)
                                     ">
-                {{ passenger.originAirportCode }} to
-                {{ passenger.destinationAirportCode }}
+                <b>Route</b>
+                <div>
+                  {{ passenger.originAirportCode }} to
+                  {{ passenger.destinationAirportCode }}
+                </div>
               </button>
             </div>
             <div class="col-sm">
@@ -76,7 +82,7 @@
                       class="btn btn-outline-dark"
                       (click)="
                                         toggleCollapsibleRow('ticketInfo', i)
-                                    ">
+                                    "><div><b>Passenger Name</b></div>
                   {{ passenger.familyName }},
                   {{ passenger.givenName }}
               </button>
@@ -86,7 +92,7 @@
                       class="btn btn-outline-dark"
                       (click)="
                                         toggleCollapsibleRow('userInfo', i)
-                                    ">
+                                    "><div><b>Username</b></div>
                 <ngb-highlight [result]="passenger.username"
                                [term]="searchTerm"></ngb-highlight>
               </button>
@@ -108,7 +114,7 @@
                                 passengerIndex === i &&
                                 rowExpanded
                             ">
-                <div class="col-sm-12">
+                <div class="col-sm">
                   <app-booking-collapsible-row [passenger]="passenger"></app-booking-collapsible-row>
                 </div>
               </div>
@@ -117,7 +123,7 @@
                                 passengerIndex === i &&
                                 rowExpanded
                             ">
-                <div class="col-sm-12">
+                <div class="col-sm">
                   <app-flight-collapsible-row [passenger]="passenger"></app-flight-collapsible-row>
                 </div>
               </div>
@@ -126,7 +132,7 @@
                                 passengerIndex === i &&
                                 rowExpanded
                             ">
-                <div class="col-sm-12">
+                <div class="col-sm">
                   <app-route-collapsible-row [passenger]="passenger"></app-route-collapsible-row>
                 </div>
               </div>
@@ -135,7 +141,7 @@
                                 passengerIndex === i &&
                                 rowExpanded
                             ">
-                <div class="col-sm-12">
+                <div class="col-sm">
                   <app-ticket-collapsible-row [passenger]="passenger"></app-ticket-collapsible-row>
                 </div>
               </div>
@@ -144,7 +150,7 @@
                                 passengerIndex === i &&
                                 rowExpanded
                             ">
-                <div class="col-sm-12">
+                <div class="col-sm" style="min-width: 210px">
                   <app-user-collapsible-row [passenger]="passenger"></app-user-collapsible-row>
                 </div>
               </div>
