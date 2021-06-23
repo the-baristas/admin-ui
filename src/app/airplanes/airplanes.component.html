@@ -1,48 +1,71 @@
-<app-airplane-search (searchResultsDisplay)="onSearchResultsDisplay($event)"
-                     (allAirplanesDisplay)="onAllAirplanesDisplay()"></app-airplane-search>
+<app-airplane-search
+    (searchResultsDisplay)="onSearchResultsDisplay($event)"
+    (allAirplanesDisplay)="onAllAirplanesDisplay()"
+></app-airplane-search>
 
 <div class="d-flex justify-content-between p-2">
-  <select class="custom-select"
-          name="pageSize"
-          [formControl]="pageSizeControl">
-    <option [ngValue]="10">10 items per page</option>
-    <option [ngValue]="25">25 items per page</option>
-    <option [ngValue]="50">50 items per page</option>
-  </select>
-  <button class="btn btn-lg btn-primary"
-          id="create-new-button"
-          (click)="openAddModal()">
-    Create New
-  </button>
+    <select
+        class="custom-select"
+        name="pageSize"
+        [formControl]="pageSizeControl"
+    >
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="25">25 items per page</option>
+        <option [ngValue]="50">50 items per page</option>
+    </select>
+    <button
+        class="btn btn-lg btn-primary"
+        id="create-new-button"
+        (click)="openAddModal()"
+    >
+        Create New
+    </button>
 </div>
 
 <div class="container">
-  <div class="d-flex justify-content-between p-2" *ngFor="let airplane of foundAirplanes; let i = index">
-    <div class="row" style="border: 1px solid black">
-      <div class="col-sm"><b>Max First Class Seats: </b>{{ airplane.firstClassSeatsMax }}</div>
-      <div class="col-sm"><b>Max Business Class Seats: </b>{{ airplane.businessClassSeatsMax }}</div>
-      <div class="col-sm"><b>Max Economy Class Seats: </b>{{ airplane.economyClassSeatsMax }}</div>
-      <div class="col-sm"><b>Model: </b>{{ airplane.model }}</div>
-      <div class="col-sm">
-        <button class="btn btn-primary"
-                (click)="openEditModal(airplane)">
-          Edit
-        </button>
-      </div>
-      <div class="col-sm">
-        <button class="btn btn-danger"
-                (click)="openDeleteModal(airplane)">
-          Delete
-        </button>
-      </div>
+    <div
+        class="d-flex justify-content-between p-2"
+        *ngFor="let airplane of foundAirplanes; let i = index"
+    >
+        <div class="row" style="border: 1px solid black">
+            <div class="col-sm">
+                <b>Max First Class Seats: </b>{{ airplane.firstClassSeatsMax }}
+            </div>
+            <div class="col-sm">
+                <b>Max Business Class Seats: </b
+                >{{ airplane.businessClassSeatsMax }}
+            </div>
+            <div class="col-sm">
+                <b>Max Economy Class Seats: </b
+                >{{ airplane.economyClassSeatsMax }}
+            </div>
+            <div class="col-sm"><b>Model: </b>{{ airplane.model }}</div>
+            <div class="col-sm">
+                <button
+                    class="btn btn-primary"
+                    (click)="openEditModal(airplane)"
+                >
+                    Edit
+                </button>
+            </div>
+            <div class="col-sm">
+                <button
+                    class="btn btn-danger"
+                    (click)="openDeleteModal(airplane)"
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="d-flex justify-content-between p-2">
-  <ngb-pagination [collectionSize]="totalElements"
-                  [(page)]="pageNumber"
-                  [pageSize]="pageSizeControl.value"
-                  (pageChange)="onPageChange()"
-                  [maxSize]="4"></ngb-pagination>
+    <ngb-pagination
+        [collectionSize]="totalElements"
+        [(page)]="pageNumber"
+        [pageSize]="pageSizeControl.value"
+        (pageChange)="onPageChange()"
+        [maxSize]="4"
+    ></ngb-pagination>
 </div>
