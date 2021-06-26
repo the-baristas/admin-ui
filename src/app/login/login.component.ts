@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   public login() {
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
-        (response: any) => {     
+        (response: any) => {
           this.jwtToken = response.headers.get("Authorization");
           if (!this.loginService.isAdmin(this.jwtToken)) {
             alert("Incorrect username and/or password.");

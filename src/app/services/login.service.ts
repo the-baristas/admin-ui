@@ -24,7 +24,7 @@ export class LoginService {
             .post<any>(
                 `${this.serverUrl}`,
                 JSON.stringify({ username: username, password: password }),
-                { observe: 'response' }
+                { observe: 'response', withCredentials: true }
             )
             .pipe(
                 catchError((error: HttpErrorResponse) => {
