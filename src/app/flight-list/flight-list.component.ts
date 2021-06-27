@@ -88,7 +88,6 @@ export class FlightComponent implements OnInit {
         this.routeService.getAllRoutes().subscribe(
           (response: Route[]) => {
             this.foundRoutes = response;
-            console.log(this.foundRoutes);
           },
           (error: HttpErrorResponse) => {
             alert(error.message)
@@ -117,7 +116,6 @@ export class FlightComponent implements OnInit {
                   this.pageNumber = flightsPage.number+1;
                   this.flights = flightsPage.content;
                   this.totalFlights = flightsPage.totalElements;
-                  console.log(flightsPage);
                 });
               this.modalRef.close();
             },
@@ -232,7 +230,6 @@ export class FlightComponent implements OnInit {
             (flightsPage: Page<Flight>) => {
               this.currentPage = flightsPage;
               this.pageNumber = flightsPage.number+1;
-              console.log(this.pageNumber)
               this.flights = flightsPage.content;
               this.totalFlights = flightsPage.totalElements;
             }

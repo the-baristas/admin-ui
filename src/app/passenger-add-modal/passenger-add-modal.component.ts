@@ -142,9 +142,6 @@ export class PassengerAddModalComponent implements OnInit {
             seatNumber: this.addingForm.get('seatNumber')?.value,
             checkInGroup: this.addingForm.get('checkInGroup')?.value
         } as Passenger;
-        // TODO
-        console.log(creatingPassenger);
-        console.log(this.addingForm.get('bookingForm.flight')?.value);
         this.passengerService
             .create(creatingPassenger)
             .subscribe((passenger: Passenger) => {
