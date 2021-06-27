@@ -51,7 +51,11 @@ export class AirplanesComponent implements OnInit {
     }
 
     onPageChange(): void {
-        this.findAllAirplanes();
+        if (this.searchTerm === '') {
+            this.findAllAirplanes();
+        } else {
+            this.findAirplanesByModelContaining();
+        }
     }
 
     findAllAirplanes(): void {

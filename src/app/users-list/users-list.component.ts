@@ -188,7 +188,7 @@ export class UsersListComponent implements OnInit {
           this.getUsers(0, this.pageSize);
           return;
         }
-        else if (this.searchUsersForm.value.searchString.length < 3)
+        else if (this.searchUsersForm.value.searchString?.length < 3)
           return;
         else {
             this.users = [];

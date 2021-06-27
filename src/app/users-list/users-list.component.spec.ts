@@ -100,6 +100,9 @@ describe('UsersListComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  afterAll(() => {
+
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
