@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { FlightCollapsibleRowComponent } from './flight-collapsible-row/flight-collapsible-row.component';
 import { FlightComponent } from './flight-list/flight-list.component';
 import { HomeComponent } from './home/home.component';
+import { httpInterceptorProviders } from './http-interceptor';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
@@ -72,11 +73,12 @@ import { UsersListComponent } from './users-list/users-list.component';
         FormsModule,
         AppRoutingModule,
         HttpClientModule,
+        HttpClientXsrfModule,
         NgbModule,
         ReactiveFormsModule,
         NgHttpLoaderModule.forRoot()
     ],
-    providers: [],
+    providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

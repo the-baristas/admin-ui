@@ -71,11 +71,7 @@ describe('UsersService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                HttpClientTestingModule,
-                HttpClientXsrfModule.withOptions({
-                    cookieName: 'XSRF-TOKEN',
-                    headerName: 'X-XSRF-TOKEN'
-                })
+                HttpClientTestingModule
             ],
             providers: [UsersService]
         });
@@ -233,15 +229,6 @@ describe('UsersService', () => {
         expect(mockRequest.cancelled).toBeFalsy();
         expect(mockRequest.request.responseType).toEqual('json');
         mockRequest.flush(userAdmin);
-    });
-
-    xit('POST response should match XSRF header', () => {
-        const url = '/users'
-        httpClient.post(url, {}, { withCredentials: true }).subscribe();
-
-        const testRequest = httpTestingController.expectOne(url);
-        console.log(testRequest.request.headers);
-        expect(testRequest.request.headers.has('X-XSRF-TOKEN')).toEqual(true);
     });
 
     it('Create user 400 should give error message', () => {

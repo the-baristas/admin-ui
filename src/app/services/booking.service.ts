@@ -18,7 +18,7 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class BookingService {
     public bookingServicePath: string = '/bookings';
-    private httpOptions!: { headers: HttpHeaders };
+    private httpOptions!: { headers: HttpHeaders, withCredentials?: boolean };
     private handleError: HandleError;
 
     constructor(
@@ -30,7 +30,8 @@ export class BookingService {
         this.httpOptions = {
             headers: new HttpHeaders({
                 Authorization: loginService.getToken()
-            })
+            }),
+            withCredentials: true
         };
         this.handleError =
             httpErrorHandlerService.createHandleError('BookingService');

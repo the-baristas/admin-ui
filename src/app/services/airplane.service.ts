@@ -15,7 +15,7 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
     private airplanesPath: string = environment.flightServiceUrl + '/airplanes';
-    private httpOptions!: { headers: HttpHeaders };
+    private httpOptions!: { headers: HttpHeaders; withCredentials?: boolean };
     private handleError: HandleError;
 
     constructor(
@@ -24,22 +24,19 @@ export class AirplaneService {
         private loginService: LoginService,
         httpErrorHandlerService: HttpErrorHandlerService
     ) {
-        this.handleError = httpErrorHandlerService.createHandleError(
-            'AirplaneService'
-        );
+        this.handleError =
+            httpErrorHandlerService.createHandleError('AirplaneService');
         this.httpOptions = {
             headers: new HttpHeaders({
                 Authorization: this.loginService.getToken()
-            })
+            }),
+            withCredentials: true
         };
     }
 
     getAirplanes(): Observable<Airplane[]> {
         return this.httpClient
-            .get<Airplane[]>(
-                this.airplanesPath,
-                this.httpOptions
-            )
+            .get<Airplane[]>(this.airplanesPath, this.httpOptions)
             .pipe(
                 tap(() =>
                     this.messageService.add('Successfully found airplanes.')
@@ -54,9 +51,7 @@ export class AirplaneService {
     ): Observable<Page<Airplane>> {
         return this.httpClient
             .get<Page<Airplane>>(
-                `${
-                    this.airplanesPath
-                }/page?index=${pageIndex}&size=${pageSize}`,
+                `${this.airplanesPath}/page?index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
             .pipe(
@@ -106,9 +101,7 @@ export class AirplaneService {
         }
         return this.httpClient
             .get<Airplane[]>(
-                `${
-                    this.airplanesPath
-                }/search?term=${term}`,
+                `${this.airplanesPath}/search?term=${term}`,
                 this.httpOptions
             )
             .pipe(
@@ -135,9 +128,7 @@ export class AirplaneService {
         }
         return this.httpClient
             .get<Page<Airplane>>(
-                `${
-                    this.airplanesPath
-                }/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
+                `${this.airplanesPath}/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
             .pipe(
@@ -168,9 +159,7 @@ export class AirplaneService {
         }
         return this.httpClient
             .get<Page<Airplane>>(
-                `${
-                    this.airplanesPath
-                }/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
+                `${this.airplanesPath}/distinct_search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
             .pipe(
@@ -200,11 +189,7 @@ export class AirplaneService {
             'application/json'
         );
         return this.httpClient
-            .post<Airplane>(
-                this.airplanesPath,
-                airplane,
-                this.httpOptions
-            )
+            .post<Airplane>(this.airplanesPath, airplane, this.httpOptions)
             .pipe(
                 tap((newAirplane: Airplane) =>
                     this.messageService.add(
