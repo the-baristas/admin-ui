@@ -21,8 +21,7 @@ export class RouteService {
     private routeServicePath: string = '/routes';
 
     httpOptions = {
-        headers: this.loginService.getHeadersWithToken(),
-        withCredentials: true
+        headers: this.loginService.getHeadersWithToken()
     };
 
     constructor(
@@ -95,7 +94,7 @@ export class RouteService {
 
     public addRoute(route: Route): Observable<Route> {
       const url = environment.flightServiceUrl + this.routeServicePath;
-        return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken(), withCredentials: true }).pipe(
+        return this.http.post<Route>(url, route, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newRoute: Route) => this.log(`added route with id=${newRoute.id}`)),
             catchError(this.handleError<Route>("addRoute"))
         );

@@ -15,7 +15,7 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
     private airplanesPath: string = environment.flightServiceUrl + '/airplanes';
-    private httpOptions!: { headers: HttpHeaders; withCredentials?: boolean };
+    private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
     constructor(
@@ -29,8 +29,7 @@ export class AirplaneService {
         this.httpOptions = {
             headers: new HttpHeaders({
                 Authorization: this.loginService.getToken()
-            }),
-            withCredentials: true
+            })
         };
     }
 

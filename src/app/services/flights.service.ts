@@ -97,7 +97,7 @@ export class FlightService {
 
     public addFlight(flight: Flight): Observable<Flight> {
       const url = `${environment.flightServiceUrl}/flights`;
-        return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken(), withCredentials: true }).pipe(
+        return this.httpClient.post<Flight>(url, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap((newFlight: Flight) => this.messageService.add(`added flight with id=${newFlight.id}`)),
             catchError(this.handleError<Flight>("addFlight"))
         );
@@ -105,7 +105,7 @@ export class FlightService {
 
     public deleteFlight(id: number): Observable<Flight> {
       const url = `${environment.flightServiceUrl + this.flightServicePath}/${id}`;
-        return this.httpClient.delete<Flight>(url, { headers: this.loginService.getHeadersWithToken(), withCredentials: true }).pipe(
+        return this.httpClient.delete<Flight>(url, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`deleted flight id=${id}`)),
             catchError(this.handleError<Flight>("deleteFlight"))
         );
@@ -113,7 +113,7 @@ export class FlightService {
 
     /** PUT: update the flight on the server */
     public updateFlight(flight: Flight): Observable<any> {
-      return this.httpClient.put(environment.flightServiceUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken(), withCredentials: true }).pipe(
+      return this.httpClient.put(environment.flightServiceUrl + this.flightServicePath + `/${flight.id}`, flight, { headers: this.loginService.getHeadersWithToken() }).pipe(
             tap(_ => this.messageService.add(`updated flight id=${flight.id}`)),
             catchError(this.handleError<any>("updateFlight"))
         );
