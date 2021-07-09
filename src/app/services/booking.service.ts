@@ -18,7 +18,7 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class BookingService {
     public bookingServicePath: string = '/bookings';
-    private httpOptions!: { headers: HttpHeaders, withCredentials?: boolean };
+    private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
     constructor(
@@ -30,8 +30,7 @@ export class BookingService {
         this.httpOptions = {
             headers: new HttpHeaders({
                 Authorization: loginService.getToken()
-            }),
-            withCredentials: true
+            })
         };
         this.handleError =
             httpErrorHandlerService.createHandleError('BookingService');
@@ -122,7 +121,9 @@ export class BookingService {
     }
 
     deleteBooking(id: number): Observable<Booking> {
-        const url = `${environment.bookingServiceUrl + this.bookingServicePath}/${id}`;
+        const url = `${
+            environment.bookingServiceUrl + this.bookingServicePath
+        }/${id}`;
 
         return this.httpClient.delete<Booking>(url, httpOptions).pipe(
             tap(() =>
@@ -137,7 +138,10 @@ export class BookingService {
     updateBooking(booking: Booking): Observable<any> {
         return this.httpClient
             .put(
-                environment.bookingServiceUrl + this.bookingServicePath + '/' + booking.id,
+                environment.bookingServiceUrl +
+                    this.bookingServicePath +
+                    '/' +
+                    booking.id,
                 booking,
                 httpOptions
             )

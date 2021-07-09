@@ -18,7 +18,7 @@ import { MessageService } from './message.service';
 export class PassengerService {
     private static readonly PASSENGERS_PATH: string =
         environment.bookingServiceUrl + '/passengers';
-    private httpOptions!: { headers: HttpHeaders, withCredentials: boolean };
+    private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
     constructor(
@@ -30,8 +30,7 @@ export class PassengerService {
         this.httpOptions = {
             headers: new HttpHeaders({
                 Authorization: loginService.getToken()
-            }),
-            withCredentials: true
+            })
         };
         this.handleError =
             httpErrorHandlerService.createHandleError('PassengerService');

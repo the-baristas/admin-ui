@@ -125,8 +125,7 @@ export class UsersService {
     public createUser(user: User): Observable<User> {
         return this.http
             .post<User>(`${this.serverUrl}`, user, {
-                headers: this.loginService.getHeadersWithToken(),
-                withCredentials: true
+                headers: this.loginService.getHeadersWithToken()
             })
             .pipe(
                 catchError((error: HttpErrorResponse) => {
@@ -146,8 +145,7 @@ export class UsersService {
     public updateUser(user: User, userId: number): Observable<void> {
         return this.http
             .put<void>(`${this.serverUrl}/${userId}`, user, {
-                headers: this.loginService.getHeadersWithToken(),
-                withCredentials: true
+                headers: this.loginService.getHeadersWithToken()
             })
             .pipe(
                 catchError((error: HttpErrorResponse) => {
@@ -169,8 +167,7 @@ export class UsersService {
     public deleteUser(userId: number): Observable<void> {
         return this.http
             .delete<void>(`${this.serverUrl}/${userId}`, {
-                headers: this.loginService.getHeadersWithToken(),
-                withCredentials: true
+                headers: this.loginService.getHeadersWithToken()
             })
             .pipe(
                 catchError((error: HttpErrorResponse) => {
