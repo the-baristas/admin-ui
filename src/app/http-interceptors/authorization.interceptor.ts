@@ -16,9 +16,8 @@ export class AuthorizationInterceptor implements HttpInterceptor {
         request: HttpRequest<unknown>,
         next: HttpHandler
     ): Observable<HttpEvent<unknown>> {
-        const token = this.loginService.getToken();
         request = request.clone({
-            setHeaders: { Authorization: token }
+            setHeaders: { Authorization: this.loginService.getToken() }
         });
         return next.handle(request);
     }
