@@ -29,22 +29,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Packages Added
 
 ### @material-ui/core
+
 ### @material-ui/lab
+
 ###@material-ui/icons
 
-### prettier  
+### prettier
+
 Used to maintain a consistent code style.
 
 ### jwt-decode
 
 ### sonar-scanner
-
-## Changelog
-
-Anthony Sirimarco - 4/22/2021 - Added user authentication with JWT tokens along with a login page, a stock homepage, and an (unfinished) users page for testing purposes.
-
-Anthony Sirimarco - 4/27/2021 - Login page will now reject valid credentials if the user does not have the admin role.
-
-Anthony Sirimarco - 5/5/2021 - Added ability to create users and to search for users by email, username and phone number. Incorporated back-end pagination to users.
-
-Anthony Sirimarco - 5/7/2021 - Added ability to update and delete users

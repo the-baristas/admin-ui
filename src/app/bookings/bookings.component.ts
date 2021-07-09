@@ -41,8 +41,6 @@ export class BookingsComponent implements OnInit {
     }
 
     openAddModal(): void {
-        // TODO
-        console.log(this.foundBookings);
         const modalRef = this.modalService.open(BookingAddModalComponent, {
             centered: true
         });

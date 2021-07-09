@@ -19,7 +19,7 @@ import { BookingsComponent } from './bookings/bookings.component';
 import { FlightCollapsibleRowComponent } from './flight-collapsible-row/flight-collapsible-row.component';
 import { FlightComponent } from './flight-list/flight-list.component';
 import { HomeComponent } from './home/home.component';
-import { httpInterceptorProviders } from './http-interceptor';
+import { httpInterceptorProviders } from './xsrf-interceptor';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';

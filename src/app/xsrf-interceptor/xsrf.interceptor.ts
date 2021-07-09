@@ -16,6 +16,10 @@ export class XsrfInterceptor implements HttpInterceptor {
         request: HttpRequest<unknown>,
         next: HttpHandler
     ): Observable<HttpEvent<unknown>> {
+        request = request.clone({
+            withCredentials: true
+        });
+
         const token = this.tokenExtractor.getToken();
         if (token !== null) {
             request = request.clone({
