@@ -6,9 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
-import { Discount } from '../../entities/discount';
-import { Page } from '../../entities/page';
-import { DiscountService } from '../../services/discount.service';
+import { Discount } from '../entities/discount';
+import { Page } from '../entities/page';
+import { DiscountService } from '../services/discount.service';
 
 import { DiscountListComponent } from './discount-list.component';
 

@@ -35,9 +35,9 @@ import { TicketCollapsibleRowComponent } from './ticket-collapsible-row/ticket-c
 import { UserCollapsibleRowComponent } from './user-collapsible-row/user-collapsible-row.component';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { DiscountListComponent } from './discounts-page/discount-list/discount-list.component';
+import { DiscountListComponent } from './discount-list/discount-list.component';
 import { DiscountPipe } from './pipes/discount.pipe';
-import { DiscountRowComponent } from './discounts-page/discount-row/discount-row.component';
+import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
 
 @NgModule({
     declarations: [

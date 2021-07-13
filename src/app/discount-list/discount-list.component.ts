@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Discount } from '../../entities/discount';
-import { Page } from '../../entities/page';
-import { DiscountService } from '../../services/discount.service';
+import { Discount } from '../entities/discount';
+import { Page } from '../entities/page';
+import { DiscountService } from '../services/discount.service';
 
 @Component({
   selector: 'app-discount-list',

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AirplanesComponent } from './airplanes/airplanes.component';
 import { BookingsComponent } from './bookings/bookings.component';
-import { DiscountListComponent } from './discounts-page/discount-list/discount-list.component';
+import { DiscountListComponent } from './discount-list/discount-list.component';
 import { FlightComponent } from './flight-list/flight-list.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
