@@ -24,7 +24,7 @@ export class DiscountListComponent implements OnInit {
     this.getDiscounts(this.pageNumber, this.pageSize);
   }
 
-  public getDiscounts(page: number, size: number): void {
+  getDiscounts(page: number, size: number): void {
     this.discountService.getAllDiscounts(page, size).subscribe(
       (response: Page<Discount>) => {
         this.currentPage = response;
@@ -36,6 +36,14 @@ export class DiscountListComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  setPage(page: number) {
+    if (page < 1 || page > this.currentPage.totalPages) {
+      return;
+    } else {
+      this.getDiscounts(page - 1, this.pageSize);
+    }
   }
 
 }

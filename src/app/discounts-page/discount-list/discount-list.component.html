@@ -1,5 +1,14 @@
 <div class="container">
   <h3>Passenger Discounts</h3>
+  <select class="custom-select"
+          style="width: auto"
+          name="pageSize"
+          [(ngModel)]="this.pageSize" (change)="getDiscounts(0,pageSize)">
+    <option [ngValue]="10">10 items per page</option>
+    <option [ngValue]="25">25 items per page</option>
+    <option [ngValue]="50">50 items per page</option>
+  </select>
+
   <div class="container">
     <div class="d-flex justify-content-between p-2" *ngFor="let discount of discounts; let i = index">
       <div class="row" style="border: 1px solid black; width: 100%">
@@ -9,4 +18,15 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination [collectionSize]="totalDiscounts"
+                  [(page)]="pageNumber"
+                  [pageSize]="pageSize"
+                  [maxSize]="4"
+                  [boundaryLinks]="true"
+                  [rotate]="true"
+                  (pageChange)="setPage($event)">
+  </ngb-pagination>
 </div>

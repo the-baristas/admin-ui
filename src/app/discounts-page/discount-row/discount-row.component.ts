@@ -63,7 +63,7 @@ export class DiscountRowComponent implements OnInit {
     this.formattedType = discount.discountType.charAt(0).toUpperCase()
       + discount.discountType.substring(1, discount.discountType.length);
 
-    this.ratePercentage = discount.discountRate * 100;
+    this.ratePercentage = Math.round(discount.discountRate * 100);
   }
 
 }
