@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\entities",
-    "\\src\\app\\passengers",
-    "\\src\\app\\route-list",
+    "\\src\\app\\login",
     "\\src\\app\\services",
-    "\\src\\app\\user-delete-modal",
+    "\\src\\app\\ticket-collapsible-row",
+    "\\src\\app\\user-collapsible-row",
     "\\src\\app\\users-list",
     "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\services\\flights.service.spec.ts",
+  "SelectedNode": "\\src\\app\\users-list\\users-list.component.spec.ts",
   "PreviewInSolutionExplorer": false
 }

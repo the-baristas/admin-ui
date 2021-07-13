@@ -1,0 +1,12 @@
+<div class="container">
+  <h3>Passenger Discounts</h3>
+  <div class="container">
+    <div class="d-flex justify-content-between p-2" *ngFor="let discount of discounts; let i = index">
+      <div class="row" style="border: 1px solid black; width: 100%">
+        <div class="col-sm">
+          <app-discount-row [discount]="discount"></app-discount-row>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

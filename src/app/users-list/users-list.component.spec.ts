@@ -29,7 +29,7 @@ describe('UsersListComponent', () => {
     email: "email@gmail.com",
     phone: "1112227878",
     role: "ROLE_USER",
-    active: true
+    isActive: true
   }, {
     userId: 2,
     givenName: "First",
@@ -39,7 +39,7 @@ describe('UsersListComponent', () => {
     email: "email@yahoo.com",
     phone: "1114447878",
     role: "ROLE_USER",
-    active: true
+    isActive: true
     }];
 
   let userPage: Page<User> = {
@@ -63,7 +63,7 @@ describe('UsersListComponent', () => {
     email: "email@smoothstack.com",
     phone: "1112221111",
     role: "ROLE_ADMIN",
-    active: true
+    isActive: true
   };
 
   beforeEach(async () => {
@@ -199,7 +199,7 @@ describe('UsersListComponent', () => {
     component.updateUserForm.value.phone = userAdmin.phone;
     component.updateUserForm.controls.phone.markAsDirty();
     component.updateUserForm.value.role = userAdmin.role;
-    component.updateUserForm.value.active = userAdmin.active;
+    component.updateUserForm.value.active = userAdmin.isActive;
 
     component.action = 'Add';
     component.userModalPerformAction();
