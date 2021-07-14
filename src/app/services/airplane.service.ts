@@ -33,24 +33,13 @@ export class AirplaneService {
         };
     }
 
-    getAirplanes(): Observable<Airplane[]> {
-        return this.httpClient
-            .get<Airplane[]>(this.airplanesPath, this.httpOptions)
-            .pipe(
-                tap(() =>
-                    this.messageService.add('Successfully found airplanes.')
-                ),
-                catchError(this.handleError<Airplane[]>('getAirplanes', []))
-            );
-    }
-
     findAllAirplanes(
         pageIndex: number,
         pageSize: number
     ): Observable<Page<Airplane>> {
         return this.httpClient
             .get<Page<Airplane>>(
-                `${this.airplanesPath}/page?index=${pageIndex}&size=${pageSize}`,
+                `${this.airplanesPath}?index=${pageIndex}&size=${pageSize}`,
                 this.httpOptions
             )
             .pipe(
@@ -70,7 +59,6 @@ export class AirplaneService {
             );
     }
 
-    /** GET airplane by id. Return `undefined` when id not found */
     getAirplaneNo404<Data>(id: number): Observable<Airplane> {
         const url = `${this.airplanesPath}/?id=${id}`;
         return this.httpClient.get<Airplane[]>(url, this.httpOptions).pipe(

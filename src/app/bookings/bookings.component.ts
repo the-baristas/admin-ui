@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BookingAddModalComponent } from '../booking-add-modal/booking-add-modal.component';
-import { BookingEditModalComponent } from '../booking-edit-modal/booking-edit-modal.component';
-import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
+import { BookingAddModalComponent } from './booking-add-modal/booking-add-modal.component';
+import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-modal.component';
+import { AirplaneDeleteModalComponent } from '../airplanes/airplane-delete-modal/airplane-delete-modal.component';
 import { Booking } from '../entities/booking';
 import { BookingService } from '../services/booking.service';
 

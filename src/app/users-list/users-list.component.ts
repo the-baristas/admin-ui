@@ -10,7 +10,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Page } from '../entities/page';
 import { User } from '../entities/user';
 import { UsersService } from '../services/users.service';
-import { UserDeleteModalComponent } from '../user-delete-modal/user-delete-modal.component';
+import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 
 @Component({
     selector: 'app-users-list',
