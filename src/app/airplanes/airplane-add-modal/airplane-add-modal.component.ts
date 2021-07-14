@@ -40,7 +40,7 @@ export class AirplaneAddModalComponent implements OnInit {
 
     add(): void {
         this.airplaneService
-            .addAirplane(this.addingForm.value as Airplane)
+            .create(this.addingForm.value as Airplane)
             .subscribe((airplane: Airplane) => {
                 this.activeModal.close(airplane);
             });

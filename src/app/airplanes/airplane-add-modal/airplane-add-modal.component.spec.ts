@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { Airplane } from '../../entities/airplane';
-import { Page } from '../../entities/page';
 import { AirplaneService } from '../../services/airplane.service';
 import { AirplaneAddModalComponent } from './airplane-add-modal.component';
 
@@ -14,7 +13,7 @@ describe('AirplaneAddModalComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'addAirplane'
+            'create'
         ]);
 
         await TestBed.configureTestingModule({
@@ -39,9 +38,7 @@ describe('AirplaneAddModalComponent', () => {
 
     it('should call #add when the add button is clicked', () => {
         const nativeElement: HTMLElement = fixture.nativeElement;
-        const buttons:
-            | NodeListOf<HTMLButtonElement>
-            | undefined = nativeElement
+        const buttons: NodeListOf<HTMLButtonElement> | undefined = nativeElement
             .querySelector('.modal-footer')
             ?.querySelectorAll('button');
         const addButton: HTMLButtonElement | undefined = buttons?.item(1);
@@ -58,7 +55,7 @@ describe('AirplaneAddModalComponent', () => {
             economyClassSeatsMax: 1,
             model: 'a'
         } as Airplane;
-        airplaneServiceSpy.addAirplane
+        airplaneServiceSpy.create
             .withArgs(airplane)
             .and.returnValue(of(airplane));
         component.addingForm.setValue(airplane);

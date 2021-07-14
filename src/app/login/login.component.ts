@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.userService.getCsrfToken().subscribe();
         this.initializeForms();
     }
 

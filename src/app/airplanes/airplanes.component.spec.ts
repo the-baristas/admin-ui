@@ -24,8 +24,8 @@ describe('AirplanesComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'findAllAirplanes',
-            'deleteAirplane'
+            'findAll',
+            'delete'
         ]);
 
         await TestBed.configureTestingModule({
@@ -51,7 +51,7 @@ describe('AirplanesComponent', () => {
         const airplanesPage: Page<Airplane> = {
             content: airplanes
         } as Page<Airplane>;
-        airplaneServiceSpy.findAllAirplanes.and.returnValue(of(airplanesPage)); // synchronous observable
+        airplaneServiceSpy.findAll.and.returnValue(of(airplanesPage)); // synchronous observable
         fixture.detectChanges(); // ngOnInit
 
         expect(component.foundAirplanes.length).toBe(2);
@@ -62,7 +62,7 @@ describe('AirplanesComponent', () => {
         const airplanesPage: Page<Airplane> = {
             content: airplanes
         } as Page<Airplane>;
-        airplaneServiceSpy.findAllAirplanes.and.returnValue(
+        airplaneServiceSpy.findAll.and.returnValue(
             defer(() => Promise.resolve(airplanesPage)) // asynchronous observable
         );
         fixture.detectChanges(); // ngOnInit
@@ -79,7 +79,7 @@ describe('AirplanesComponent', () => {
             const airplanesPage: Page<Airplane> = {
                 content: airplanes
             } as Page<Airplane>;
-            airplaneServiceSpy.findAllAirplanes.and.returnValue(
+            airplaneServiceSpy.findAll.and.returnValue(
                 defer(() => Promise.resolve(airplanesPage)) // asynchronous observable
             );
             fixture.detectChanges(); // ngOnInit
@@ -108,7 +108,7 @@ describe('AirplanesComponent', () => {
                 content: airplanes
             } as Page<Airplane>;
             const a$ = cold('---x|', { x: airplanesPage });
-            airplaneServiceSpy.findAllAirplanes.and.returnValue(a$);
+            airplaneServiceSpy.findAll.and.returnValue(a$);
 
             fixture.detectChanges(); // ngOnInit
             flush(); // flush the observables
@@ -138,7 +138,7 @@ describe('AirplanesComponent', () => {
     });
 
     xit('should create 2 table rows when there are 2 Airplanes in foundAirplanes', () => {
-        airplaneServiceSpy.findAllAirplanes.and.returnValue(EMPTY);
+        airplaneServiceSpy.findAll.and.returnValue(EMPTY);
         component.foundAirplanes = [{} as Airplane, {} as Airplane];
         fixture.detectChanges();
         const airplanesElement: HTMLElement = fixture.nativeElement;

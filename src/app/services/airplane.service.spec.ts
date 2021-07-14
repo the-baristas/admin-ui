@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {
     HttpClientTestingModule,
-    HttpTestingController
+    HttpTestingController,
+    TestRequest
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { defer } from 'rxjs';
@@ -47,7 +48,7 @@ describe('AirplaneService', () => {
         expect(airplaneService).toBeTruthy();
     });
 
-    describe('#getAirplanes', () => {
+    describe('#findAll', () => {
         beforeEach(() => {
             airplaneService = TestBed.inject(AirplaneService);
         });
@@ -57,7 +58,7 @@ describe('AirplaneService', () => {
                 content: [{ id: 1 }, { id: 2 }] as Airplane[]
             } as Page<Airplane>;
             airplaneService
-                .findAllAirplanes(0, 1)
+                .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
                         expect(airplanesPage).toEqual(
@@ -68,9 +69,10 @@ describe('AirplaneService', () => {
                 );
 
             // airplaneService should have made one request to GET airplanes from expected URL
-            const request = httpTestingController.expectOne(
+            const url: string = `${
                 environment.flightServiceUrl + airplanesPath
-            );
+            }?index=0&size=1`;
+            const request: TestRequest = httpTestingController.expectOne(url);
             expect(request.request.method).toEqual('GET');
 
             // Respond with the mock airplanes
@@ -79,26 +81,27 @@ describe('AirplaneService', () => {
 
         it('should be OK returning no airplanes', () => {
             airplaneService
-                .findAllAirplanes(0, 1)
+                .findAll(0, 1)
                 .subscribe(
-                    (airplanes) =>
-                        expect(airplanes.content.length).toEqual(
+                    (airplanesPage: Page<Airplane>) =>
+                        expect(airplanesPage.content.length).toEqual(
                             0,
                             'should have empty airplanes array'
                         ),
                     fail
                 );
 
-            const request = httpTestingController.expectOne(
+            const url: string = `${
                 environment.flightServiceUrl + airplanesPath
-            );
+            }?index=0&size=1`;
+            const request: TestRequest = httpTestingController.expectOne(url);
             request.flush([]); // Respond with no airplanes
         });
 
         // This service reports the error but finds a way to let the app keep going.
         it('should turn 404 into an empty airplanes result', () => {
             airplaneService
-                .findAllAirplanes(0, 1)
+                .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
                         expect(airplanesPage.content.length).toEqual(
@@ -108,9 +111,10 @@ describe('AirplaneService', () => {
                     fail
                 );
 
-            const request = httpTestingController.expectOne(
+            const url: string = `${
                 environment.flightServiceUrl + airplanesPath
-            );
+            }?index=0&size=1`;
+            const request = httpTestingController.expectOne(url);
 
             // respond with a 404 and the error message in the body
             const message = 'deliberate 404 error';
@@ -121,10 +125,10 @@ describe('AirplaneService', () => {
             const expectedAirplanesPage: Page<Airplane> = {
                 content: [{ id: 1 }, { id: 2 }] as Airplane[]
             } as Page<Airplane>;
-            airplaneService.findAllAirplanes(0, 1).subscribe();
-            airplaneService.findAllAirplanes(0, 1).subscribe();
+            airplaneService.findAll(0, 1).subscribe();
+            airplaneService.findAll(0, 1).subscribe();
             airplaneService
-                .findAllAirplanes(0, 1)
+                .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
                         expect(airplanesPage).toEqual(
@@ -134,10 +138,11 @@ describe('AirplaneService', () => {
                     fail
                 );
 
-            const requests = httpTestingController.match(
+            const url: string = `${
                 environment.flightServiceUrl + airplanesPath
-            );
-            expect(requests.length).toEqual(3, 'calls to getAirplanes()');
+            }?index=0&size=1`;
+            const requests: TestRequest[] = httpTestingController.match(url);
+            expect(requests.length).toEqual(3, 'calls to findAll()');
 
             // Respond to each request with different mock airplane results
             requests[0].flush([]);
@@ -155,7 +160,7 @@ describe('AirplaneService', () => {
             const updatingAirplane: Airplane = { id: 1 } as Airplane;
 
             airplaneService
-                .updateAirplane(updatingAirplane)
+                .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
@@ -194,7 +199,7 @@ describe('AirplaneService', () => {
             } as Airplane;
 
             airplaneService
-                .updateAirplane(updatingAirplane)
+                .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
@@ -221,7 +226,7 @@ describe('AirplaneService', () => {
         it('should turn network error into return of the updating airplane', () => {
             const updatingAirplane: Airplane = { id: 1 } as Airplane;
             airplaneService
-                .updateAirplane(updatingAirplane)
+                .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
@@ -263,7 +268,7 @@ describe('AirplaneService', () => {
             const id: number = 1;
             const expectedAirplane = { id } as Airplane;
             airplaneService
-                .getAirplaneById(id)
+                .findById(id)
                 .subscribe(
                     (airplane: Airplane) =>
                         expect(airplane).toEqual(
@@ -283,7 +288,7 @@ describe('AirplaneService', () => {
     });
 
     it('#searchAirplanes', () => {
-        airplaneService.searchAirplanes('word').subscribe((data) => {
+        airplaneService.search('word').subscribe((data) => {
             expect(data).toEqual([airplane]);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -295,7 +300,7 @@ describe('AirplaneService', () => {
     });
 
     it('#addAirplanes', () => {
-        airplaneService.addAirplane(airplane).subscribe((data) => {
+        airplaneService.create(airplane).subscribe((data) => {
             expect(data).toEqual(airplane);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -307,7 +312,7 @@ describe('AirplaneService', () => {
     });
 
     it('#deleteAirplanes', () => {
-        airplaneService.deleteAirplane(1).subscribe((data) => {
+        airplaneService.delete(1).subscribe((data) => {
             expect(data).toEqual(airplane);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -375,7 +380,7 @@ xdescribe('AirplaneService (with spies)', () => {
         );
 
         airplaneService
-            .findAllAirplanes(0, 1)
+            .findAll(0, 1)
             .subscribe(
                 (airplanesPage: Page<Airplane>) =>
                     expect(airplanesPage).toEqual(
@@ -398,7 +403,7 @@ xdescribe('AirplaneService (with spies)', () => {
             defer(() => Promise.reject(errorResponse))
         );
 
-        airplaneService.findAllAirplanes(0, 1).subscribe(
+        airplaneService.findAll(0, 1).subscribe(
             (airplanePage: Page<Airplane>) =>
                 fail('expected an error, not airplanes'),
             (error: HttpErrorResponse) =>

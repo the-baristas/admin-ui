@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { Airplane } from '../../entities/airplane';
 import { AirplaneService } from '../../services/airplane.service';
-
 import { AirplaneEditModalComponent } from './airplane-edit-modal.component';
 
 describe('AirplaneEditModalComponent', () => {
@@ -14,7 +13,7 @@ describe('AirplaneEditModalComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'updateAirplane'
+            'update'
         ]);
 
         await TestBed.configureTestingModule({
@@ -65,9 +64,7 @@ describe('AirplaneEditModalComponent', () => {
 
     it('save button should call #save which should close the active modal passing the selected airplane', () => {
         const nativeElement: HTMLElement = fixture.nativeElement;
-        const buttons:
-            | NodeListOf<HTMLButtonElement>
-            | undefined = nativeElement
+        const buttons: NodeListOf<HTMLButtonElement> | undefined = nativeElement
             .querySelector('.modal-footer')
             ?.querySelectorAll('button');
         const addButton: HTMLButtonElement | undefined = buttons?.item(1);
@@ -84,7 +81,7 @@ describe('AirplaneEditModalComponent', () => {
         } as Airplane;
         component.selectedAirplane = selectedAirplane;
         fixture.detectChanges();
-        airplaneServiceSpy.updateAirplane
+        airplaneServiceSpy.update
             .withArgs(selectedAirplane)
             .and.returnValue(of(selectedAirplane));
         spyOn(activeModal, 'close');

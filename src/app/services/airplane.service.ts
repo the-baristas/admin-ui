@@ -33,7 +33,7 @@ export class AirplaneService {
         };
     }
 
-    findAllAirplanes(
+    findAll(
         pageIndex: number,
         pageSize: number
     ): Observable<Page<Airplane>> {
@@ -72,7 +72,7 @@ export class AirplaneService {
     }
 
     /** GET airplane by id. Will 404 if id not found */
-    getAirplaneById(id: number): Observable<Airplane> {
+    findById(id: number): Observable<Airplane> {
         const url = `${this.airplanesPath}/${id}`;
         return this.httpClient.get<Airplane>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add(`fetched airplane id=${id}`)),
@@ -81,7 +81,7 @@ export class AirplaneService {
     }
 
     /* GET airplanes whose model contains search term */
-    searchAirplanes(term: string): Observable<Airplane[]> {
+    search(term: string): Observable<Airplane[]> {
         if (!term.trim()) {
             // if not search term, return empty airplane array.
             return of([]);
@@ -170,7 +170,7 @@ export class AirplaneService {
             );
     }
 
-    addAirplane(airplane: Airplane): Observable<Airplane> {
+    create(airplane: Airplane): Observable<Airplane> {
         this.httpOptions.headers = this.httpOptions.headers.append(
             'Content-Type',
             'application/json'
@@ -187,7 +187,7 @@ export class AirplaneService {
             );
     }
 
-    deleteAirplane(id: number): Observable<Airplane> {
+    delete(id: number): Observable<Airplane> {
         const url = `${this.airplanesPath}/${id}`;
         return this.httpClient.delete<Airplane>(url, this.httpOptions).pipe(
             tap(() =>
@@ -200,7 +200,7 @@ export class AirplaneService {
     }
 
     /** PUT: update the airplane on the server */
-    updateAirplane(airplane: Airplane): Observable<any> {
+    update(airplane: Airplane): Observable<any> {
         return this.httpClient
             .put(
                 `${this.airplanesPath}/${airplane.id}`,

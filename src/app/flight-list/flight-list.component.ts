@@ -93,7 +93,7 @@ export class FlightComponent implements OnInit {
             alert(error.message)
           }
         );
-        this.airplaneService.findAllAirplanes(0, 10).subscribe(
+        this.airplaneService.findAll(0, 10).subscribe(
           (response: Page<Airplane>) => {
             this.foundAirplanes = response.content;
           },

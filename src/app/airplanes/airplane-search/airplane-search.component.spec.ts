@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Airplane } from '../../entities/airplane';
 import { AirplaneService } from '../../services/airplane.service';
-
 import { AirplaneSearchComponent } from './airplane-search.component';
+
 
 describe('AirplaneSearchComponent', () => {
     let component: AirplaneSearchComponent;
@@ -12,8 +12,7 @@ describe('AirplaneSearchComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'getAirplanes',
-            'searchAirplanes'
+            'search'
         ]);
 
         await TestBed.configureTestingModule({
@@ -38,13 +37,10 @@ describe('AirplaneSearchComponent', () => {
         const selectedAirplane: Airplane = { id: 0, model: 'a1' } as Airplane;
         const term: string = 'a';
         const airplanes: Airplane[] = [{} as Airplane];
-        airplaneServiceSpy.searchAirplanes
-            .withArgs(term)
-            .and.returnValue(of(airplanes));
+        airplaneServiceSpy.search.withArgs(term).and.returnValue(of(airplanes));
         component.search(term);
-        const searchBox: HTMLInputElement = fixture.nativeElement.querySelector(
-            'input'
-        );
+        const searchBox: HTMLInputElement =
+            fixture.nativeElement.querySelector('input');
         component.onSuggestionClick(searchBox, selectedAirplane);
 
         expect(searchBox.value).toBe(selectedAirplane.model);

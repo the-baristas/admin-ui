@@ -13,7 +13,7 @@ describe('AirplaneDeleteModalComponent', () => {
 
     beforeEach(async () => {
         airplaneServiceSpy = jasmine.createSpyObj('AirplaneService', [
-            'deleteAirplane'
+            'delete'
         ]);
 
         await TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('AirplaneDeleteModalComponent', () => {
 
     it('#delete closes the active modal passing the deleted airplane', () => {
         const airplane = { id: 1 } as Airplane;
-        airplaneServiceSpy.deleteAirplane
+        airplaneServiceSpy.delete
             .withArgs(airplane.id)
             .and.returnValue(of(airplane));
         component.selectedAirplane = airplane;

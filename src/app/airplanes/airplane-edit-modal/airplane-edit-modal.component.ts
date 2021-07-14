@@ -46,7 +46,7 @@ export class AirplaneEditModalComponent implements OnInit {
 
     save(): void {
         this.airplaneService
-            .updateAirplane(this.selectedAirplane)
+            .update(this.selectedAirplane)
             .subscribe((updatedAirplane: Airplane) => {
                 this.activeModal.close(updatedAirplane);
             });
