@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AirplaneAddModalComponent } from '../airplane-add-modal/airplane-add-modal.component';
-import { AirplaneDeleteModalComponent } from '../airplane-delete-modal/airplane-delete-modal.component';
-import { AirplaneEditModalComponent } from '../airplane-edit-modal/airplane-edit-modal.component';
 import { Airplane } from '../entities/airplane';
 import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
+import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
+import { AirplaneDeleteModalComponent } from './airplane-delete-modal/airplane-delete-modal.component';
+import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component';
 
 @Component({
     selector: 'app-airplanes',
@@ -26,7 +26,7 @@ export class AirplanesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.findAllAirplanes();
+        this.findAll();
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
             const pagesMax: number = Math.ceil(this.totalElements / pageSize);
@@ -34,41 +34,41 @@ export class AirplanesComponent implements OnInit {
             // pages when pageSize is changed.
             this.pageNumber = Math.min(this.pageNumber, pagesMax);
             if (this.searchTerm === '') {
-                this.findAllAirplanes();
+                this.findAll();
             } else {
-                this.findAirplanesByModelContaining();
+                this.findByModelContaining();
             }
         });
     }
 
     onSearchResultsDisplay(searchTerm: string): void {
         this.searchTerm = searchTerm;
-        this.findAirplanesByModelContaining();
+        this.findByModelContaining();
     }
 
     onAllAirplanesDisplay(): void {
-        this.findAllAirplanes();
+        this.findAll();
     }
 
     onPageChange(): void {
         if (this.searchTerm === '') {
-            this.findAllAirplanes();
+            this.findAll();
         } else {
-            this.findAirplanesByModelContaining();
+            this.findByModelContaining();
         }
     }
 
-    findAllAirplanes(): void {
+    findAll(): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
-            .findAllAirplanes(pageIndex, this.pageSizeControl.value)
+            .findAll(pageIndex, this.pageSizeControl.value)
             .subscribe((airplanesPage: Page<Airplane>) => {
                 this.foundAirplanes = airplanesPage.content;
                 this.totalElements = airplanesPage.totalElements;
             });
     }
 
-    findAirplanesByModelContaining(): void {
+    findByModelContaining(): void {
         const pageIndex = this.pageNumber - 1;
         this.airplaneService
             .findByModelContaining(

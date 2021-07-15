@@ -93,9 +93,9 @@ export class FlightComponent implements OnInit {
             alert(error.message)
           }
         );
-        this.airplaneService.getAirplanes().subscribe(
-          (response: Airplane[]) => {
-            this.foundAirplanes = response;
+        this.airplaneService.findAll(0, 10).subscribe(
+          (response: Page<Airplane>) => {
+            this.foundAirplanes = response.content;
           },
           (error: HttpErrorResponse) => {
             alert(error.message)

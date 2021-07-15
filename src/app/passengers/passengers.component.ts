@@ -11,9 +11,9 @@ import {
 } from 'rxjs/operators';
 import { Page } from '../entities/page';
 import { Passenger } from '../entities/passenger';
-import { PassengerAddModalComponent } from '../passenger-add-modal/passenger-add-modal.component';
-import { PassengerDeleteModalComponent } from '../passenger-delete-modal/passenger-delete-modal.component';
-import { PassengerEditModalComponent } from '../passenger-edit-modal/passenger-edit-modal.component';
+import { PassengerAddModalComponent } from './passenger-add-modal/passenger-add-modal.component';
+import { PassengerDeleteModalComponent } from './passenger-delete-modal/passenger-delete-modal.component';
+import { PassengerEditModalComponent } from './passenger-edit-modal/passenger-edit-modal.component';
 import { PassengerService } from '../services/passenger.service';
 
 @Component({
