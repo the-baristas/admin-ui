@@ -6,7 +6,7 @@
                 #searchBox
                 id="search-box"
                 autocomplete="off"
-                (input)="search(searchBox.value)"
+                (input)="onInput(searchBox.value)"
             />
         </div>
     </div>
@@ -178,9 +178,9 @@
 <div class="d-flex justify-content-between p-2">
     <ngb-pagination
         [collectionSize]="totalElements"
-        [(page)]="pageNumber"
         [pageSize]="pageSizeControl.value"
-        [maxSize]="4"
-        (pageChange)="onPageChange()"
+        [page]="pageNumber"
+        [maxSize]="5"
+        (pageChange)="onPageChange($event)"
     ></ngb-pagination>
 </div>
