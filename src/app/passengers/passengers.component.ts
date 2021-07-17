@@ -29,11 +29,6 @@ export class PassengersComponent implements OnInit {
     totalElements!: number;
     searchTerm: string = '';
     passengers$!: Observable<Passenger[]>;
-    isCollapsed1: boolean = true;
-    isCollapsed2: boolean = true;
-    isCollapsed3: boolean = true;
-    seatInfoCollapsed: boolean = true;
-    userDetailsCollapsed: boolean = true;
     selectedTable: string = '';
     passengerIndex: number = 0;
     rowExpanded: boolean = false;

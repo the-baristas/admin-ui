@@ -1,19 +1,15 @@
-<div class="container">
-  <div class="row" style="border: 1px dotted gray">
-    <div class="col-sm"><b>Active: </b>{{ passenger.bookingActive }}</div>
-    <div class="col-sm">
-      <b>Confirmation Code: </b>
-      {{ passenger.bookingConfirmationCode }}
+<div class="row border">
+    <div class="col-sm-3"><b>Active: </b>{{ passenger.bookingActive }}</div>
+    <div class="col-sm-3">
+        <b>Confirmation Code: </b>
+        {{ passenger.bookingConfirmationCode }}
     </div>
-    <div class="col-sm">
-      <b>Layover Count: </b>
-      {{ passenger.layoverCount }}
+    <div class="col-sm-3">
+        <b>Layover Count: </b>
+        {{ passenger.layoverCount }}
     </div>
-    <div class="col-sm">
-      <b>Total Price: </b>
-      {{ passenger.bookingTotalPrice }}
+    <div class="col-sm-3">
+        <b>Total Price: </b>
+        {{ passenger.bookingTotalPrice }}
     </div>
-  </div>
 </div>
-
-
