@@ -35,6 +35,7 @@
       <div class="col-sm"><b>Price: </b>First Class: ${{page.firstPrice}}<br /> Business Class: ${{page.businessPrice}}<br /> Economy Class: ${{page.economyPrice}}</div>
       <div class="col-sm"><b>Reserved Seats: </b>First Class: {{page.firstReserved}}<br /> Business Class: {{page.businessReserved}}<br /> Economy Class: {{page.economyReserved}}</div>
       <div class="col-sm"><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, page)" data-toggle="modal">Edit</button> </div>
+      <div class="col-sm"><app-flight-email-button [flight]="page"></app-flight-email-button></div>
     </div>
   </div>
 </div>
