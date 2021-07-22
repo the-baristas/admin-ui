@@ -19,8 +19,8 @@
                 </label>
                 <input
                     type="text"
-                    id="booking-confirmation-code"
                     class="form-control"
+                    id="booking-confirmation-code"
                     formControlName="bookingConfirmationCode"
                 />
                 <div
@@ -61,7 +61,7 @@
                 />
                 <label for="phone">Phone: </label>
                 <input
-                    text="text"
+                    text="tel"
                     class="form-control"
                     id="phone"
                     formControlName="phone"
@@ -104,29 +104,30 @@
             </div>
             <label for="given-name">First Name: </label>
             <input
+                type="text"
                 class="form-control"
                 id="given-name"
                 formControlName="givenName"
-                type="text"
             />
             <label for="family-name">Last Name: </label>
             <input
+                type="text"
                 class="form-control"
                 id="family-name"
                 formControlName="familyName"
-                type="text"
             />
             <label for="date-of-birth">Date of Birth: </label>
             <input
+                type="date"
                 class="form-control"
                 id="date-of-birth"
                 formControlName="dateOfBirth"
-                type="date"
             />
             <label for="gender">Gender: </label>
             <select class="form-control" id="gender" formControlName="gender">
                 <option>Male</option>
                 <option>Female</option>
+                <option>Nonbinary</option>
             </select>
             <label for="street-address">Street Address: </label>
             <input

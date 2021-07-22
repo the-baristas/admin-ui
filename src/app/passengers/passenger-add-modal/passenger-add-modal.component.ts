@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { switchMap } from 'rxjs/operators';
+import { getFutureDateValidator } from 'src/app/validators/date-of-birth-validator';
 import { Booking } from '../../entities/booking';
 import { BookingFlight } from '../../entities/booking-flight';
 import { Passenger } from '../../entities/passenger';
@@ -58,7 +59,7 @@ export class PassengerAddModalComponent implements OnInit {
             }),
             givenName: ['', Validators.required],
             familyName: ['', Validators.required],
-            dateOfBirth: ['', Validators.required],
+            dateOfBirth: ['', [Validators.required, getFutureDateValidator()]],
             gender: ['', Validators.required],
             streetAddress: ['', Validators.required],
             city: ['', Validators.required],
@@ -112,7 +113,7 @@ export class PassengerAddModalComponent implements OnInit {
     }
 
     add(): void {
-        const creatingPassenger: Passenger = {
+        const passengerToCreate: Passenger = {
             bookingConfirmationCode: this.bookingConfirmationCode?.value,
             originAirportCode:
                 this.addingForm.get('bookingForm.flight')?.value
@@ -143,9 +144,9 @@ export class PassengerAddModalComponent implements OnInit {
             checkInGroup: this.addingForm.get('checkInGroup')?.value
         } as Passenger;
         this.passengerService
-            .create(creatingPassenger)
-            .subscribe((passenger: Passenger) => {
-                this.activeModal.close(passenger);
+            .create(passengerToCreate)
+            .subscribe((createdPassenger: Passenger) => {
+                this.activeModal.close(createdPassenger);
             });
     }
 
