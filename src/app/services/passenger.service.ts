@@ -149,4 +149,17 @@ export class PassengerService {
                 catchError(this.handleError<Passenger>('update', passenger))
             );
     }
+
+    delete(id: number): Observable<void> {
+        const url = `${PassengerService.PASSENGERS_PATH}/${id}`;
+        const a: undefined = undefined;
+        return this.httpClient.delete<void>(url, this.httpOptions).pipe(
+            tap(() =>
+                this.messageService.add(
+                    `Deleted passenger (id: ${id}) successfully.`
+                )
+            ),
+            catchError(this.handleError<void>('delete'))
+        );
+    }
 }

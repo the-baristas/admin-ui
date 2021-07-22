@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { switchMap } from 'rxjs/operators';
-import { getFutureDateValidator } from 'src/app/validators/date-of-birth-validator';
+import { getFutureDateValidator } from 'src/app/validators/future-date-validator';
 import { Booking } from '../../entities/booking';
 import { BookingFlight } from '../../entities/booking-flight';
 import { Passenger } from '../../entities/passenger';

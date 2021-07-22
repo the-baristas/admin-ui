@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PassengerService } from 'src/app/services/passenger.service';
-import { getFutureDateValidator } from 'src/app/validators/date-of-birth-validator';
+import { getFutureDateValidator } from 'src/app/validators/future-date-validator';
 import { Passenger } from '../../entities/passenger';
 
 @Component({
