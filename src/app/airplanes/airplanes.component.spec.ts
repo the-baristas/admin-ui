@@ -9,12 +9,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { defer, EMPTY, of } from 'rxjs';
 import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
-import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
-import { AirplaneDeleteModalComponent } from './airplane-delete-modal/airplane-delete-modal.component';
-import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component';
 import { Airplane } from '../entities/airplane';
 import { Page } from '../entities/page';
 import { AirplaneService } from '../services/airplane.service';
+import { AirplaneAddModalComponent } from './airplane-add-modal/airplane-add-modal.component';
+import { AirplaneDeleteModalComponent } from './airplane-delete-modal/airplane-delete-modal.component';
+import { AirplaneEditModalComponent } from './airplane-edit-modal/airplane-edit-modal.component';
 import { AirplanesComponent } from './airplanes.component';
 
 describe('AirplanesComponent', () => {
@@ -142,12 +142,11 @@ describe('AirplanesComponent', () => {
         component.foundAirplanes = [{} as Airplane, {} as Airplane];
         fixture.detectChanges();
         const airplanesElement: HTMLElement = fixture.nativeElement;
-        const tableRows:
-            | NodeListOf<HTMLTableRowElement>
-            | undefined = airplanesElement
-            .querySelector('table')
-            ?.querySelector('tbody')
-            ?.querySelectorAll('tr');
+        const tableRows: NodeListOf<HTMLTableRowElement> | undefined =
+            airplanesElement
+                .querySelector('table')
+                ?.querySelector('tbody')
+                ?.querySelectorAll('tr');
 
         expect(tableRows?.length).toBe(2);
     });

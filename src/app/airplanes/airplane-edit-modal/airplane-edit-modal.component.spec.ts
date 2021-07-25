@@ -67,10 +67,10 @@ describe('AirplaneEditModalComponent', () => {
         const buttons: NodeListOf<HTMLButtonElement> | undefined = nativeElement
             .querySelector('.modal-footer')
             ?.querySelectorAll('button');
-        const addButton: HTMLButtonElement | undefined = buttons?.item(1);
+        const saveButton: HTMLButtonElement | undefined = buttons?.item(1);
         spyOn(component, 'save').and.callThrough();
 
-        addButton?.click();
+        saveButton?.click();
         expect(component.save).toHaveBeenCalled();
 
         const selectedAirplane: Airplane = {
@@ -80,7 +80,7 @@ describe('AirplaneEditModalComponent', () => {
             model: 'a'
         } as Airplane;
         component.selectedAirplane = selectedAirplane;
-        fixture.detectChanges();
+        fixture.detectChanges(); // #ngOnInit
         airplaneServiceSpy.update
             .withArgs(selectedAirplane)
             .and.returnValue(of(selectedAirplane));

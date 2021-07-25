@@ -10,7 +10,7 @@ export type HandleError = <T>(
 ) => (error: HttpErrorResponse) => Observable<T>;
 
 /** Handles HttpClient errors */
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class HttpErrorHandlerService {
     constructor(private messageService: MessageService) {}
 

@@ -64,11 +64,12 @@ export class PassengerEditModalComponent implements OnInit {
     }
 
     private updateForm(): void {
+        this.editingForm.patchValue(this.selectedPassenger);
+
         const addressArray = this.selectedPassenger.address.split(' ');
         const cityIndex = addressArray.length - 3;
         const stateIndex = addressArray.length - 2;
         const zipCodeIndex = addressArray.length - 1;
-        this.editingForm.patchValue(this.selectedPassenger);
         this.editingForm.patchValue({
             streetAddress: addressArray.slice(0, cityIndex).join(' '),
             city: addressArray[cityIndex],

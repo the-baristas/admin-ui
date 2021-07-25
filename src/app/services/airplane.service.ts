@@ -185,32 +185,32 @@ export class AirplaneService {
     }
 
     /** PUT: update the airplane on the server */
-    update(airplane: Airplane): Observable<any> {
+    update(airplane: Airplane): Observable<Airplane> {
         return this.httpClient
-            .put(
+            .put<Airplane>(
                 `${this.airplanesPath}/${airplane.id}`,
                 airplane,
                 this.httpOptions
             )
             .pipe(
-                tap(() =>
+                tap((updatedAirplane: Airplane) =>
                     this.messageService.add(
-                        `Successfully updated! Airplane id=${airplane.id}`
+                        `Successfully updated! Airplane id: ${updatedAirplane.id}`
                     )
                 ),
                 catchError(this.handleError<any>('update', airplane))
             );
     }
 
-    delete(id: number): Observable<void> {
+    delete(id: number): Observable<unknown> {
         const url = `${this.airplanesPath}/${id}`;
-        return this.httpClient.delete<void>(url, this.httpOptions).pipe(
+        return this.httpClient.delete<unknown>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
                     `Successfully deleted! Airplane id=${id}`
                 )
             ),
-            catchError(this.handleError<void>('delete'))
+            catchError(this.handleError<unknown>('delete'))
         );
     }
 }

@@ -43,10 +43,10 @@ export class PassengersComponent implements OnInit {
     ngOnInit(): void {
         this.initializePassengers$();
         // TODO: Remove commented function.
-        this.passengers$.subscribe(/*(passengers: Passenger[]) => {
+        this.passengers$.subscribe();
+        /*((passengers: Passenger[]) => {
                 this.foundPassengers = passengers;
-            }*/
-        );
+            })*/
         this.findAll();
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
@@ -121,6 +121,7 @@ export class PassengersComponent implements OnInit {
         this.passengerService
             .search(term, pageIndex, this.pageSizeControl.value)
             .subscribe(this.updateFoundPassengers.bind(this));
+        this.searchTerm = term;
     }
 
     openAddModal(): void {
@@ -176,7 +177,8 @@ export class PassengersComponent implements OnInit {
     }
 
     onPageChange(pageNumber: number): void {
-        this.pageNumber = pageNumber;
         this.findAll();
+        this.pageNumber = pageNumber;
+        this.searchTerm = '';
     }
 }
