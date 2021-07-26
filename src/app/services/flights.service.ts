@@ -119,4 +119,20 @@ export class FlightService {
         );
     }
 
+    /** Email the flight information to all users who have booked tickets for the given flight */
+    public emailAllBookedUsers(id: number): Observable<any> {
+        const url = `${environment.flightServiceUrl + this.flightServicePath}/email/${id}`;
+        return this.httpClient.get(
+            url, { headers: this.loginService.getHeadersWithToken() }).pipe(
+                tap(() =>
+                this.messageService.add(
+                  'Successfully sent emails.'
+                )
+                ),
+                catchError(
+                  this.handleError<any>('emailAllBookedUsers')
+                )
+              );
+    }
+
 }
