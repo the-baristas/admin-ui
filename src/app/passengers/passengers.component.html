@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-6">
             <select
-                class="custom-select w-auto"
+                class="custom-select-sm w-auto"
                 name="pageSize"
                 [formControl]="pageSizeControl"
             >
@@ -34,18 +34,18 @@
                 type="button"
                 (click)="openAddModal()"
             >
-                Create New
+                New
             </button>
         </div>
     </div>
     <div
-        class="row border border-dark"
+        class="row border border-dark p-1"
         *ngFor="let passenger of foundPassengers; index as i"
     >
-        <div class="col-6 col-sm-2 p-2">
+        <div class="col-6 col-sm-2 p-1 text-center">
             <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-outline-dark p-1 m-1"
                 (click)="toggleCollapsibleRow('bookingDetails', i)"
             >
                 <b>Confirmation Code</b>
@@ -57,10 +57,10 @@
                 </div>
             </button>
         </div>
-        <div class="col-6 col-sm-2 p-2">
+        <div class="col-6 col-sm-2 p-1 text-center">
             <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-outline-dark p-1 m-1"
                 (click)="toggleCollapsibleRow('flightDetails', i)"
             >
                 <b>Flight Details</b>
@@ -84,7 +84,7 @@
                 </div>
             </button>
         </div>
-        <div class="col-6 col-sm-2 p-2">
+        <div class="col-6 col-sm-2 p-2 text-center">
             <button
                 type="button"
                 class="btn btn-outline-dark"
@@ -95,7 +95,7 @@
                 {{ passenger.givenName }}
             </button>
         </div>
-        <div class="col-12 col-sm-2 p-2">
+        <div class="col-6 col-sm-2 p-2 text-center">
             <button
                 type="button"
                 class="btn btn-outline-dark"
@@ -110,12 +110,13 @@
                 </div>
             </button>
         </div>
-        <div class="col-6 col-sm-1 p-2">
+        <div class="col-6 d-sm-none"></div>
+        <div class="col-6 col-sm-1 p-1 mt-1 text-center">
             <button class="btn btn-primary" (click)="openEditModal(passenger)">
                 Edit
             </button>
         </div>
-        <div class="col-6 col-sm-1 p-2">
+        <div class="col-6 col-sm-1 p-1 mt-1 text-center">
             <button class="btn btn-danger" (click)="openDeleteModal(passenger)">
                 Delete
             </button>
