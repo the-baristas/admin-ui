@@ -38,6 +38,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { DiscountListComponent } from './discount-list/discount-list.component';
 import { DiscountPipe } from './pipes/discount.pipe';
 import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
+import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
 
 @NgModule({
     declarations: [
@@ -72,7 +73,8 @@ import { DiscountRowComponent } from './discount-list/discount-row/discount-row.
         TicketCollapsibleRowComponent,
         DiscountListComponent,
         DiscountPipe,
-        DiscountRowComponent
+        DiscountRowComponent,
+        FlightEmailButtonComponent
     ],
     imports: [
         BrowserModule,
