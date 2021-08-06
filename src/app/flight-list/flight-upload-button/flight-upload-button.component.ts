@@ -36,9 +36,6 @@ export class FlightUploadButtonComponent implements OnInit {
   }
 
   onSubmitUpload() {
-    console.log(this.uploadForm.value.file.toString());
-    if (!this.uploadForm.value.file.toString().endsWith(".csv"))
-      console.log("no")
     this.awsService.uploadCsv(this.file);
     this.modalService.dismissAll();
   }

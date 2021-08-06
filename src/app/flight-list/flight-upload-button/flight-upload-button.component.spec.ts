@@ -22,4 +22,20 @@ describe('FlightUploadButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have Upload button', () => {
+    let compiled = fixture.debugElement.nativeElement;
+
+    expect(compiled.querySelector('#upload-button').textContent).toContain('Upload');
+  });
+
+  it('pressing upload button should open modal', () => {
+    spyOn(component, 'openModal').and.callThrough();
+    let button: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector('#upload-button');
+
+    button.click();
+    expect(component.openModal).toHaveBeenCalled();
+    expect(fixture.debugElement.nativeElement.querySelector("modal-body")).toBeDefined();
+  });
+
 });

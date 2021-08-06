@@ -23,7 +23,6 @@ export class AwsService {
       ACL: 'public-read',
       ContentType: csv.type
     }
-    console.log(csv)
     bucket.upload(params, (error: any, data: any) => {
       if (error) {
         alert("There was a problem");
