@@ -43,5 +43,3 @@ Used to maintain a consistent code style.
 ### sonar-scanner
 
 ### aws-sdk
-
-### @types/node
