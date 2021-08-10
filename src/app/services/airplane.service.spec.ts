@@ -287,7 +287,7 @@ describe('AirplaneService', () => {
         });
     });
 
-    it('#searchAirplanes', () => {
+    it('#search', () => {
         airplaneService.search('word').subscribe((data) => {
             expect(data).toEqual([airplane]);
         });
@@ -299,10 +299,10 @@ describe('AirplaneService', () => {
         mockRequest.flush([airplane]);
     });
 
-    it('#addAirplanes', () => {
-        airplaneService.create(airplane).subscribe((data) => {
-            expect(data).toEqual(airplane);
-        });
+    it('#create', () => {
+        airplaneService
+            .create(airplane)
+            .subscribe((data) => expect(data).toEqual(airplane), fail);
         let mockRequest = httpTestingController.expectOne(
             environment.flightServiceUrl + airplanesPath
         );
@@ -311,10 +311,8 @@ describe('AirplaneService', () => {
         mockRequest.flush(airplane);
     });
 
-    it('#deleteAirplanes', () => {
-        airplaneService.delete(1).subscribe((data) => {
-            expect(data).toEqual(airplane);
-        });
+    it('#delete', () => {
+        airplaneService.delete(1).subscribe();
         let mockRequest = httpTestingController.expectOne(
             environment.flightServiceUrl + airplanesPath + '/' + airplane.id
         );

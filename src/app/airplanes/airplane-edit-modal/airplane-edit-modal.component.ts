@@ -35,7 +35,7 @@ export class AirplaneEditModalComponent implements OnInit {
         });
     }
 
-    updateForm(): void {
+    private updateForm(): void {
         this.editingForm.setValue({
             firstClassSeatsMax: this.selectedAirplane.firstClassSeatsMax,
             businessClassSeatsMax: this.selectedAirplane.businessClassSeatsMax,

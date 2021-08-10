@@ -37,15 +37,15 @@ describe('AirplaneDeleteModalComponent', () => {
     });
 
     it('#delete closes the active modal passing the deleted airplane', () => {
-        const airplane = { id: 1 } as Airplane;
+        const airplaneToDelete: Airplane = { id: 1 } as Airplane;
         airplaneServiceSpy.delete
-            .withArgs(airplane.id)
-            .and.returnValue(of(airplane));
-        component.selectedAirplane = airplane;
-        fixture.detectChanges();
+            .withArgs(airplaneToDelete.id)
+            .and.returnValue(of(undefined));
+        component.selectedAirplane = airplaneToDelete;
+        fixture.detectChanges(); // #ngOninit
 
         spyOn(activeModal, 'close');
         component.delete();
-        expect(activeModal.close).toHaveBeenCalledWith(airplane);
+        expect(activeModal.close).toHaveBeenCalledWith(airplaneToDelete);
     });
 });

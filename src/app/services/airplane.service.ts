@@ -33,10 +33,7 @@ export class AirplaneService {
         };
     }
 
-    findAll(
-        pageIndex: number,
-        pageSize: number
-    ): Observable<Page<Airplane>> {
+    findAll(pageIndex: number, pageSize: number): Observable<Page<Airplane>> {
         return this.httpClient
             .get<Page<Airplane>>(
                 `${this.airplanesPath}?index=${pageIndex}&size=${pageSize}`,
@@ -49,7 +46,7 @@ export class AirplaneService {
                     )
                 ),
                 catchError(
-                    this.handleError<Page<Airplane>>('getAirplanesPage', {
+                    this.handleError<Page<Airplane>>('findAll', {
                         content: [] as Airplane[],
                         number: 0,
                         totalElements: 0,
@@ -101,7 +98,7 @@ export class AirplaneService {
                               `No airplanes matching "${term}".`
                           )
                 ),
-                catchError(this.handleError<Airplane[]>('searchAirplanes', []))
+                catchError(this.handleError<Airplane[]>('search', []))
             );
     }
 
@@ -187,33 +184,33 @@ export class AirplaneService {
             );
     }
 
-    delete(id: number): Observable<Airplane> {
-        const url = `${this.airplanesPath}/${id}`;
-        return this.httpClient.delete<Airplane>(url, this.httpOptions).pipe(
-            tap(() =>
-                this.messageService.add(
-                    `Successfully deleted! Airplane id=${id}`
-                )
-            ),
-            catchError(this.handleError<Airplane>('deleteAirplane'))
-        );
-    }
-
     /** PUT: update the airplane on the server */
-    update(airplane: Airplane): Observable<any> {
+    update(airplane: Airplane): Observable<Airplane> {
         return this.httpClient
-            .put(
+            .put<Airplane>(
                 `${this.airplanesPath}/${airplane.id}`,
                 airplane,
                 this.httpOptions
             )
             .pipe(
-                tap(() =>
+                tap((updatedAirplane: Airplane) =>
                     this.messageService.add(
-                        `Successfully updated! Airplane id=${airplane.id}`
+                        `Successfully updated! Airplane id: ${updatedAirplane.id}`
                     )
                 ),
-                catchError(this.handleError<any>('updateAirplane', airplane))
+                catchError(this.handleError<any>('update', airplane))
             );
+    }
+
+    delete(id: number): Observable<unknown> {
+        const url = `${this.airplanesPath}/${id}`;
+        return this.httpClient.delete<unknown>(url, this.httpOptions).pipe(
+            tap(() =>
+                this.messageService.add(
+                    `Successfully deleted! Airplane id=${id}`
+                )
+            ),
+            catchError(this.handleError<unknown>('delete'))
+        );
     }
 }

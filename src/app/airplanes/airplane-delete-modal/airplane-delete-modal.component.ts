@@ -20,8 +20,8 @@ export class AirplaneDeleteModalComponent implements OnInit {
     ngOnInit(): void {}
 
     delete(): void {
-        this.airplaneService.delete(this.selectedAirplane.id).subscribe(() => {
-            this.activeModal.close(this.selectedAirplane);
-        });
+        this.airplaneService
+            .delete(this.selectedAirplane.id)
+            .subscribe(() => this.activeModal.close(this.selectedAirplane));
     }
 }

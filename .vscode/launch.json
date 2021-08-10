@@ -36,7 +36,7 @@
         },
         {
             "name": "ng e2e",
-            "type": "node",
+            "type": "pwa-node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/protractor/bin/protractor",
             "protocol": "inspector",
