@@ -11,10 +11,10 @@ import {
 } from 'rxjs/operators';
 import { Page } from '../entities/page';
 import { Passenger } from '../entities/passenger';
+import { PassengerService } from '../services/passenger.service';
 import { PassengerAddModalComponent } from './passenger-add-modal/passenger-add-modal.component';
 import { PassengerDeleteModalComponent } from './passenger-delete-modal/passenger-delete-modal.component';
 import { PassengerEditModalComponent } from './passenger-edit-modal/passenger-edit-modal.component';
-import { PassengerService } from '../services/passenger.service';
 
 @Component({
     selector: 'app-passengers',
@@ -23,20 +23,17 @@ import { PassengerService } from '../services/passenger.service';
 })
 export class PassengersComponent implements OnInit {
     foundPassengers: Passenger[] = [];
-    pageNumber: number = 1;
     pageSizeControl: FormControl = new FormControl(10);
+    pageNumber: number = 1;
+    pageNumberControl: FormControl = new FormControl(1);
     totalElements!: number;
     searchTerm: string = '';
     passengers$!: Observable<Passenger[]>;
-    private searchTerms = new Subject<string>();
-    isCollapsed1: boolean = true;
-    isCollapsed2: boolean = true;
-    isCollapsed3: boolean = true;
-    seatInfoCollapsed: boolean = true;
-    userDetailsCollapsed: boolean = true;
     selectedTable: string = '';
     passengerIndex: number = 0;
     rowExpanded: boolean = false;
+
+    private searchTerms = new Subject<string>();
 
     constructor(
         private passengerService: PassengerService,
@@ -45,22 +42,57 @@ export class PassengersComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializePassengers$();
-        this.passengers$.subscribe((passengers: Passenger[]) => {
-            this.foundPassengers = passengers;
-        });
+        // TODO: Remove commented function.
+        this.passengers$.subscribe();
+        /*((passengers: Passenger[]) => {
+                this.foundPassengers = passengers;
+            })*/
         this.findAll();
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
             const pagesMax: number = Math.ceil(this.totalElements / pageSize);
             // The page number may be set to be greater than the max number of
             // pages when pageSize is changed.
-            this.pageNumber = Math.min(this.pageNumber, pagesMax);
+            this.pageNumber = Math.min(this.pageNumberControl.value, pagesMax);
             if (this.searchTerm === '') {
                 this.findAll();
             } else {
                 this.search(this.searchTerm);
             }
         });
+    }
+
+    private initializePassengers$(): void {
+        this.passengers$ = this.searchTerms.pipe(
+            // wait 300ms after each keystroke before considering the term
+            debounceTime(300),
+            // ignore new term if same as previous term
+            distinctUntilChanged(),
+            // switch to new search observable each time the term changes
+            switchMap((term: string) => {
+                const pageIndex = this.pageNumber - 1;
+                return iif(
+                    () => term === '',
+                    this.passengerService.findAll(
+                        pageIndex,
+                        this.pageSizeControl.value
+                    ),
+                    this.passengerService.search(
+                        term,
+                        pageIndex,
+                        this.pageSizeControl.value
+                    )
+                );
+            }),
+            tap(this.updateFoundPassengers.bind(this)),
+            // Map the page to an array.
+            map((page: Page<Passenger>) => page.content)
+        );
+    }
+
+    updateFoundPassengers(page: Page<Passenger>): void {
+        this.foundPassengers = page.content;
+        this.totalElements = page.totalElements;
     }
 
     toggleCollapsibleRow(selectedTable: string, passengerIndex: number): void {
@@ -77,38 +109,19 @@ export class PassengersComponent implements OnInit {
         this.passengerIndex = passengerIndex;
     }
 
-    private initializePassengers$(): void {
+    findAll(): void {
         const pageIndex = this.pageNumber - 1;
-        this.passengers$ = this.searchTerms.pipe(
-            // wait 300ms after each keystroke before considering the term
-            debounceTime(300),
-            // ignore new term if same as previous term
-            distinctUntilChanged(),
-            // switch to new search observable each time the term changes
-            switchMap((term: string) =>
-                iif(
-                    () => term === '',
-                    this.passengerService.findAll(
-                        pageIndex,
-                        this.pageSizeControl.value
-                    ),
-                    this.passengerService.search(
-                        term,
-                        pageIndex,
-                        this.pageSizeControl.value
-                    )
-                )
-            ),
-            tap((page: Page<Passenger>) => {
-                this.totalElements = page.totalElements;
-            }),
-            // Map the page to an array.
-            map((page: Page<Passenger>) => page.content)
-        );
+        this.passengerService
+            .findAll(pageIndex, this.pageSizeControl.value)
+            .subscribe(this.updateFoundPassengers.bind(this));
     }
 
-    findAll(): void {
-        this.search('');
+    search(term: string): void {
+        const pageIndex = this.pageNumber - 1;
+        this.passengerService
+            .search(term, pageIndex, this.pageSizeControl.value)
+            .subscribe(this.updateFoundPassengers.bind(this));
+        this.searchTerm = term;
     }
 
     openAddModal(): void {
@@ -127,10 +140,10 @@ export class PassengersComponent implements OnInit {
         const modalRef = this.modalService.open(PassengerEditModalComponent, {
             centered: true
         });
-        // The selected airplane in the foundAirplanes array is cloned and
+        // The selected passenger in the foundPassengers array is cloned and
         // passed it to the modal component so that changes made in the modal
-        // won't affect the airplanes list.
-        modalRef.componentInstance.selectedAirplane = Object.assign(
+        // won't affect the passengers list.
+        modalRef.componentInstance.selectedPassenger = Object.assign(
             {},
             selectedPassenger
         );
@@ -147,23 +160,25 @@ export class PassengersComponent implements OnInit {
         const modalRef = this.modalService.open(PassengerDeleteModalComponent, {
             centered: true
         });
-        modalRef.componentInstance.selectedAirplane = passengerToDelete;
+        modalRef.componentInstance.selectedPassenger = passengerToDelete;
         modalRef.componentInstance.entityName = 'Passenger';
 
-        modalRef.result.then((deletedAirplane: Passenger) => {
+        modalRef.result.then((deletedPassenger: Passenger) => {
             this.foundPassengers = this.foundPassengers.filter(
-                (passenger: Passenger) => passenger !== deletedAirplane
+                (passenger: Passenger) => passenger !== deletedPassenger
             );
         });
     }
 
-    onPageChange(): void {
-        this.findAll();
-    }
-
     // Push a search term into the observable stream.
-    search(term: string): void {
+    onInput(term: string): void {
         this.searchTerm = term;
         this.searchTerms.next(term);
+    }
+
+    onPageChange(pageNumber: number): void {
+        this.findAll();
+        this.pageNumber = pageNumber;
+        this.searchTerm = '';
     }
 }

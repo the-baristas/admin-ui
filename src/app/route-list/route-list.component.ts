@@ -56,7 +56,6 @@ export class RouteListComponent implements OnInit {
                     this.pageNumber = routesPage.number+1;
                     this.foundRoutes = routesPage.content;
                     this.totalRoutes = routesPage.totalElements;
-                    console.log(routesPage);
                 }
             );
           this.initializeForms();

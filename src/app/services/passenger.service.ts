@@ -135,4 +135,30 @@ export class PassengerService {
                 catchError(this.handleError<Passenger>('add', passenger))
             );
     }
+
+    update(passenger: Passenger): Observable<Passenger> {
+        const url = `${PassengerService.PASSENGERS_PATH}/${passenger.id}`;
+        return this.httpClient
+            .put<Passenger>(url, passenger, this.httpOptions)
+            .pipe(
+                tap((updatedPassenger: Passenger) =>
+                    this.messageService.add(
+                        `Successfully updated. Passenger id: ${updatedPassenger.id}`
+                    )
+                ),
+                catchError(this.handleError<Passenger>('update', passenger))
+            );
+    }
+
+    delete(id: number): Observable<unknown> {
+        const url = `${PassengerService.PASSENGERS_PATH}/${id}`;
+        return this.httpClient.delete<unknown>(url, this.httpOptions).pipe(
+            tap(() =>
+                this.messageService.add(
+                    `Deleted passenger (id: ${id}) successfully.`
+                )
+            ),
+            catchError(this.handleError<unknown>('delete'))
+        );
+    }
 }

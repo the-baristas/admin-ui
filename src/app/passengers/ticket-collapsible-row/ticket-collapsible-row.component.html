@@ -1,14 +1,15 @@
-
-<div class="container">
-  <div class="row" style="border: 1px dotted gray">
-    <div class="col-sm"><b>Name: </b>{{ passenger.familyName }}, {{ passenger.givenName }}</div>
+<div class="row border">
+    <div class="col-sm">
+        <b>Name: </b>{{ passenger.familyName }}, {{ passenger.givenName }}
+    </div>
     <div class="col-sm"><b>Date of Birth: </b>{{ passenger.dateOfBirth }}</div>
     <div class="col-sm"><b>Gender: </b>{{ passenger.gender }}</div>
     <div class="col-sm"><b>Address: </b>{{ passenger.address }}</div>
     <div class="col-sm"><b>Seat Class: </b>{{ passenger.seatClass }}</div>
     <div class="col-sm"><b>Seat Number: </b>{{ passenger.seatNumber }}</div>
-    <div class="col-sm"><b>Check-In Group: </b>{{ passenger.checkInGroup }}</div>
+    <div class="col-sm">
+        <b>Check-In Group: </b>{{ passenger.checkInGroup }}
+    </div>
     <div class="col-sm"><b>Discount Type: </b>{{ passenger.discountType }}</div>
     <div class="col-sm"><b>Discount Rate: </b>{{ passenger.discountRate }}</div>
-  </div>
 </div>
