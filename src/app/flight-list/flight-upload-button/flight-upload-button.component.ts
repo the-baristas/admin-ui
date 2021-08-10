@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { AwsService } from '../../services/aws.service';
+import { FlightService } from '../../services/flights.service';
 
 @Component({
   selector: 'app-flight-upload-button',
@@ -21,7 +21,7 @@ export class FlightUploadButtonComponent implements OnInit {
   uploadForm!: FormGroup;
   file: any;
 
-  constructor(private modalService: NgbModal, private awsService: AwsService) { }
+  constructor(private modalService: NgbModal, private flightService: FlightService) { }
   
   ngOnInit(): void {
     this.uploadForm = new FormGroup({
@@ -36,7 +36,13 @@ export class FlightUploadButtonComponent implements OnInit {
   }
 
   onSubmitUpload() {
-    this.awsService.uploadCsv(this.file);
+    this.flightService.uploadFlightCsv(this.file).subscribe((response: any) => {
+      alert("File uploaded successfully.")
+    },
+      (error: Error) => {
+        alert("Unable to upload file.")
+      }
+    )
     this.modalService.dismissAll();
   }
 

@@ -1,3 +1,5 @@
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FlightUploadButtonComponent } from './flight-upload-button.component';
@@ -8,7 +10,8 @@ describe('FlightUploadButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FlightUploadButtonComponent ]
+      declarations: [FlightUploadButtonComponent],
+      imports: [HttpClientTestingModule, HttpClientModule],
     })
     .compileComponents();
   });
