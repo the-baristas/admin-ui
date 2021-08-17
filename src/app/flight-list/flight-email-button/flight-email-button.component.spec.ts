@@ -47,7 +47,9 @@ describe('FlightEmailButtonComponent', () => {
     businessPrice: 1,
     economyReserved: 0,
     economyPrice: 1,
-    isActive: true
+    isActive: true,
+    departureGate: "A1",
+    arrivalGate: "B1"
   }
 
   beforeEach(async () => {
