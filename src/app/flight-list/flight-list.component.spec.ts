@@ -57,7 +57,9 @@ describe('FlightComponent', () => {
     businessPrice: 1,
     economyReserved: 1,
     economyPrice: 1,
-    isActive: true
+    isActive: true,
+    departureGate: "A1",
+    arrivalGate: "B1"
   }
   let flightsPage: Page<Flight> = {
     content: [flight],

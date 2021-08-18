@@ -24,7 +24,9 @@ export interface Flight {
     routeId: string;
     airplaneId: string;
     departureTime: string;
+    departureGate: string;
     arrivalTime: string;
+    arrivalGate: string;
     firstReserved: number;
     firstPrice: number;
     businessReserved: number;
@@ -33,4 +35,3 @@ export interface Flight {
     economyPrice: number;
     isActive: boolean;
   }
-  
