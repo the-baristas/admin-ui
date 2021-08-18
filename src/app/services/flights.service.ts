@@ -133,6 +133,19 @@ export class FlightService {
                   this.handleError<any>('emailAllBookedUsers')
                 )
               );
-    }
+  }
 
+  /** Send a file to be uploaded to AWS S3 */
+  public uploadFlightCsv(file: File): Observable<any> {
+    const url = `${environment.flightServiceUrl + this.flightServicePath}/csv`;
+    let formData = new FormData();
+    formData.append("file", file);
+    return this.httpClient.post(
+      url, formData, { headers: this.loginService.getHeadersWithToken() })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+            return throwError('Failed to upload file.');
+        })
+      );
+  }
 }

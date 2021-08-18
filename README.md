@@ -41,3 +41,5 @@ Used to maintain a consistent code style.
 ### jwt-decode
 
 ### sonar-scanner
+
+### aws-sdk

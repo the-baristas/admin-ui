@@ -76,6 +76,9 @@ describe('FlightEmailButtonComponent', () => {
   });
 
   it('button should only be enabled when there are seats reserved', () => {
+    component.flight.businessReserved = 0;
+    component.setButtonDisabled();
+    fixture.detectChanges();
     let button: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector('button');
 
     expect(button?.innerText).toContain('Email');
@@ -92,6 +95,9 @@ describe('FlightEmailButtonComponent', () => {
 
   it('clicking button should send email', () => {
     spyOn(component, 'onClickEmail').and.callThrough();
+    component.flight.businessReserved = 2;
+    component.setButtonDisabled();
+    fixture.detectChanges();
 
     let button: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector('button');
     button.click();

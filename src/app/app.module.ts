@@ -39,6 +39,7 @@ import { DiscountListComponent } from './discount-list/discount-list.component';
 import { DiscountPipe } from './pipes/discount.pipe';
 import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
 import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
+import { FlightUploadButtonComponent } from './flight-list/flight-upload-button/flight-upload-button.component';
 
 @NgModule({
     declarations: [
@@ -74,7 +75,8 @@ import { FlightEmailButtonComponent } from './flight-list/flight-email-button/fl
         DiscountListComponent,
         DiscountPipe,
         DiscountRowComponent,
-        FlightEmailButtonComponent
+        FlightEmailButtonComponent,
+        FlightUploadButtonComponent
     ],
     imports: [
         BrowserModule,
