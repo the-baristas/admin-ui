@@ -32,6 +32,10 @@ export class UsersListComponent implements OnInit {
   searchUsersForm!: FormGroup;
   searchString!: string;
 
+  now = Date.now();
+  private currentTime: Date = new Date(Date.now());
+  currentDate: string = `${this.currentTime.getFullYear()}-`;
+
   constructor(
     private usersService: UsersService,
     private modalService: NgbModal,
@@ -112,6 +116,11 @@ export class UsersListComponent implements OnInit {
       this.updateUserForm.patchValue({ phone: user.phone });
       this.updateUserForm.patchValue({ role: user.role });
       this.updateUserForm.patchValue({ active: user.active });
+      this.updateUserForm.patchValue({ dob: user.dob });
+      this.updateUserForm.patchValue({ streetAddress: user.streetAddress });
+      this.updateUserForm.patchValue({ city: user.city });
+      this.updateUserForm.patchValue({ state: user.state });
+      this.updateUserForm.patchValue({ zip: user.zip });
     } else {
       this.action = 'Add';
       this.updateUserForm.patchValue({
@@ -171,10 +180,29 @@ export class UsersListComponent implements OnInit {
         Validators.minLength(1),
         Validators.maxLength(45)
       ]),
-      password: new FormControl(''),
+      password: new FormControl('', [
+        Validators.required
+      ]),
       phone: new FormControl('', [
         Validators.required,
         Validators.pattern('1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?')
+      ]),
+      dob: new FormControl('', [
+        Validators.required
+      ]),
+      streetAddress: new FormControl('', [
+        Validators.required
+      ]),
+      city: new FormControl('', [
+        Validators.required
+      ]),
+      state: new FormControl('', [
+        Validators.required,
+        Validators.pattern("(A[LKSZR])|(C[AOT])|(D[EC])|(F[ML])|(G[AU])|(HI)|(I[DLNA])|(K[SY])|(LA)|(M[EHDAINSOT])|(N[EVHJMYCD])|(MP)|(O[HKR])|(P[WAR])|(RI)|(S[CD])|(T[NX])|(UT)|(V[TIA])|(W[AVIY])")
+      ]),
+      zip: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$")
       ]),
       role: new FormControl(''),
       active: new FormControl('')
