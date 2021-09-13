@@ -37,37 +37,43 @@ export class RouteListComponent implements OnInit {
 
   confirmation!: boolean;
 
-  constructor(private routeService: RouteService, private modalService: NgbModal, 
-     private formBuilder: FormBuilder) { }
-        
+  activeOnly: boolean = true;
+
+  constructor(private routeService: RouteService, private modalService: NgbModal,
+    private formBuilder: FormBuilder) { }
+
   private modalRef!: NgbModalRef;
   errMsg: any;
   closeResult: any;
 
-  
 
-        ngOnInit(): void {
-          const pageIndex = this.pageNumber - 1;
-          this.routeService
-              .getRoutesPage(pageIndex, this.pageSize)
-              .subscribe(
-                  (routesPage: Page<Route>) => {
-                    this.currentPage = routesPage;
-                    this.pageNumber = routesPage.number+1;
-                    this.foundRoutes = routesPage.content;
-                    this.totalRoutes = routesPage.totalElements;
-                }
-            );
-          this.initializeForms();
+
+  ngOnInit(): void {
+    this.getRoutesPage();
+    this.initializeForms();
+  }
+
+  getRoutesPage() {
+    const pageIndex = this.pageNumber - 1;
+    this.routeService
+      .getRoutesPage(pageIndex, this.pageSize, this.activeOnly)
+      .subscribe(
+        (routesPage: Page<Route>) => {
+          this.currentPage = routesPage;
+          this.pageNumber = routesPage.number + 1;
+          this.foundRoutes = routesPage.content;
+          this.totalRoutes = routesPage.totalElements;
         }
+      );
+  }
 
   updateForm(): void {
     this.updateRouteForm.patchValue({
-        originId: this.editRoute.originAirport.iataId,
-        destinationId: this.editRoute.destinationAirport.iataId,
-        isActive: this.editRoute.isActive,
+      originId: this.editRoute.originAirport.iataId,
+      destinationId: this.editRoute.destinationAirport.iataId,
+      isActive: this.editRoute.isActive,
     });
-}
+  }
 
   public getRoutes(): void {
     this.routeService.getAllRoutes().subscribe(
@@ -75,7 +81,6 @@ export class RouteListComponent implements OnInit {
         this.foundRoutes = response;
         this.totalRoutes = this.foundRoutes.length;
         this.setPage(1);
-        console.log(this.foundRoutes);
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -114,7 +119,7 @@ export class RouteListComponent implements OnInit {
           this.modalRef.close();
         },
         (error: HttpErrorResponse) => {
-          
+
           if (error.status === 404) {
             alert("One or more fields are invalid.")
           }
@@ -128,17 +133,17 @@ export class RouteListComponent implements OnInit {
     if (this.confirmation === true) {
       console.log(this.editRoute.id);
       this.routeService.deleteRoute(this.editRoute.id)
-      .subscribe(
-        (response: any) => {
-          this.getRoutes();
-          this.modalRef.close();
-        },
-        (error: HttpErrorResponse) => {
-          if (error.status === 204) {
-            alert("Deleted Successfully!")
+        .subscribe(
+          (response: any) => {
+            this.getRoutes();
+            this.modalRef.close();
+          },
+          (error: HttpErrorResponse) => {
+            if (error.status === 204) {
+              alert("Deleted Successfully!")
+            }
           }
-        }
-      )
+        )
     }
   }
 
@@ -149,7 +154,7 @@ export class RouteListComponent implements OnInit {
       this.updateForm();
       this.updateRouteForm.valueChanges.subscribe((route: Route) => {
         Object.assign(this.editRoute, route);
-    });
+      });
     }
     this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(
@@ -183,14 +188,12 @@ export class RouteListComponent implements OnInit {
       return;
     }
     else {
-      console.log(pageNo);
-      this.routeService.getRoutesPage(pageNo - 1, this.pageSize).subscribe(
+      this.routeService.getRoutesPage(pageNo - 1, this.pageSize, this.activeOnly).subscribe(
         (routesPage: Page<Route>) => {
-            this.currentPage = routesPage;
-            this.pageNumber = routesPage.number+1;
-            console.log(this.pageNumber);
-            this.foundRoutes = routesPage.content;
-            this.totalRoutes = routesPage.totalElements;
+          this.currentPage = routesPage;
+          this.pageNumber = routesPage.number + 1;
+          this.foundRoutes = routesPage.content;
+          this.totalRoutes = routesPage.totalElements;
         }
       )
     }
@@ -205,17 +208,17 @@ export class RouteListComponent implements OnInit {
         isActive: new FormControl('')
 
       });
-      this.addRouteForm = new FormGroup(
-        {
-          originId: new FormControl(this.newRoute),
-          destinationId: new FormControl(this.newRoute),
-          isActive: new FormControl(this.newRoute)
-        });
-        this.searchRoutesForm = new FormGroup(
-          {
-            query: new FormControl('')
-          }
-        )
+    this.addRouteForm = new FormGroup(
+      {
+        originId: new FormControl(this.newRoute),
+        destinationId: new FormControl(this.newRoute),
+        isActive: new FormControl(this.newRoute)
+      });
+    this.searchRoutesForm = new FormGroup(
+      {
+        query: new FormControl('')
+      }
+    )
   }
 
   searchRoutesByAirport() {
@@ -223,27 +226,44 @@ export class RouteListComponent implements OnInit {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
       const pageIndex = this.pageNumber - 1;
-      this.routeService.getRoutesPage(pageIndex, this.pageSize);
+      this.routeService.getRoutesPage(pageIndex, this.pageSize, this.activeOnly);
       return;
     }
-  
+
     const pageIndex = this.pageNumber - 1;
-    this.routeService.routeQuery(this.searchRoutesForm.value.query, pageIndex, this.pageSize)
-    .subscribe(
-      (routesPage: Page<Route>) => {
-        this.currentPage = routesPage;
-        this.pageNumber = routesPage.number+1;
-        this.foundRoutes = routesPage.content;
-        this.totalRoutes = routesPage.totalElements;
-        let div: any = document.getElementById('searchByIdErrorMessage');
-        div.style.display = "none";
-        console.log(this.foundRoutes);
-      },
-      (error: HttpErrorResponse) => {
-        let div: any = document.getElementById('searchByIdErrorMessage');
-        div.style.display = "block";
-      }
-    );
+    this.routeService.routeQuery(this.searchRoutesForm.value.query, pageIndex, this.pageSize, this.activeOnly)
+      .subscribe(
+        (routesPage: Page<Route>) => {
+          this.currentPage = routesPage;
+          this.pageNumber = routesPage.number + 1;
+          this.foundRoutes = routesPage.content;
+          this.totalRoutes = routesPage.totalElements;
+          let div: any = document.getElementById('searchByIdErrorMessage');
+          div.style.display = "none";
+          console.log(this.foundRoutes);
+        },
+        (error: HttpErrorResponse) => {
+          let div: any = document.getElementById('searchByIdErrorMessage');
+          div.style.display = "block";
+        }
+      );
+  }
+
+  handleActiveToggleChange() {
+    if (this.searchRoutesForm.value.query !== '' && this.searchRoutesForm.value.query !== null)
+    {
+      this.searchRoutesByAirport();
+    }
+    else {
+      this.getRoutesPage();
+    }
+  }
+
+  getActiveOrInactive(active: boolean) {
+    if (active)
+      return "Active";
+    else
+      return "Inactive";
   }
 
   get updateRouteFormControls() {

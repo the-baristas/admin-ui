@@ -18,16 +18,16 @@ describe('FlightsService', () => {
     originAirport: {
       iataId: "XXX",
       city: "X City",
-      isActive: 1
+      isActive: true
     },
     destinationAirport: {
       iataId: "ZZZ",
       city: "Z city",
-      isActive: 1
+      isActive: true
     },
     originId: "XXX",
     destinationId: "ZZZ",
-    isActive: 1
+    isActive: true
   };
   let routesPage: Page<Route> = {
     content: [route],
@@ -90,10 +90,10 @@ describe('FlightsService', () => {
 
 
   it('get routes page returns mock route page', () => {
-    service.getRoutesPage(0, 10).subscribe((data) => {
+    service.getRoutesPage(0, 10, true).subscribe((data) => {
       expect(data).toEqual(routesPage)
     });
-    let mockRequest = httpTestingController.expectOne(apiUrl + "?pageNo=0&pageSize=10&sortBy=id");
+    let mockRequest = httpTestingController.expectOne(apiUrl + "?pageNo=0&pageSize=10&sortBy=id&activeOnly=true");
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
     mockRequest.flush(routesPage);

@@ -47,9 +47,9 @@ export class FlightService {
             );   
     }
 
-    public getFlightsPage(pageIndex: number, pageSize: number): Observable<Page<Flight>> {
+    public getFlightsPage(pageIndex: number, pageSize: number, activeOnly: boolean): Observable<Page<Flight>> {
         return this.httpClient.get<Page<Flight>>(
-          `${environment.flightServiceUrl}/flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+          `${environment.flightServiceUrl}/flights?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id&activeOnly=${activeOnly}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
               tap(() =>
               this.messageService.add(
                 'Successfully found flights page.'
@@ -61,9 +61,9 @@ export class FlightService {
             );
  }
 
-    public getFlightByLocation(originId: string, destinationId: string, pageIndex: number, pageSize: number): Observable<Page<Flight>> {
+    public getFlightByLocation(originId: string, destinationId: string, pageIndex: number, pageSize: number, activeOnly: boolean): Observable<Page<Flight>> {
         console.log("Origin ID:" + originId + "Destination ID:" + destinationId);
-      const url = `${environment.flightServiceUrl}/search/flightsbylocation?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+      const url = `${environment.flightServiceUrl}/flights/search?originId=${originId}&destinationId=${destinationId}&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id&activeOnly=${activeOnly}`;
         console.log(url);
         return this.httpClient.get<Page<Flight>>(
             url, { headers: this.loginService.getHeadersWithToken() }).pipe(

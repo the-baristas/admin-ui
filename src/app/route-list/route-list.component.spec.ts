@@ -25,16 +25,16 @@ describe('RouteListComponent', () => {
     originAirport: {
       iataId: "XXX",
       city: "X City",
-      isActive: 1
+      isActive: true
     },
-      destinationAirport: {
-        iataId: "ZZZ",
+    destinationAirport: {
+      iataId: "ZZZ",
       city: "Z city",
-      isActive: 1
+      isActive: true
     },
     originId: "XXX",
     destinationId: "ZZZ",
-    isActive: 1
+    isActive: true
   };
   let routesPage: Page<Route> = {
     content: [route],
@@ -57,14 +57,14 @@ describe('RouteListComponent', () => {
     routeServiceMock.updateRoute.and.returnValue(of(route));
 
     await TestBed.configureTestingModule({
-      declarations: [ RouteListComponent ],
+      declarations: [RouteListComponent],
       imports: [HttpClientTestingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
       providers: [
         { provide: RouteService, useValue: routeServiceMock },
         NgbModal
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

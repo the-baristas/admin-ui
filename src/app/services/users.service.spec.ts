@@ -29,7 +29,7 @@ describe('UsersService', () => {
             email: 'email@gmail.com',
             phone: '1112227878',
             role: 'ROLE_USER',
-        isActive: true,
+        active: true,
         dob: new Date(),
         streetAddress: "",
         city: "",
@@ -45,7 +45,7 @@ describe('UsersService', () => {
           email: 'email@yahoo.com',
           phone: '1114447878',
           role: 'ROLE_USER',
-          isActive: true,
+          active: true,
           dob: new Date(Date.now()),
           streetAddress: "1111 Street Rd",
           city: "City",
@@ -75,7 +75,7 @@ describe('UsersService', () => {
       email: 'email@smoothstack.com',
       phone: '1112221111',
       role: 'ROLE_ADMIN',
-      isActive: true,
+      active: true,
       dob: new Date(Date.now()),
       streetAddress: "1111 Street Rd",
       city: "City",
@@ -115,11 +115,11 @@ describe('UsersService', () => {
     });
 
     it('get all users returns mock user data', () => {
-        service.getAllUsers(0, 10).subscribe((data) => {
+        service.getAllUsers(0, 10, true).subscribe((data) => {
             expect(data).toEqual(userPage);
         });
         let mockRequest = httpTestingController.expectOne(
-            apiUrl + '?page=0&size=10'
+          apiUrl + '?page=0&size=10&activeOnly=true'
         );
         expect(mockRequest.cancelled).toBeFalsy();
         expect(mockRequest.request.responseType).toEqual('json');
@@ -128,12 +128,12 @@ describe('UsersService', () => {
 
     it('Get all users failing should give error message', () => {
         let error!: string;
-        service.getAllUsers(0, 10).subscribe(null, (e) => {
+        service.getAllUsers(0, 10, true).subscribe(null, (e) => {
             error = e;
         });
 
         let request = httpTestingController.expectOne(
-            apiUrl + '?page=0&size=10'
+          apiUrl + '?page=0&size=10&activeOnly=true'
         );
         request.flush('Unable to retrieve user data', {
             status: 400,

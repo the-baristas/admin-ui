@@ -31,6 +31,7 @@ export class UsersListComponent implements OnInit {
 
   searchUsersForm!: FormGroup;
   searchString!: string;
+  activeOnly: boolean = true;
 
   now = Date.now();
   private currentTime: Date = new Date(Date.now());
@@ -57,7 +58,7 @@ export class UsersListComponent implements OnInit {
       this.handleSearch(page, size);
     }
     else {
-      this.usersService.getAllUsers(page, size).subscribe(
+      this.usersService.getAllUsers(page, size, this.activeOnly).subscribe(
         (response: Page<User>) => {
           this.currentPage = response;
           this.pageNumber = response.number + 1;
@@ -156,7 +157,8 @@ export class UsersListComponent implements OnInit {
     this.searchUsersForm = new FormGroup({
       searchString: new FormControl(this.searchString, [
         Validators.maxLength(45)
-      ])
+      ]),
+      activeOnly: new FormControl(this.activeOnly)
     });
 
     this.updateUserForm = new FormGroup({
@@ -208,8 +210,7 @@ export class UsersListComponent implements OnInit {
   }
 
   searchUsers() {
-
-    if (this.searchUsersForm.value.searchString === '') {
+    if (!this.searchUsersForm.value.searchString || this.searchUsersForm.value.searchString === '') {
       this.getUsers(0, this.pageSize);
       return;
     }
@@ -223,7 +224,7 @@ export class UsersListComponent implements OnInit {
   }
 
   handleSearch(page: number, size: number) {
-    this.usersService.findUsersBySearchTerm(this.searchUsersForm.value.searchString, page, size).subscribe(
+    this.usersService.findUsersBySearchTerm(this.searchUsersForm.value.searchString, page, size, this.activeOnly).subscribe(
       (response: Page<User>) => {
         this.currentPage = response;
         this.pageNumber = response.number + 1;
@@ -235,6 +236,10 @@ export class UsersListComponent implements OnInit {
       }
     );
 
+  }
+
+  handleActiveToggleChange() {
+    this.searchUsers();
   }
 
   clearSearchForm() {
@@ -263,6 +268,13 @@ export class UsersListComponent implements OnInit {
 
   closeModal() {
     this.modalRef.close();
+  }
+
+  getActiveOrInactive(active: boolean) {
+    if (active)
+      return "Active";
+    else
+      return "Inactive";
   }
 
   get updateUserFormControls() {

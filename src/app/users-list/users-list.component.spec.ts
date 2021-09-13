@@ -29,7 +29,7 @@ describe('UsersListComponent', () => {
     email: "email@gmail.com",
     phone: "1112227878",
     role: "ROLE_USER",
-    isActive: true,
+    active: true,
     dob: new Date(Date.now()),
     streetAddress: "1111 Street Rd",
     city: "City",
@@ -45,7 +45,7 @@ describe('UsersListComponent', () => {
     email: "email@yahoo.com",
     phone: "1114447878",
     role: "ROLE_USER",
-    isActive: true,
+    active: true,
     dob: new Date(Date.now()),
     streetAddress: "1111 Street Rd",
     city: "City",
@@ -74,7 +74,7 @@ describe('UsersListComponent', () => {
     email: "email@smoothstack.com",
     phone: "1112221111",
     role: "ROLE_ADMIN",
-    isActive: true,
+    active: true,
     dob: new Date(Date.now()),
     streetAddress: "1111 Street Rd",
     city: "City",
@@ -215,7 +215,7 @@ describe('UsersListComponent', () => {
     component.updateUserForm.value.phone = userAdmin.phone;
     component.updateUserForm.controls.phone.markAsDirty();
     component.updateUserForm.value.role = userAdmin.role;
-    component.updateUserForm.value.active = userAdmin.isActive;
+    component.updateUserForm.value.active = userAdmin.active;
 
     component.action = 'Add';
     component.userModalPerformAction();
