@@ -44,7 +44,7 @@ export class BookingEditModalComponent implements OnInit {
 
     save(): void {
         this.bookingService
-            .updateBooking(this.selectedBooking)
+            .update(this.selectedBooking)
             .subscribe((updatedBooking: Booking) => {
                 this.activeModal.close(updatedBooking);
             });

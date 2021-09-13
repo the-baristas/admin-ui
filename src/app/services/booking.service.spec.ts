@@ -40,7 +40,7 @@ describe('BookingService', () => {
     });
 
     it('get bookings', () => {
-        service.getBookings().subscribe((data) => {
+        service.findAll().subscribe((data) => {
             expect(data).toEqual([booking]);
         });
         let mockRequest = httpTestingController.expectOne(apiUrl);
@@ -70,7 +70,7 @@ describe('BookingService', () => {
     });
 
     it('search booking by confirmation code returns mock data', () => {
-        service.searchBookings('code').subscribe((data) => {
+        service.search('code').subscribe((data) => {
             expect(data).toEqual([booking]);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -92,7 +92,7 @@ describe('BookingService', () => {
     });
 
     it('delete booking', () => {
-        service.deleteBooking(0).subscribe((data) => {
+        service.delete(0).subscribe((data) => {
             expect(data).toEqual(booking);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -104,7 +104,7 @@ describe('BookingService', () => {
     });
 
     it('update booking', () => {
-        service.updateBooking(booking).subscribe((data) => {
+        service.update(booking).subscribe((data) => {
             expect(data).toEqual(booking);
         });
         let mockRequest = httpTestingController.expectOne(

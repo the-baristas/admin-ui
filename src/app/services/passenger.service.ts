@@ -18,6 +18,7 @@ import { MessageService } from './message.service';
 export class PassengerService {
     private static readonly PASSENGERS_PATH: string =
         environment.bookingServiceUrl + '/passengers';
+
     private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 

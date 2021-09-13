@@ -1,68 +1,113 @@
-<app-booking-search
-    (resultsEvent)="replaceFoundBookings($event)"
-></app-booking-search>
+<div class="container">
+    <div class="row">
+        <div class="col-12 my-2">
+            <label for="search-box">Confirmation Code | Username</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <input
+                class="w-100 p-2 mb-3"
+                #searchBox
+                id="search-box"
+                autocomplete="off"
+                (input)="onInput(searchBox.value)"
+            />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <select
+                class="custom-select-sm w-auto"
+                name="pageSize"
+                [formControl]="pageSizeControl"
+            >
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <button
+                class="btn btn-primary float-right"
+                id="create-new-button"
+                type="button"
+                (click)="openAddModal()"
+            >
+                New
+            </button>
+        </div>
+    </div>
+    <div
+        class="row border border-dark p-1"
+        *ngFor="let booking of foundBookings; index as i"
+    >
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button
+                type="button"
+                class="btn btn-outline-dark p-1 m-1"
+                (click)="toggleActive(booking)"
+            >
+                <b *ngIf="booking.active; else elseBlock">Deactivate</b>
+                <ng-template #elseBlock><b>Activate</b></ng-template>
+            </button>
+        </div>
+        <div class="col-6 col-sm-2 p-1 text-center">
+            <b>Confirmation Code</b>
+            <div>
+                <ngb-highlight
+                    [result]="booking.confirmationCode"
+                    [term]="searchTerm"
+                ></ngb-highlight>
+            </div>
+        </div>
+        <div class="col-6 col-sm-2 p-1 text-center">
+            <b>Layover Count</b>
+            <div>
+                {{ booking.layoverCount }}
+            </div>
+        </div>
+        <div class="col-6 col-sm-2 p-1 text-center">
+            <b>Total Price</b>
+            <div>
+                {{ booking.totalPrice }}
+            </div>
+        </div>
+        <div class="col-6 col-sm-2 p-1 text-center">
+            <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="showPassengers(booking.confirmationCode)"
+            >
+                Passengers
+            </button>
+        </div>
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="showFlights(booking.confirmationCode)"
+            >
+                Flights
+            </button>
+        </div>
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button class="btn btn-primary" (click)="openEditModal(booking)">
+                Edit
+            </button>
+        </div>
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button class="btn btn-danger" (click)="openDeleteModal(booking)">
+                Delete
+            </button>
+        </div>
+    </div>
 
-<button
-    class="btn btn-lg btn-primary"
-    id="create-new-button"
-    (click)="openAddModal()"
->
-    Create New
-</button>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Confirmation Code</th>
-            <th scope="col">Layover Count</th>
-            <th scope="col">Total Price</th>
-            <th scope="col">Active</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr
-            *ngFor="
-                let booking of foundBookings
-                    | slice: (page - 1) * pageSize:page * pageSize
-            "
-        >
-            <td>{{ booking.id }}</td>
-            <td>{{ booking.confirmationCode }}</td>
-            <td>{{ booking.layoverCount }}</td>
-            <td>{{ booking.totalPrice }}</td>
-            <td>{{ booking.active }}</td>
-            <td>
-                <button
-                    class="btn btn-primary"
-                    (click)="toggleActive(booking)"
-                >
-                    <span *ngIf=booking.active>Disable</span>
-                    <span *ngIf=!booking.active>Enable</span>
-                </button>
-            </td>
-            <td>
-                <button
-                    class="btn btn-primary"
-                    (click)="openEditModal(booking)"
-                >
-                    Edit
-                </button>
-            </td>
-            <td>
-                <button
-                    class="btn btn-danger"
-                    (click)="openDeleteModal(booking)"
-                >
-                    Delete
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<ngb-pagination
-    [collectionSize]="foundBookings.length"
-    [(page)]="page"
-    [pageSize]="pageSize"
-></ngb-pagination>
+    <div class="d-flex justify-content-center py-3">
+        <ngb-pagination
+            [collectionSize]="foundBookings.length"
+            [(page)]="pageNumber"
+            [pageSize]="pageSizeControl.value"
+        ></ngb-pagination>
+    </div>
+</div>

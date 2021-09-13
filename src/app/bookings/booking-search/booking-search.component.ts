@@ -6,6 +6,7 @@ import {
     map,
     switchMap,
 } from 'rxjs/operators';
+import { Page } from 'src/app/entities/page';
 import { Booking } from '../../entities/booking';
 import { BookingService } from '../../services/booking.service';
 
@@ -19,7 +20,7 @@ export class BookingSearchComponent implements OnInit {
     selectedBooking: Booking = {} as Booking;
     page: number = 1;
     pageSize: number = 10;
-    @Output() resultsEvent: EventEmitter<Booking[]> = new EventEmitter();
+    @Output() resultsEvent: EventEmitter<Page<Booking>> = new EventEmitter();
 
     private searchTerms = new Subject<string>();
 
@@ -43,9 +44,9 @@ export class BookingSearchComponent implements OnInit {
 
     showResults(): void {
         this.bookingService
-            .searchBookings(this.selectedBooking.confirmationCode)
-            .subscribe((bookings: Booking[]) => {
-                this.resultsEvent.emit(bookings);
+            .search(this.selectedBooking.confirmationCode, 0, 10)
+            .subscribe((bookingsPage: Page<Booking>) => {
+                this.resultsEvent.emit(bookingsPage);
             });
     }
 
@@ -57,11 +58,11 @@ export class BookingSearchComponent implements OnInit {
             distinctUntilChanged(),
             // switch to new search observable each time the term changes
             switchMap((term: string) =>
-                this.bookingService.searchBookings(term)
+                this.bookingService.search(term, 0, 10)
             ),
             // Remove duplicates.
-            map((bookings: Array<Booking>) =>
-                this.makeArrayUnique(bookings, 'model')
+            map((bookingsPage: Page<Booking>) =>
+                this.makeArrayUnique(bookingsPage.content, 'model')
             )
         );
     }

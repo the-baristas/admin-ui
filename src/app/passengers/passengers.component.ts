@@ -42,12 +42,13 @@ export class PassengersComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializePassengers$();
-        // TODO: Remove commented function.
         this.passengers$.subscribe();
-        /*((passengers: Passenger[]) => {
-                this.foundPassengers = passengers;
-            })*/
-        this.findAll();
+
+        if (history.state.confirmationCode) {
+            this.search(history.state.confirmationCode);
+        } else {
+            this.findAll();
+        }
 
         this.pageSizeControl.valueChanges.subscribe((pageSize: number) => {
             const pagesMax: number = Math.ceil(this.totalElements / pageSize);

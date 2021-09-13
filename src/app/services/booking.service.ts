@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Booking } from '../entities/booking';
+import { Page } from '../entities/page';
 import {
     HandleError,
     HttpErrorHandlerService
@@ -17,7 +18,9 @@ const httpOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-    public bookingServicePath: string = '/bookings';
+    private static readonly BOOKINGs_PATH: string =
+        environment.bookingServiceUrl + '/bookings';
+
     private httpOptions!: { headers: HttpHeaders };
     private handleError: HandleError;
 
@@ -36,24 +39,18 @@ export class BookingService {
             httpErrorHandlerService.createHandleError('BookingService');
     }
 
-    getBookings(): Observable<Booking[]> {
-        return this.httpClient
-            .get<Booking[]>(
-                environment.bookingServiceUrl + this.bookingServicePath,
-                this.httpOptions
+    findAll(pageIndex: number, pageSize: number): Observable<Page<Booking>> {
+        const url = `${BookingService.BOOKINGs_PATH}?index=${pageIndex}&size=${pageSize}`;
+        return this.httpClient.get<Page<Booking>>(url, this.httpOptions).pipe(
+            tap(() => this.messageService.add('Successfully found bookings.')),
+            catchError(
+                this.handleError<Page<Booking>>('findAll', {} as Page<Booking>)
             )
-            .pipe(
-                tap(() =>
-                    this.messageService.add('Successfully found bookings.')
-                ),
-                catchError(this.handleError<Booking[]>('getBookings', []))
-            );
+        );
     }
 
     findByConfirmationCode(confirmationCode: string): Observable<Booking> {
-        const url = `${
-            environment.bookingServiceUrl + this.bookingServicePath
-        }/${confirmationCode}`;
+        const url = `${BookingService.BOOKINGs_PATH}/${confirmationCode}`;
         return this.httpClient.get<Booking>(url, this.httpOptions).pipe(
             tap(() => this.messageService.add('Successfully found Booking.')),
             catchError(
@@ -66,7 +63,7 @@ export class BookingService {
     }
 
     existsByConfirmationCode(confirmationCode: string): Observable<boolean> {
-        const url = `${environment.bookingServiceUrl}${this.bookingServicePath}/${confirmationCode}`;
+        const url = `${BookingService.BOOKINGs_PATH}/${confirmationCode}`;
         return this.httpClient.get<boolean>(url, this.httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
@@ -79,52 +76,47 @@ export class BookingService {
         );
     }
 
-    searchBookings(term: string): Observable<Booking[]> {
-        if (!term.trim()) {
-            return of([]);
+    search(
+        searchTerm: string,
+        pageIndex: number,
+        pageSize: number
+    ): Observable<Page<Booking>> {
+        if (searchTerm.trim() === '') {
+            return of({ content: [] as Booking[] } as Page<Booking>);
         }
-        return this.httpClient
-            .get<Booking[]>(
-                `${
-                    environment.bookingServiceUrl + this.bookingServicePath
-                }/?confirmation_code=${term}`
+        const url = `${BookingService.BOOKINGs_PATH}/search?term=${searchTerm}&index=${pageIndex}&size=${pageSize}`;
+        return this.httpClient.get<Page<Booking>>(url, httpOptions).pipe(
+            tap((page: Page<Booking>) =>
+                page.totalPages
+                    ? this.messageService.add(
+                          `Found bookings matching "${searchTerm}".`
+                      )
+                    : this.messageService.add(
+                          `No bookings matching "${searchTerm}".`
+                      )
+            ),
+            catchError(
+                this.handleError<Page<Booking>>('search', {
+                    content: [] as Booking[]
+                } as Page<Booking>)
             )
-            .pipe(
-                tap((x) =>
-                    x.length
-                        ? this.messageService.add(
-                              `Found bookings matching "${term}".`
-                          )
-                        : this.messageService.add(
-                              `No bookings matching "${term}".`
-                          )
-                ),
-                catchError(this.handleError<Booking[]>('searchBookings', []))
-            );
+        );
     }
 
     addBooking(booking: Booking): Observable<Booking> {
-        return this.httpClient
-            .post<Booking>(
-                environment.bookingServiceUrl + this.bookingServicePath,
-                booking,
-                httpOptions
-            )
-            .pipe(
-                tap((newBooking: Booking) =>
-                    this.messageService.add(
-                        `Successfully added booking with id=${newBooking.id}`
-                    )
-                ),
-                catchError(this.handleError<Booking>('addBooking', booking))
-            );
+        const url = `${BookingService.BOOKINGs_PATH}`;
+        return this.httpClient.post<Booking>(url, booking, httpOptions).pipe(
+            tap((newBooking: Booking) =>
+                this.messageService.add(
+                    `Successfully added booking with id=${newBooking.id}`
+                )
+            ),
+            catchError(this.handleError<Booking>('addBooking', booking))
+        );
     }
 
-    deleteBooking(id: number): Observable<Booking> {
-        const url = `${
-            environment.bookingServiceUrl + this.bookingServicePath
-        }/${id}`;
-
+    delete(id: number): Observable<Booking> {
+        const url = `${BookingService.BOOKINGs_PATH}/${id}`;
         return this.httpClient.delete<Booking>(url, httpOptions).pipe(
             tap(() =>
                 this.messageService.add(
@@ -135,23 +127,15 @@ export class BookingService {
         );
     }
 
-    updateBooking(booking: Booking): Observable<any> {
-        return this.httpClient
-            .put(
-                environment.bookingServiceUrl +
-                    this.bookingServicePath +
-                    '/' +
-                    booking.id,
-                booking,
-                httpOptions
-            )
-            .pipe(
-                tap(() =>
-                    this.messageService.add(
-                        `Successfully updated Booking with id=${booking.id}`
-                    )
-                ),
-                catchError(this.handleError<any>('updateBooking', booking))
-            );
+    update(booking: Booking): Observable<any> {
+        const url = `${BookingService.BOOKINGs_PATH}/${booking.id}`;
+        return this.httpClient.put(url, booking, httpOptions).pipe(
+            tap(() =>
+                this.messageService.add(
+                    `Successfully updated Booking with id=${booking.id}`
+                )
+            ),
+            catchError(this.handleError<any>('updateBooking', booking))
+        );
     }
 }
