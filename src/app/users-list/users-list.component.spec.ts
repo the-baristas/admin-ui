@@ -29,8 +29,14 @@ describe('UsersListComponent', () => {
     email: "email@gmail.com",
     phone: "1112227878",
     role: "ROLE_USER",
-    isActive: true
-  }, {
+    isActive: true,
+    dob: new Date(Date.now()),
+    streetAddress: "1111 Street Rd",
+    city: "City",
+    state: "CA",
+    zip: "21233"
+  },
+  {
     userId: 2,
     givenName: "First",
     familyName: "Last",
@@ -39,8 +45,13 @@ describe('UsersListComponent', () => {
     email: "email@yahoo.com",
     phone: "1114447878",
     role: "ROLE_USER",
-    isActive: true
-    }];
+    isActive: true,
+    dob: new Date(Date.now()),
+    streetAddress: "1111 Street Rd",
+    city: "City",
+    state: "CA",
+    zip: "21233"
+  }];
 
   let userPage: Page<User> = {
     content: userData,
@@ -63,7 +74,12 @@ describe('UsersListComponent', () => {
     email: "email@smoothstack.com",
     phone: "1112221111",
     role: "ROLE_ADMIN",
-    isActive: true
+    isActive: true,
+    dob: new Date(Date.now()),
+    streetAddress: "1111 Street Rd",
+    city: "City",
+    state: "CA",
+    zip: "21233"
   };
 
   beforeEach(async () => {

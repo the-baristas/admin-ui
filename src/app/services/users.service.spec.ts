@@ -29,18 +29,28 @@ describe('UsersService', () => {
             email: 'email@gmail.com',
             phone: '1112227878',
             role: 'ROLE_USER',
-            isActive: true
+        isActive: true,
+        dob: new Date(),
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: ""
         },
         {
-            userId: 2,
-            givenName: 'First',
-            familyName: 'Last',
-            username: 'username5',
-            password: 'pass',
-            email: 'email@yahoo.com',
-            phone: '1114447878',
-            role: 'ROLE_USER',
-            isActive: true
+          userId: 2,
+          givenName: 'First',
+          familyName: 'Last',
+          username: 'username5',
+          password: 'pass',
+          email: 'email@yahoo.com',
+          phone: '1114447878',
+          role: 'ROLE_USER',
+          isActive: true,
+          dob: new Date(Date.now()),
+          streetAddress: "1111 Street Rd",
+          city: "City",
+          state: "CA",
+          zip: "21233"
         }
     ];
 
@@ -57,15 +67,20 @@ describe('UsersService', () => {
     };
 
     let userAdmin: User = {
-        userId: 3,
-        givenName: 'First',
-        familyName: 'Last',
-        username: 'admin',
-        password: 'pass',
-        email: 'email@smoothstack.com',
-        phone: '1112221111',
-        role: 'ROLE_ADMIN',
-        isActive: true
+      userId: 3,
+      givenName: 'First',
+      familyName: 'Last',
+      username: 'admin',
+      password: 'pass',
+      email: 'email@smoothstack.com',
+      phone: '1112221111',
+      role: 'ROLE_ADMIN',
+      isActive: true,
+      dob: new Date(Date.now()),
+      streetAddress: "1111 Street Rd",
+      city: "City",
+      state: "CA",
+      zip: "21233"
     };
 
     beforeEach(() => {
