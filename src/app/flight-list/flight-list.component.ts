@@ -43,6 +43,8 @@ export class FlightComponent implements OnInit {
   searchOrigin!: string;
   searchDestination!: string;
 
+  activeOnly: boolean = true;
+
   confirmation!: boolean;
 
   constructor(private flightService: FlightService, private routeService: RouteService, private airplaneService: AirplaneService, private modalService: NgbModal,
@@ -55,7 +57,7 @@ export class FlightComponent implements OnInit {
   ngOnInit(): void {
     const pageIndex = this.pageNumber - 1;
     this.flightService
-      .getFlightsPage(pageIndex, this.pageSize)
+      .getFlightsPage(pageIndex, this.pageSize, this.activeOnly)
       .subscribe(
         (flightsPage: Page<Flight>) => {
           this.currentPage = flightsPage; // the page object
@@ -111,7 +113,7 @@ export class FlightComponent implements OnInit {
         (response: any) => {
           const pageIndex = this.pageNumber - 1;
           this.flightService.getFlight(response);
-          this.flightService.getFlightsPage(pageIndex, this.pageSize)
+          this.flightService.getFlightsPage(pageIndex, this.pageSize, this.activeOnly)
             .subscribe(
               (flightsPage: Page<Flight>) => {
                 this.currentPage = flightsPage;
@@ -141,7 +143,7 @@ export class FlightComponent implements OnInit {
         (response: any) => {
           const pageIndex = this.pageNumber - 1;
           this.updatedFlight = this.flightService.getFlight(response);
-          this.flightService.getFlightsPage(pageIndex, this.pageSize)
+          this.flightService.getFlightsPage(pageIndex, this.pageSize, this.activeOnly)
             .subscribe(
               (flightsPage: Page<Flight>) => {
                 this.currentPage = flightsPage;
@@ -168,7 +170,7 @@ export class FlightComponent implements OnInit {
         .subscribe(
           (response: any) => {
             const pageIndex = this.pageNumber - 1;
-            this.flightService.getFlightsPage(pageIndex, this.pageSize)
+            this.flightService.getFlightsPage(pageIndex, this.pageSize, this.activeOnly)
               .subscribe(
                 (flightsPage: Page<Flight>) => {
                   this.currentPage = flightsPage;
@@ -228,7 +230,7 @@ export class FlightComponent implements OnInit {
       return;
     }
     else {
-      this.flightService.getFlightsPage(pageNo - 1, this.pageSize).subscribe(
+      this.flightService.getFlightsPage(pageNo - 1, this.pageSize, this.activeOnly).subscribe(
         (flightsPage: Page<Flight>) => {
           this.currentPage = flightsPage;
           this.pageNumber = flightsPage.number + 1;
@@ -286,7 +288,7 @@ export class FlightComponent implements OnInit {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
       const pageIndex = this.pageNumber - 1;
-      this.flightService.getFlightsPage(pageIndex, this.pageSize);
+      this.flightService.getFlightsPage(pageIndex, this.pageSize, this.activeOnly);
       return;
     }
 
@@ -309,12 +311,12 @@ export class FlightComponent implements OnInit {
       let div: any = document.getElementById('searchByIdErrorMessage');
       div.style.display = "none";
       const pageIndex = this.pageNumber - 1;
-      this.flightService.getFlightsPage(pageIndex, this.pageSize);
+      this.flightService.getFlightsPage(pageIndex, this.pageSize, this.activeOnly);
       return;
     }
 
     const pageIndex = this.pageNumber - 1;
-    this.flightService.getFlightByLocation(this.searchFlightsForm.value.searchOrigin, this.searchFlightsForm.value.searchDestination, pageIndex, this.pageSize).subscribe(
+    this.flightService.getFlightByLocation(this.searchFlightsForm.value.searchOrigin, this.searchFlightsForm.value.searchDestination, pageIndex, this.pageSize, this.activeOnly).subscribe(
       (flightsPage: Page<Flight>) => {
         this.currentPage = flightsPage;
         this.pageNumber = flightsPage.number + 1;
@@ -328,6 +330,36 @@ export class FlightComponent implements OnInit {
         div.style.display = "block";
       }
     );
+  }
+
+  getActiveOrInactive(active: boolean) {
+    if (active)
+      return "Active";
+    else
+      return "Inactive";
+  }
+
+  handleActiveToggleChange() {
+    if (this.searchFieldsFilled()) {
+      this.searchFlightsByLocation();
+    }
+    else {
+      this.flightService
+        .getFlightsPage(0, this.pageSize, this.activeOnly)
+        .subscribe(
+          (flightsPage: Page<Flight>) => {
+            this.currentPage = flightsPage; // the page object
+            this.pageNumber = flightsPage.number + 1;
+            this.flights = flightsPage.content;
+            this.totalFlights = flightsPage.totalElements;
+          }
+        );
+    }
+  }
+
+  searchFieldsFilled() {
+    return this.searchFlightsForm.value.searchOrigin !== '' && this.searchFlightsForm.value.searchDestination !== ''
+      && this.searchFlightsForm.value.searchOrigin !== null && this.searchFlightsForm.value.searchDestination !== null
   }
 
   get updateFlightFormControls() {

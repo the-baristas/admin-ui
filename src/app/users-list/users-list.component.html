@@ -7,6 +7,7 @@
   <div class="grid-item" style="width:25%;">
     <button id="clearButton" class="btn btn-secondary" (click)="clearSearchForm()">Clear</button>
   </div>
+
 </div>
 
 <div class="d-flex justify-content-between p-2">
@@ -18,7 +19,16 @@
     <option [ngValue]="25">25 items per page</option>
     <option [ngValue]="50">50 items per page</option>
   </select>
-  <div style="text-align:right; margin-right: 130px">
+
+  <div style="display:flex">
+    <h5 style="max-width:30%">Active Only: </h5>
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="activeOnly" (change)="handleActiveToggleChange()">
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <div style="text-align:right; margin-right: 120px; margin-left: 20px">
     <button id="createButton" class="btn btn-primary" (click)="openModal(userModal, null)">Create New</button>
   </div>
 </div>
@@ -28,7 +38,7 @@
   <div class="container">
     <div class="d-flex justify-content-between p-2" *ngFor="let user of users; let i = index">
       <div class="row" style="border: 1px solid black">
-
+        <div class="col-sm-8"><h5>{{getActiveOrInactive(user.active)}}</h5></div>
         <div class="col-sm-8"><b>Name: </b>{{user.givenName}} {{user.familyName}}</div>
         <div class="col-sm-8"><b>Username: </b> {{user.username}}</div>
         <div class="col-sm-8" style="min-width:340px"><b>Email: </b>{{user.email}}</div>
@@ -51,7 +61,7 @@
           </button>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 </div>
 
@@ -190,7 +200,7 @@
           </div>
 
           <div>
-            <label for="isActive">Active?</label>
+            <label for="active">Active?</label>
             <div>
               <input type="checkbox" class="form-control" formControlName="active" />
             </div>

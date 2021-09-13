@@ -7,7 +7,7 @@ export interface User {
   email: string;
   phone: string;
   role: string;
-  isActive: boolean;
+  active: boolean;
   dob: Date;
   streetAddress: string;
   city: string;

@@ -45,9 +45,9 @@ export class RouteService {
             );   
     }
 
-    public getRoutesPage(pageIndex: number, pageSize: number): Observable<Page<Route>> {
+    public getRoutesPage(pageIndex: number, pageSize: number, activeOnly: boolean): Observable<Page<Route>> {
         return this.http.get<Page<Route>>(
-          `${environment.flightServiceUrl}/routes?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`, { headers: this.loginService.getHeadersWithToken() }).pipe(
+          `${environment.flightServiceUrl}/routes?pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id&activeOnly=${activeOnly}`, { headers: this.loginService.getHeadersWithToken() }).pipe(
               tap(() =>
               this.messageService.add(
                 'Successfully found routes page.'
@@ -81,8 +81,8 @@ export class RouteService {
         );
     }
 
-    public routeQuery(query: string, pageIndex: number, pageSize: number) {
-      const url = environment.flightServiceUrl + '/routes-query?query=' + query + `&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id`;
+    public routeQuery(query: string, pageIndex: number, pageSize: number, activeOnly: boolean) {
+      const url = environment.flightServiceUrl + '/routes/routes-query?query=' + query + `&pageNo=${pageIndex}&pageSize=${pageSize}&sortBy=id&activeOnly=${activeOnly}`;
         return this.http.get<Page<Route>>(url, { headers: this.loginService.getHeadersWithToken() })
             .pipe(
                 tap(_ => this.log('fetched routes')),

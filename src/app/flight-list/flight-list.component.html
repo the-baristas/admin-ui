@@ -17,22 +17,30 @@
     <option [ngValue]="25">25 items per page</option>
     <option [ngValue]="50">50 items per page</option>
   </select>
+  <div style="display:flex">
+    <h5 style="max-width:30%">Active Only: </h5>
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="activeOnly" (change)="handleActiveToggleChange()">
+      <span class="slider round"></span>
+    </label>
+  </div>
   <div class="create-new-button">
     <button type="button" id="add-flight-button" class="btn btn-primary" (click)="openTwo(addFlightModal)">Create New</button>
     <app-flight-upload-button></app-flight-upload-button>
   </div>
-  
+
 </div>
 
 
 <div class="container">
-  <div class="d-flex justify-content-between p-2" *ngFor="let page of flights; let i = index">
-    <div class="row" style="border: 1px solid black">
+  <div *ngFor="let page of flights; let i = index" style="border: 1px solid black">
+    <div class="p-2"><h5>{{getActiveOrInactive(page.isActive)}}</h5></div>
+    <div class="row d-flex justify-content-between p-2">
       <div class="col-sm"><b>ID: </b>{{page.id}}</div>
       <div class="col-sm"><b>Airplane: </b>A{{page.airplane.id}}</div>
       <div class="col-sm"><b>Route: </b>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</div>
-      <div class="col-sm"><b>Departure Time: </b>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}<br/><b>Gate:</b> {{page.departureGate}}</div>
-      <div class="col-sm"><b>Arrival Time: </b>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}<br/><b>Gate:</b> {{page.arrivalGate}}</div>
+      <div class="col-sm"><b>Departure Time: </b>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}<br /><b>Gate:</b> {{page.departureGate}}</div>
+      <div class="col-sm"><b>Arrival Time: </b>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}<br /><b>Gate:</b> {{page.arrivalGate}}</div>
       <div class="col-sm"><b>Price: </b>First Class: ${{page.firstPrice}}<br /> Business Class: ${{page.businessPrice}}<br /> Economy Class: ${{page.economyPrice}}</div>
       <div class="col-sm"><b>Reserved Seats: </b>First Class: {{page.firstReserved}}<br /> Business Class: {{page.businessReserved}}<br /> Economy Class: {{page.economyReserved}}</div>
       <div class="col-sm"><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, page)" data-toggle="modal">Edit</button> </div>

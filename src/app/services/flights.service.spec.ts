@@ -127,10 +127,10 @@ describe('FlightsService', () => {
   });
 
   it('get flights page returns mock flights page', () => {
-    service.getFlightsPage(0, 10).subscribe((data) => {
+    service.getFlightsPage(0, 10, true).subscribe((data) => {
       expect(data).toEqual(flightsPage)
     });
-    let mockRequest = httpTestingController.expectOne(apiUrl + "?pageNo=0&pageSize=10&sortBy=id");
+    let mockRequest = httpTestingController.expectOne(apiUrl + "?pageNo=0&pageSize=10&sortBy=id&activeOnly=true");
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
     mockRequest.flush(flightsPage);
