@@ -65,7 +65,7 @@ export class UsersListComponent implements OnInit {
           this.totalUsers = response.totalElements;
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          alert(error);
         }
       );
     }
@@ -180,9 +180,7 @@ export class UsersListComponent implements OnInit {
         Validators.minLength(1),
         Validators.maxLength(45)
       ]),
-      password: new FormControl('', [
-        Validators.required
-      ]),
+      password: new FormControl(''),
       phone: new FormControl('', [
         Validators.required,
         Validators.pattern('1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?')
