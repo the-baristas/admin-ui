@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 my-2">
-            <label for="search-box">Confirmation Code | Username</label>
+            <label for="search-box">Confirmation Code</label>
         </div>
     </div>
     <div class="row">
@@ -61,22 +61,31 @@
                 ></ngb-highlight>
             </div>
         </div>
-        <div class="col-6 col-sm-2 p-1 text-center">
+        <div class="col-6 col-sm-1 p-1 text-center">
             <b>Layover Count</b>
             <div>
                 {{ booking.layoverCount }}
             </div>
         </div>
-        <div class="col-6 col-sm-2 p-1 text-center">
+        <div class="col-6 col-sm-1 p-1 text-center">
             <b>Total Price</b>
             <div>
                 {{ booking.totalPrice }}
             </div>
         </div>
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button
+                type="button"
+                class="btn btn-outline-dark mx-auto my-0"
+                (click)="toggleCollapsibleRow('USER', i)"
+            >
+                User
+            </button>
+        </div>
         <div class="col-6 col-sm-2 p-1 text-center">
             <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-outline-dark mx-auto my-0"
                 (click)="showPassengers(booking.confirmationCode)"
             >
                 Passengers
@@ -92,7 +101,19 @@
             </button>
         </div>
         <div class="col-6 col-sm-1 p-1 text-center">
-            <button class="btn btn-primary" (click)="openEditModal(booking)">
+            <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="toggleCollapsibleRow('PAYMENT', i)"
+            >
+                Payment
+            </button>
+        </div>
+        <div class="col-6 col-sm-1 p-1 text-center">
+            <button
+                class="btn btn-primary mx-auto my-0"
+                (click)="openEditModal(booking)"
+            >
                 Edit
             </button>
         </div>
@@ -100,6 +121,24 @@
             <button class="btn btn-danger" (click)="openDeleteModal(booking)">
                 Delete
             </button>
+        </div>
+        <div
+            class="col-12"
+            *ngIf="
+                selectedTable === 'USER' && passengerIndex === i && rowExpanded
+            "
+        >
+            <app-user-row [userData]="booking"></app-user-row>
+        </div>
+        <div
+            class="col-12"
+            *ngIf="
+                selectedTable === 'PAYMENT' &&
+                passengerIndex === i &&
+                rowExpanded
+            "
+        >
+            <app-payment-row [booking]="booking"></app-payment-row>
         </div>
     </div>
 

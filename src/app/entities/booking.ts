@@ -12,4 +12,6 @@ export interface Booking {
     username: string;
     email: string;
     phone: string;
+    stripeId: string;
+    refunded: boolean;
 }

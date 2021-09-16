@@ -1,0 +1,10 @@
+<div class="row border">
+    <div class="col-sm">
+        <b>Stripe ID: </b>
+        {{ booking.stripeId }}
+    </div>
+    <div class="col-sm">
+        <b *ngIf="booking.refunded; else elseBlock">Refunded</b>
+        <ng-template #elseBlock><b>Not refunded</b></ng-template>
+    </div>
+</div>
