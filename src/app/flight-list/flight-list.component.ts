@@ -10,6 +10,8 @@ import { Page } from '../entities/page';
 import { Observable } from 'rxjs';
 import { Route } from '../entities/route';
 import { Airplane } from '../entities/airplane';
+import { TimezoneUtils } from '../utils/timezone-utils';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-flight-list',
@@ -44,6 +46,7 @@ export class FlightComponent implements OnInit {
   searchDestination!: string;
 
   activeOnly: boolean = true;
+  displayInLocalTime: boolean = true;
 
   confirmation!: boolean;
 
@@ -360,6 +363,13 @@ export class FlightComponent implements OnInit {
   searchFieldsFilled() {
     return this.searchFlightsForm.value.searchOrigin !== '' && this.searchFlightsForm.value.searchDestination !== ''
       && this.searchFlightsForm.value.searchOrigin !== null && this.searchFlightsForm.value.searchDestination !== null
+  }
+
+  toLocalTime(time: string, airportCode: string) {
+    if (this.displayInLocalTime)
+      return TimezoneUtils.changeToLocalTime(time, airportCode).format('MMM Do, YYYY, h:mmA');
+    else
+      return moment(time).format('MMM Do, YYYY, h:mmA');
   }
 
   get updateFlightFormControls() {

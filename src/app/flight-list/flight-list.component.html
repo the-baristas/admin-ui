@@ -24,6 +24,13 @@
       <span class="slider round"></span>
     </label>
   </div>
+  <div style="display:flex">
+    <h5 style="max-width:30%">Local Times: </h5>
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="displayInLocalTime">
+      <span class="slider round"></span>
+    </label>
+  </div>
   <div class="create-new-button">
     <button type="button" id="add-flight-button" class="btn btn-primary" (click)="openTwo(addFlightModal)">Create New</button>
     <app-flight-upload-button></app-flight-upload-button>
@@ -39,8 +46,8 @@
       <div class="col-sm"><b>ID: </b>{{page.id}}</div>
       <div class="col-sm"><b>Airplane: </b>A{{page.airplane.id}}</div>
       <div class="col-sm"><b>Route: </b>{{page.route.originAirport.city}} ({{page.route.originAirport.iataId}}) to {{page.route.destinationAirport.city}} ({{page.route.destinationAirport.iataId}})</div>
-      <div class="col-sm"><b>Departure Time: </b>{{page.departureTime | date }}<br /> {{page.departureTime | date: 'shortTime' }}<br /><b>Gate:</b> {{page.departureGate}}</div>
-      <div class="col-sm"><b>Arrival Time: </b>{{page.arrivalTime | date }} <br /> {{page.arrivalTime | date: 'shortTime'}}<br /><b>Gate:</b> {{page.arrivalGate}}</div>
+      <div class="col-sm"><b>Departure Time: <br /></b>{{toLocalTime(page.departureTime, page.route.originAirport.iataId)}}<br /><b>Gate:</b> {{page.departureGate}}</div>
+      <div class="col-sm"><b>Arrival Time: <br /></b>{{toLocalTime(page.arrivalTime, page.route.destinationAirport.iataId)}}<br /><b>Gate:</b> {{page.arrivalGate}}</div>
       <div class="col-sm"><b>Price: </b>First Class: ${{page.firstPrice}}<br /> Business Class: ${{page.businessPrice}}<br /> Economy Class: ${{page.economyPrice}}</div>
       <div class="col-sm"><b>Reserved Seats: </b>First Class: {{page.firstReserved}}<br /> Business Class: {{page.businessReserved}}<br /> Economy Class: {{page.economyReserved}}</div>
       <div class="col-sm"><button class="btn btn-primary" id="edit-button" (click)="open(saveFlightModal, page)" data-toggle="modal">Edit</button> </div>

@@ -23,6 +23,7 @@
     "@angular/router": "~11.2.9",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@schematics/angular": "^11.0.0",
+    "airport-tz-ts": "^1.0.1",
     "angular-bootstrap-datetimepicker": "^3.1.0",
     "aws-sdk": "^2.957.0",
     "bootstrap": "^4.6.0",
