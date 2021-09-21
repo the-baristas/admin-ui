@@ -36,10 +36,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ### prettier
 
-Used to maintain a consistent code style.
+	Used to maintain a consistent code style.
 
 ### jwt-decode
 
 ### sonar-scanner
 
-### aws-sdk
+### airport-tz-ts
