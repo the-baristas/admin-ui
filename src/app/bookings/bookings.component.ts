@@ -83,13 +83,9 @@ export class BookingsComponent implements OnInit {
             .subscribe(this.updateFoundBookings.bind(this));
     }
 
-    updateFoundBookings(page: Page<Booking>): void {
+    private updateFoundBookings(page: Page<Booking>): void {
         this.foundBookings = page.content;
         this.totalElements = page.totalElements;
-    }
-
-    replaceFoundBookings(bookings: Booking[]): void {
-        this.foundBookings = bookings;
     }
 
     toggleActive(booking: Booking): void {

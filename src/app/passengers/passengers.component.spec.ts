@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 describe('PassengersComponent', () => {
     let component: PassengersComponent;
     let fixture: ComponentFixture<PassengersComponent>;
-    let passengerServiceMock: jasmine.SpyObj<PassengerService>;
+    let passengerServiceSpy: jasmine.SpyObj<PassengerService>;
     let passenger: Passenger = {
         id: 1,
         bookingId: 1,
@@ -59,12 +59,12 @@ describe('PassengersComponent', () => {
     };
 
     beforeEach(async () => {
-        passengerServiceMock = jasmine.createSpyObj('PassengerService', [
+        passengerServiceSpy = jasmine.createSpyObj('PassengerService', [
             'findAll',
             'search'
         ]);
-        passengerServiceMock.findAll.and.returnValue(of(passengerPage));
-        passengerServiceMock.search.and.returnValue(of(passengerPage));
+        passengerServiceSpy.findAll.and.returnValue(of(passengerPage));
+        passengerServiceSpy.search.and.returnValue(of(passengerPage));
 
         await TestBed.configureTestingModule({
             declarations: [PassengersComponent],
@@ -74,7 +74,7 @@ describe('PassengersComponent', () => {
                 ReactiveFormsModule
             ],
             providers: [
-                { provide: PassengerService, useValue: passengerServiceMock },
+                { provide: PassengerService, useValue: passengerServiceSpy },
                 NgbModal
             ]
         }).compileComponents();

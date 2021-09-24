@@ -16,7 +16,7 @@ import { MessageService } from './message.service';
 
 describe('AirplaneService', () => {
     let httpTestingController: HttpTestingController;
-    let airplaneService: AirplaneService;
+    let service: AirplaneService;
     const airplanesPath: string = '/airplanes';
     const airplane: Airplane = { id: 1 } as Airplane;
 
@@ -36,7 +36,7 @@ describe('AirplaneService', () => {
         // as they will be referenced by each test.
         // httpClient = TestBed.inject(HttpClient);
         httpTestingController = TestBed.inject(HttpTestingController);
-        airplaneService = TestBed.inject(AirplaneService);
+        service = TestBed.inject(AirplaneService);
     });
 
     afterEach(() => {
@@ -45,19 +45,19 @@ describe('AirplaneService', () => {
     });
 
     it('should be created', () => {
-        expect(airplaneService).toBeTruthy();
+        expect(service).toBeTruthy();
     });
 
     describe('#findAll', () => {
         beforeEach(() => {
-            airplaneService = TestBed.inject(AirplaneService);
+            service = TestBed.inject(AirplaneService);
         });
 
         it('should return expected airplanes (called once)', () => {
             const expectedAirplanesPage: Page<Airplane> = {
                 content: [{ id: 1 }, { id: 2 }] as Airplane[]
             } as Page<Airplane>;
-            airplaneService
+            service
                 .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
@@ -80,7 +80,7 @@ describe('AirplaneService', () => {
         });
 
         it('should be OK returning no airplanes', () => {
-            airplaneService
+            service
                 .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
@@ -100,7 +100,7 @@ describe('AirplaneService', () => {
 
         // This service reports the error but finds a way to let the app keep going.
         it('should turn 404 into an empty airplanes result', () => {
-            airplaneService
+            service
                 .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
@@ -125,9 +125,9 @@ describe('AirplaneService', () => {
             const expectedAirplanesPage: Page<Airplane> = {
                 content: [{ id: 1 }, { id: 2 }] as Airplane[]
             } as Page<Airplane>;
-            airplaneService.findAll(0, 1).subscribe();
-            airplaneService.findAll(0, 1).subscribe();
-            airplaneService
+            service.findAll(0, 1).subscribe();
+            service.findAll(0, 1).subscribe();
+            service
                 .findAll(0, 1)
                 .subscribe(
                     (airplanesPage: Page<Airplane>) =>
@@ -159,7 +159,7 @@ describe('AirplaneService', () => {
         it('should update a airplane and return it', () => {
             const updatingAirplane: Airplane = { id: 1 } as Airplane;
 
-            airplaneService
+            service
                 .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
@@ -198,7 +198,7 @@ describe('AirplaneService', () => {
                 model: 'Boeing 777'
             } as Airplane;
 
-            airplaneService
+            service
                 .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
@@ -225,7 +225,7 @@ describe('AirplaneService', () => {
 
         it('should turn network error into return of the updating airplane', () => {
             const updatingAirplane: Airplane = { id: 1 } as Airplane;
-            airplaneService
+            service
                 .update(updatingAirplane)
                 .subscribe(
                     (airplane: Airplane) =>
@@ -261,13 +261,13 @@ describe('AirplaneService', () => {
 
     describe('#getAirplaneById', () => {
         beforeEach(() => {
-            airplaneService = TestBed.inject(AirplaneService);
+            service = TestBed.inject(AirplaneService);
         });
 
         it('should return expected airplane (called once)', () => {
             const id: number = 1;
             const expectedAirplane = { id } as Airplane;
-            airplaneService
+            service
                 .findById(id)
                 .subscribe(
                     (airplane: Airplane) =>
@@ -288,7 +288,7 @@ describe('AirplaneService', () => {
     });
 
     it('#search', () => {
-        airplaneService.search('word').subscribe((data) => {
+        service.search('word').subscribe((data) => {
             expect(data).toEqual([airplane]);
         });
         let mockRequest = httpTestingController.expectOne(
@@ -300,7 +300,7 @@ describe('AirplaneService', () => {
     });
 
     it('#create', () => {
-        airplaneService
+        service
             .create(airplane)
             .subscribe((data) => expect(data).toEqual(airplane), fail);
         let mockRequest = httpTestingController.expectOne(
@@ -312,7 +312,7 @@ describe('AirplaneService', () => {
     });
 
     it('#delete', () => {
-        airplaneService.delete(1).subscribe();
+        service.delete(1).subscribe();
         let mockRequest = httpTestingController.expectOne(
             environment.flightServiceUrl + airplanesPath + '/' + airplane.id
         );

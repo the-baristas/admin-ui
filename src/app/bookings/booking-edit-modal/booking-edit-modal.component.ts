@@ -5,9 +5,9 @@ import { Booking } from '../../entities/booking';
 import { BookingService } from '../../services/booking.service';
 
 @Component({
-  selector: 'app-booking-edit-modal',
-  templateUrl: './booking-edit-modal.component.html',
-  styleUrls: ['./booking-edit-modal.component.css']
+    selector: 'app-booking-edit-modal',
+    templateUrl: './booking-edit-modal.component.html',
+    styleUrls: ['./booking-edit-modal.component.css']
 })
 export class BookingEditModalComponent implements OnInit {
     selectedBooking: Booking = {} as Booking;
@@ -15,7 +15,7 @@ export class BookingEditModalComponent implements OnInit {
         {
             confirmationCode: new FormControl(''),
             layoverCount: new FormControl(''),
-            totalPrice: new FormControl(''),
+            totalPrice: new FormControl('')
         },
         [Validators.required]
     );
@@ -50,4 +50,3 @@ export class BookingEditModalComponent implements OnInit {
             });
     }
 }
-

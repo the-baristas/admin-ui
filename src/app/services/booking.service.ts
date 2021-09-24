@@ -115,7 +115,19 @@ export class BookingService {
         );
     }
 
-    delete(id: number): Observable<Booking> {
+    update(booking: Booking): Observable<Booking> {
+        const url = `${BookingService.BOOKINGs_PATH}/${booking.id}`;
+        return this.httpClient.put<Booking>(url, booking, httpOptions).pipe(
+            tap(() =>
+                this.messageService.add(
+                    `Successfully updated Booking with id=${booking.id}`
+                )
+            ),
+            catchError(this.handleError<any>('update', booking))
+        );
+    }
+
+    delete(id: number): Observable<unknown> {
         const url = `${BookingService.BOOKINGs_PATH}/${id}`;
         return this.httpClient.delete<Booking>(url, httpOptions).pipe(
             tap(() =>
@@ -123,19 +135,7 @@ export class BookingService {
                     `Successfully deleted booking with id=${id}`
                 )
             ),
-            catchError(this.handleError<Booking>('deleteBooking'))
-        );
-    }
-
-    update(booking: Booking): Observable<any> {
-        const url = `${BookingService.BOOKINGs_PATH}/${booking.id}`;
-        return this.httpClient.put(url, booking, httpOptions).pipe(
-            tap(() =>
-                this.messageService.add(
-                    `Successfully updated Booking with id=${booking.id}`
-                )
-            ),
-            catchError(this.handleError<any>('updateBooking', booking))
+            catchError(this.handleError<Booking>('delete'))
         );
     }
 }

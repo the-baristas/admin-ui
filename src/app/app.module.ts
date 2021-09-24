@@ -12,36 +12,35 @@ import { AirplanesComponent } from './airplanes/airplanes.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookingAddModalComponent } from './bookings/booking-add-modal/booking-add-modal.component';
-import { BookingCollapsibleRowComponent } from './passengers/booking-collapsible-row/booking-collapsible-row.component';
 import { BookingEditModalComponent } from './bookings/booking-edit-modal/booking-edit-modal.component';
-import { BookingSearchComponent } from './bookings/booking-search/booking-search.component';
 import { BookingsComponent } from './bookings/bookings.component';
-import { FlightCollapsibleRowComponent } from './passengers/flight-collapsible-row/flight-collapsible-row.component';
+import { PaymentRowComponent } from './bookings/payment-row/payment-row.component';
+import { DiscountListComponent } from './discount-list/discount-list.component';
+import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
+import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
 import { FlightComponent } from './flight-list/flight-list.component';
+import { FlightUploadButtonComponent } from './flight-list/flight-upload-button/flight-upload-button.component';
 import { HomeComponent } from './home/home.component';
 import { httpInterceptorProviders } from './http-interceptors';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutComponent } from './layout/layout.component';
-import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './layout/messages/messages.component';
+import { LoginComponent } from './login/login.component';
+import { BookingCollapsibleRowComponent } from './passengers/booking-collapsible-row/booking-collapsible-row.component';
+import { FlightCollapsibleRowComponent } from './passengers/flight-collapsible-row/flight-collapsible-row.component';
 import { PassengerAddModalComponent } from './passengers/passenger-add-modal/passenger-add-modal.component';
 import { PassengerDeleteModalComponent } from './passengers/passenger-delete-modal/passenger-delete-modal.component';
 import { PassengerEditModalComponent } from './passengers/passenger-edit-modal/passenger-edit-modal.component';
 import { PassengersComponent } from './passengers/passengers.component';
-import { PhonePipe } from './pipes/phone.pipe';
 import { RouteCollapsibleRowComponent } from './passengers/route-collapsible-row/route-collapsible-row.component';
-import { RouteListComponent } from './route-list/route-list.component';
 import { TicketCollapsibleRowComponent } from './passengers/ticket-collapsible-row/ticket-collapsible-row.component';
 import { UserCollapsibleRowComponent } from './passengers/user-collapsible-row/user-collapsible-row.component';
+import { DiscountPipe } from './pipes/discount.pipe';
+import { PhonePipe } from './pipes/phone.pipe';
+import { RouteListComponent } from './route-list/route-list.component';
+import { UserRowComponent } from './user-row/user-row.component';
 import { UserDeleteModalComponent } from './users-list/user-delete-modal/user-delete-modal.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { DiscountListComponent } from './discount-list/discount-list.component';
-import { DiscountPipe } from './pipes/discount.pipe';
-import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
-import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
-import { FlightUploadButtonComponent } from './flight-list/flight-upload-button/flight-upload-button.component';
-import { PaymentRowComponent } from './bookings/payment-row/payment-row.component';
-import { UserRowComponent } from './user-row/user-row.component';
 
 @NgModule({
     declarations: [
@@ -56,7 +55,6 @@ import { UserRowComponent } from './user-row/user-row.component';
         AirplaneEditModalComponent,
         AirplaneDeleteModalComponent,
         BookingsComponent,
-        BookingSearchComponent,
         BookingAddModalComponent,
         BookingEditModalComponent,
         UsersListComponent,
