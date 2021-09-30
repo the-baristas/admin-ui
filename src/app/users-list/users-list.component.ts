@@ -11,6 +11,7 @@ import { Page } from '../entities/page';
 import { User } from '../entities/user';
 import { UsersService } from '../services/users.service';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
+import { UserModalComponent } from './user-modal/user-modal.component';
 
 @Component({
   selector: 'app-users-list',
@@ -104,36 +105,59 @@ export class UsersListComponent implements OnInit {
   }
 
   openModal(modal: any, user: any) {
-    this.updateUserForm.reset();
 
-    if (user != null) {
-      this.action = 'Edit';
-      this.editUser = user;
-      this.updateUserForm.patchValue({ givenName: user.givenName });
-      this.updateUserForm.patchValue({ familyName: user.familyName });
-      this.updateUserForm.patchValue({ email: user.email });
-      this.updateUserForm.patchValue({ username: user.username });
-      this.updateUserForm.patchValue({ password: user.password });
-      this.updateUserForm.patchValue({ phone: user.phone });
-      this.updateUserForm.patchValue({ role: user.role });
-      this.updateUserForm.patchValue({ active: user.active });
-      this.updateUserForm.patchValue({ dob: user.dob });
-      this.updateUserForm.patchValue({ streetAddress: user.streetAddress });
-      this.updateUserForm.patchValue({ city: user.city });
-      this.updateUserForm.patchValue({ state: user.state });
-      this.updateUserForm.patchValue({ zip: user.zip });
-    } else {
-      this.action = 'Add';
-      this.updateUserForm.patchValue({
-        role: 'ROLE_CUSTOMER',
-        active: true
-      });
-    }
-    this.modalRef = this.modalService.open(modal);
-    this.modalRef.result.then((result) => {
-      this.errMsg = '';
-      this.closeResult = 'Close with ${result}';
+    let userModalRef = this.modalService.open(UserModalComponent, {
+      centered: true
     });
+
+    userModalRef.componentInstance.openModal(null, user);
+
+
+    userModalRef.result.then((result) => {
+      if (result === 1) {
+        //if there's only one element left on the page we delete from, then we should be sent to the previous page
+        if (this.currentPage.numberOfElements > 1)
+          this.getUsers(this.currentPage.number, this.pageSize);
+        else
+          this.getUsers(this.currentPage.number - 1, this.pageSize);
+        this.errMsg = '';
+        this.closeResult = 'Close with ${result}';
+      }
+    });
+
+
+    // this.updateUserForm.reset();
+
+    // if (user != null) {
+    //   this.action = 'Edit';
+    //   this.editUser = user;
+    //   this.updateUserForm.patchValue({ givenName: user.givenName });
+    //   this.updateUserForm.patchValue({ familyName: user.familyName });
+    //   this.updateUserForm.patchValue({ email: user.email });
+    //   this.updateUserForm.patchValue({ username: user.username });
+    //   this.updateUserForm.patchValue({ password: user.password });
+    //   this.updateUserForm.patchValue({ phone: user.phone });
+    //   this.updateUserForm.patchValue({ role: user.role });
+    //   this.updateUserForm.patchValue({ active: user.active });
+    //   this.updateUserForm.patchValue({ dob: user.dob });
+    //   this.updateUserForm.patchValue({ streetAddress: user.streetAddress });
+    //   this.updateUserForm.patchValue({ city: user.city });
+    //   this.updateUserForm.patchValue({ state: user.state });
+    //   this.updateUserForm.patchValue({ zip: user.zip });
+    // } else {
+    //   this.action = 'Add';
+    //   this.updateUserForm.patchValue({
+    //     role: 'ROLE_CUSTOMER',
+    //     active: true
+    //   });
+    // }
+
+
+    // this.modalRef = this.modalService.open(modal);
+    // this.modalRef.result.then((result) => {
+    //   this.errMsg = '';
+    //   this.closeResult = 'Close with ${result}';
+    // });
   }
 
   public userModalPerformAction() {
