@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from '../../services/users.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/entities/user';
 
 @Component({
@@ -14,8 +14,8 @@ export class UserModalComponent implements OnInit {
 
   public action: String = '';
 
-  updateUserForm!: FormGroup;
-  public editUser: User = {} as User;
+  userForm!: FormGroup;
+  public user: User = {} as User;
 
   now = Date.now();
   private currentTime: Date = new Date(Date.now());
@@ -23,8 +23,7 @@ export class UserModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private usersService: UsersService,
-    private formBuilder: FormBuilder
+    private usersService: UsersService
 ) {
   this.initializeForms();
 
@@ -36,7 +35,7 @@ export class UserModalComponent implements OnInit {
 
   initializeForms() {
 
-    this.updateUserForm = new FormGroup({
+    this.userForm = new FormGroup({
       givenName: new FormControl('', [
         Validators.required,
         Validators.minLength(1),
@@ -84,28 +83,28 @@ export class UserModalComponent implements OnInit {
     });
   }
 
-  openModal(modal: any, user: any) {
-    this.updateUserForm.reset();
+  openModal(user: any) {
+    this.userForm.reset();
 
     if (user != null) {
       this.action = 'Edit';
-      this.editUser = user;
-      this.updateUserForm.patchValue({ givenName: user.givenName });
-      this.updateUserForm.patchValue({ familyName: user.familyName });
-      this.updateUserForm.patchValue({ email: user.email });
-      this.updateUserForm.patchValue({ username: user.username });
-      this.updateUserForm.patchValue({ password: user.password });
-      this.updateUserForm.patchValue({ phone: user.phone });
-      this.updateUserForm.patchValue({ role: user.role });
-      this.updateUserForm.patchValue({ active: user.active });
-      this.updateUserForm.patchValue({ dob: user.dob });
-      this.updateUserForm.patchValue({ streetAddress: user.streetAddress });
-      this.updateUserForm.patchValue({ city: user.city });
-      this.updateUserForm.patchValue({ state: user.state });
-      this.updateUserForm.patchValue({ zip: user.zip });
+      this.user = user;
+      this.userForm.patchValue({ givenName: user.givenName });
+      this.userForm.patchValue({ familyName: user.familyName });
+      this.userForm.patchValue({ email: user.email });
+      this.userForm.patchValue({ username: user.username });
+      this.userForm.patchValue({ password: user.password });
+      this.userForm.patchValue({ phone: user.phone });
+      this.userForm.patchValue({ role: user.role });
+      this.userForm.patchValue({ active: user.active });
+      this.userForm.patchValue({ dob: user.dob });
+      this.userForm.patchValue({ streetAddress: user.streetAddress });
+      this.userForm.patchValue({ city: user.city });
+      this.userForm.patchValue({ state: user.state });
+      this.userForm.patchValue({ zip: user.zip });
     } else {
       this.action = 'Add';
-      this.updateUserForm.patchValue({
+      this.userForm.patchValue({
         role: 'ROLE_CUSTOMER',
         active: true
       });
@@ -123,10 +122,10 @@ export class UserModalComponent implements OnInit {
   }
 
   createUser() {
-    this.usersService.createUser(this.updateUserForm.value).subscribe(
+    this.usersService.createUser(this.userForm.value).subscribe(
       (response: any) => {
         this.activeModal.close(1);
-        this.updateUserForm.reset();
+        this.userForm.reset();
         alert('User created successfully');
       },
       (error: Error) => {
@@ -137,7 +136,7 @@ export class UserModalComponent implements OnInit {
 
   updateUser() {
     this.usersService
-      .updateUser(this.updateUserForm.value, this.editUser.userId)
+      .updateUser(this.userForm.value, this.user.userId)
       .subscribe(
         (response: any) => {
           this.activeModal.close(1);
@@ -154,8 +153,8 @@ export class UserModalComponent implements OnInit {
     this.activeModal.close();
   }
 
-  get updateUserFormControls() {
-    return this.updateUserForm.controls;
+  get userFormControls() {
+    return this.userForm.controls;
   }
 
 }

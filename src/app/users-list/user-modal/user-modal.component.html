@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-    <form [formGroup]="updateUserForm" (submit)="userModalPerformAction()">
+    <form [formGroup]="userForm" (submit)="userModalPerformAction()">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{action}} User</h5>
@@ -12,7 +12,7 @@
               <input type="text"
                      class="form-control"
                      formControlName="givenName" />
-              <span *ngIf="updateUserFormControls.givenName.errors?.maxlength" class="text-danger">
+              <span *ngIf="userFormControls.givenName.errors?.maxlength" class="text-danger">
                 <b>Please enter less than 45 characters</b>
               </span>
             </div>
@@ -21,7 +21,7 @@
               <input type="text"
                      class="form-control"
                      formControlName="familyName" />
-              <span *ngIf="updateUserFormControls.familyName.errors?.maxlength" class="text-danger">
+              <span *ngIf="userFormControls.familyName.errors?.maxlength" class="text-danger">
                 <b>Please enter less than 45 characters</b>
               </span>
             </div>
@@ -30,7 +30,7 @@
               <input type="text"
                      class="form-control"
                      formControlName="username" />
-              <span *ngIf="updateUserFormControls.username.errors?.maxlength" class="text-danger">
+              <span *ngIf="userFormControls.username.errors?.maxlength" class="text-danger">
                 <b>Please enter less than 45 characters</b>
               </span>
             </div>
@@ -40,7 +40,7 @@
               <input type="password"
                      class="form-control"
                      formControlName="password" />
-              <span *ngIf="updateUserFormControls.password.errors?.maxlength" class="text-danger">
+              <span *ngIf="userFormControls.password.errors?.maxlength" class="text-danger">
                 <b>Please enter less than 45 characters</b>
               </span>
             </span>
@@ -50,10 +50,10 @@
               <input type="text"
                      class="form-control"
                      formControlName="email" />
-              <span *ngIf="updateUserFormControls.email.errors?.pattern" class="text-danger">
+              <span *ngIf="userFormControls.email.errors?.pattern" class="text-danger">
                 <b>Please enter a valid email</b>
               </span>
-              <span *ngIf="updateUserFormControls.email.errors?.maxlength" class="text-danger">
+              <span *ngIf="userFormControls.email.errors?.maxlength" class="text-danger">
                 <b>Please enter less than 50 characters</b>
               </span>
             </div>
@@ -62,7 +62,7 @@
               <input type="text"
                      class="form-control"
                      formControlName="phone" />
-              <span *ngIf="updateUserFormControls.phone.errors?.pattern" class="text-danger">
+              <span *ngIf="userFormControls.phone.errors?.pattern" class="text-danger">
                 <b>Please enter a valid phone number</b>
               </span>
             </div>
@@ -91,7 +91,7 @@
                      class="form-control"
                      formControlName="state"
                      maxlength="2" />
-              <span *ngIf="updateUserFormControls.city.errors?.pattern" class="text-danger">
+              <span *ngIf="userFormControls.city.errors?.pattern" class="text-danger">
                 <b>Please enter a valid state</b>
               </span>
             </div>
@@ -101,7 +101,7 @@
                      class="form-control"
                      formControlName="zip"
                      maxlength="5" />
-              <span *ngIf="updateUserFormControls.zip.errors?.pattern" class="text-danger">
+              <span *ngIf="userFormControls.zip.errors?.pattern" class="text-danger">
                 <b>Please enter valid zipcode</b>
               </span>
             </div>
@@ -134,8 +134,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="updateModalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Cancel</button>
-            <button id="updateModalSubmit" type="submit" class="btn btn-primary" [disabled]="updateUserForm.invalid">Save</button>
+            <button id="modalClose" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Cancel</button>
+            <button id="modalSubmit" type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Save</button>
           </div>
         </div>
      </form>

@@ -41,7 +41,6 @@ import { DiscountRowComponent } from './discount-list/discount-row/discount-row.
 import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
 import { FlightUploadButtonComponent } from './flight-list/flight-upload-button/flight-upload-button.component';
 import { UserModalComponent } from './users-list/user-modal/user-modal.component';
-import { UserListRowComponent } from './users-list/user-list-row/user-list-row.component';
 
 @NgModule({
     declarations: [
@@ -79,8 +78,7 @@ import { UserListRowComponent } from './users-list/user-list-row/user-list-row.c
         DiscountRowComponent,
         FlightEmailButtonComponent,
         FlightUploadButtonComponent,
-        UserModalComponent,
-        UserListRowComponent
+        UserModalComponent
     ],
     imports: [
         BrowserModule,

@@ -29,7 +29,7 @@
   </div>
 
   <div style="text-align:right; margin-right: 120px; margin-left: 20px">
-    <button id="createButton" class="btn btn-primary" (click)="openModal(null, null)">Create New</button>
+    <button id="createButton" class="btn btn-primary" (click)="openModal(null)">Create New</button>
   </div>
 </div>
 
@@ -48,7 +48,7 @@
         <div class="col-sm-9">
           <button id="editButton"
                   class="btn btn-primary"
-                  (click)="openModal(null, user)">
+                  (click)="openModal(user)">
             Edit
           </button>
         </div>
@@ -56,7 +56,7 @@
           <button id="deleteButton"
                   type="button"
                   class="btn btn-danger"
-                  (click)="openDeleteModal(null, user.userId)">
+                  (click)="openDeleteModal(user.userId)">
             Delete
           </button>
         </div>
