@@ -16,11 +16,11 @@ pipeline {
                 sh 'ng test --browsers ChromeHeadless --no-watch --code-coverage'
             }
         }
-        stage('Sonarqube') {
-            steps {
-                sh 'npm run sonar'
-            }
-        }
+        // stage('Sonarqube') {
+        //     steps {
+        //         sh 'npm run sonar'
+        //     }
+        // }
         stage('Build') {
             steps {
                 sh 'ng build --configuration=production'
