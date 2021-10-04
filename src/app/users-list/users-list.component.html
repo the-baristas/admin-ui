@@ -34,25 +34,25 @@
 </div>
 
 <div class="container">
-  <h3>Registered Users</h3>
   <div class="container">
     <div class="d-flex justify-content-between p-2" *ngFor="let user of users; let i = index">
       <div class="row" style="border: 1px solid black">
-        <div class="col-sm-8"><h5>{{getActiveOrInactive(user.active)}}</h5></div>
-        <div class="col-sm-8"><b>Name: </b>{{user.givenName}} {{user.familyName}}</div>
-        <div class="col-sm-8"><b>Username: </b> {{user.username}}</div>
-        <div class="col-sm-8" style="min-width:340px"><b>Email: </b>{{user.email}}</div>
-        <div class="col-sm-8"><b>Phone: </b>{{user.phone | phone}}</div>
-        <div class="col-sm-8"><b>DoB: </b>{{user.dob}}</div>
-        <div class="col-sm-8"><b>Address: </b>{{user.streetAddress}} {{user.city}}, {{user.state}} {{user.zip}}</div>
-        <div class="col-sm-8">
+        <div class="col-sm-9"><h5>{{getActiveOrInactive(user.active)}}</h5></div>
+        <div class="col-sm-9"><b>Name: </b>{{user.givenName}} {{user.familyName}}</div>
+        <div class="col-sm-9"><b>Role: </b> {{user.role.split('_')[1].toLowerCase()}}</div>
+        <div class="col-sm-9"><b>Username: </b> {{user.username}}</div>
+        <div class="col-sm-9" style="min-width:340px"><b>Email: </b>{{user.email}}</div>
+        <div class="col-sm-9"><b>Phone: </b>{{user.phone | phone}}</div>
+        <div class="col-sm-9"><b>DoB: </b>{{user.dob}}</div>
+        <div class="col-sm-9"><b>Address: </b>{{user.streetAddress}} {{user.city}}, {{user.state}} {{user.zip}}</div>
+        <div class="col-sm-9">
           <button id="editButton"
                   class="btn btn-primary"
                   (click)="openModal(userModal, user)">
             Edit
           </button>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
           <button id="deleteButton"
                   type="button"
                   class="btn btn-danger"
@@ -191,8 +191,14 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <td scope="col">Customer<input id="customer" type="radio" value="ROLE_CUSTOMER" name="role" class="form-control" formControlName="role"></td>
-                    <td scope="col">Admin<input id="admin" type="radio" value="ROLE_ADMIN" name="role" class="form-control" formControlName="role"></td>
+                    <td scope="col">Customer</td>
+                    <td scope="col">Agent</td>
+                    <td scope="col">Admin</td>
+                  </tr>
+                  <tr>
+                    <td scope="col"><input id="customer" type="radio" value="ROLE_CUSTOMER" name="role" class="form-control" formControlName="role"></td>
+                    <td scope="col"><input id="agent" type="radio" value="ROLE_AGENT" name="role" class="form-control" formControlName="role"></td>
+                    <td scope="col"><input id="admin" type="radio" value="ROLE_ADMIN" name="role" class="form-control" formControlName="role"></td>
                   </tr>
                 </thead>
               </table>

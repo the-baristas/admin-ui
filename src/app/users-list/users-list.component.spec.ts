@@ -124,12 +124,6 @@ describe('UsersListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render "Users"', () => {
-    let compiled = fixture.debugElement.nativeElement;
-
-    expect(compiled.querySelector('h3').textContent).toContain('Users');
-  });
-
   it('Test getUsers', () => {
     expect(component.totalUsers).toEqual(2);
     expect(component.users[0]).toEqual(userData[0]);
