@@ -192,45 +192,13 @@ describe('UsersListComponent', () => {
     expect(select.value).toEqual('2: 50');
   });
 
-  it('Test create user', () => {
-    let createButton = fixture.debugElement.nativeElement.querySelector('#createButton');
-    createButton.click();
-
-    //component.updateUserForm.value.givenName = userAdmin.givenName;
-    //component.updateUserForm.controls.givenName.markAsDirty();
-    //component.updateUserForm.value.familyName = userAdmin.familyName;
-    //component.updateUserForm.controls.familyName.markAsDirty();
-    //component.updateUserForm.value.email = userAdmin.email;
-    //component.updateUserForm.controls.email.markAsDirty();
-    //component.updateUserForm.value.username = userAdmin.username;
-    //component.updateUserForm.controls.username.markAsDirty();
-    //component.updateUserForm.value.password = userAdmin.password;
-    //component.updateUserForm.controls.password.markAsDirty();
-    //component.updateUserForm.value.phone = userAdmin.phone;
-    //component.updateUserForm.controls.phone.markAsDirty();
-    //component.updateUserForm.value.role = userAdmin.role;
-    //component.updateUserForm.value.active = userAdmin.active;
-
-    //component.action = 'Add';
-    //component.userModalPerformAction();
-    //expect(usersServiceMock.createUser).toHaveBeenCalled();
-
-  });
-
-
-  it('Clear button should clearn search form', () => {
+  it('Clear button should clear search form', () => {
     let button = fixture.debugElement.nativeElement.querySelector('#clearButton');
     component.searchUsersForm.value.searchString = userData[0].email;
     component.searchUsersForm.controls.searchString.markAsDirty();
 
     component.clearSearchForm();
     expect(component.searchUsersForm.controls.searchString.dirty).toBeFalsy();
-  });
-
-  xit('should be at least one "Edit" button', () => {
-    let compiled = fixture.debugElement.nativeElement;
-    
-    expect(compiled.querySelector('#editButton').textContent).toContain('Edit');
   });
 
   it('test searchUsers()', () => {
