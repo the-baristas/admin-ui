@@ -9,7 +9,7 @@ import { LoginService } from './services/login.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    title = 'Admin UI';
+    title = 'Utopia Admin Portal';
 
     constructor(
         private loginService: LoginService,
