@@ -4,11 +4,11 @@
             {{ passenger.flightActive }}
     </div>
     <div class="col-sm">
-        <b>Departure Time: </b>
-        {{ passenger.departureTime | date: "short" }}
+      <b>Departure Time: </b>
+      {{ convertToLocalTime(passenger.departureTime, passenger.originAirportCode)}}
     </div>
     <div class="col-sm">
-        <b>Arrival Time: </b>
-        {{ passenger.arrivalTime | date: "short" }}
+      <b>Arrival Time: </b>
+      {{ convertToLocalTime(passenger.arrivalTime, passenger.destinationAirportCode)}}
     </div>
 </div>

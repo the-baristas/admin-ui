@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Passenger } from '../../entities/passenger';
+import * as moment from 'moment';
+import { TimezoneUtils } from '../../utils/timezone-utils';
 
 @Component({
     selector: 'app-flight-collapsible-row',
@@ -11,5 +13,9 @@ export class FlightCollapsibleRowComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
+
+    convertToLocalTime(time: string, airportCode: string) {
+      return TimezoneUtils.changeToLocalTime(time, airportCode).format('YY/MM/DD, h:mm A');
+    }
 }
