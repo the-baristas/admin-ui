@@ -10,11 +10,11 @@ import {
     switchMap,
     tap
 } from 'rxjs/operators';
-import { AirplaneDeleteModalComponent } from '../airplanes/airplane-delete-modal/airplane-delete-modal.component';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { Booking } from '../entities/booking';
 import { Page } from '../entities/page';
 import { BookingService } from '../services/booking.service';
-import { BookingAddModalComponent } from './booking-add-modal/booking-add-modal.component';
+import { BookingCreateModalComponent } from './booking-create-modal/booking-create-modal.component';
 import { BookingEditModalComponent } from './booking-edit-modal/booking-edit-modal.component';
 
 @Component({
@@ -94,7 +94,7 @@ export class BookingsComponent implements OnInit {
     }
 
     openAddModal(): void {
-        const modalRef = this.modalService.open(BookingAddModalComponent, {
+        const modalRef = this.modalService.open(BookingCreateModalComponent, {
             centered: true
         });
         modalRef.result.then((booking: Booking) => {
@@ -102,6 +102,7 @@ export class BookingsComponent implements OnInit {
         });
     }
 
+    // TODO: Remove.
     /**
      * Open the Edit Modal for the given booking.
      */
@@ -125,21 +126,23 @@ export class BookingsComponent implements OnInit {
         });
     }
 
+    // TODO: Remove.
     openDeleteModal(bookingToDelete: Booking): void {
-        const modalRef = this.modalService.open(AirplaneDeleteModalComponent, {
+        const modalRef = this.modalService.open(DeleteModalComponent, {
             centered: true
         });
-        modalRef.componentInstance.entityToDelete = bookingToDelete;
+        modalRef.componentInstance.selectedEntity = bookingToDelete;
         modalRef.componentInstance.entityName = 'Booking';
 
-        modalRef.result.then(this.delete.bind(this));
-    }
-
-    delete(booking: Booking): void {
-        this.foundBookings = this.foundBookings.filter(
-            (b: Booking) => b !== booking
-        );
-        this.bookingService.delete(booking.id).subscribe();
+        modalRef.closed
+            .pipe(
+                switchMap(() => this.bookingService.delete(bookingToDelete.id))
+            )
+            .subscribe(() => {
+                this.foundBookings = this.foundBookings.filter(
+                    (booking: Booking) => booking !== bookingToDelete
+                );
+            });
     }
 
     /**

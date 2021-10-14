@@ -4,20 +4,18 @@ import { BookingService } from '../services/booking.service';
 import { UniqueBookingValidator } from './unique-booking-validator';
 
 describe('UniqueBookingValidator', () => {
-  let bookingService: BookingService;
+    let bookingService: BookingService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [BookingService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
+            providers: [BookingService]
+        });
+
+        bookingService = TestBed.inject(BookingService);
     });
 
-    bookingService = TestBed.inject(BookingService);
-  });
-
-   it('should create an instance', () => {
-     expect(new UniqueBookingValidator(bookingService)).toBeTruthy();
-   });
-
-
+    it('should create an instance', () => {
+        expect(new UniqueBookingValidator(bookingService)).toBeTruthy();
+    });
 });

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+    AbstractControl, FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UsersService } from 'src/app/services/users.service';
 import { Booking } from '../../entities/booking';
 import { BookingService } from '../../services/booking.service';
 
@@ -10,20 +15,20 @@ import { BookingService } from '../../services/booking.service';
     styleUrls: ['./booking-edit-modal.component.css']
 })
 export class BookingEditModalComponent implements OnInit {
+    editingForm!: FormGroup;
     selectedBooking: Booking = {} as Booking;
-    editingForm: FormGroup = new FormGroup(
-        {
-            confirmationCode: new FormControl(''),
-            layoverCount: new FormControl(''),
-            totalPrice: new FormControl('')
-        },
-        [Validators.required]
-    );
 
     constructor(
         public activeModal: NgbActiveModal,
-        private bookingService: BookingService
-    ) {}
+        private bookingService: BookingService,
+        formBuilder: FormBuilder,
+    ) {
+        this.editingForm = formBuilder.group({
+            confirmationCode: ['', Validators.required],
+            layoverCount: [{ value: 0, disabled: true }],
+            totalPrice: [{ value: 0, disabled: true }],
+        });
+    }
 
     ngOnInit(): void {
         this.updateForm();
@@ -35,11 +40,7 @@ export class BookingEditModalComponent implements OnInit {
     }
 
     updateForm(): void {
-        this.editingForm.setValue({
-            confirmationCode: this.selectedBooking.confirmationCode,
-            layoverCount: this.selectedBooking.layoverCount,
-            totalPrice: this.selectedBooking.totalPrice
-        });
+        this.editingForm.patchValue(this.selectedBooking);
     }
 
     save(): void {
@@ -48,5 +49,9 @@ export class BookingEditModalComponent implements OnInit {
             .subscribe((updatedBooking: Booking) => {
                 this.activeModal.close(updatedBooking);
             });
+    }
+
+    get confirmationCode(): AbstractControl | null {
+        return this.editingForm.get('confirmationCode');
     }
 }

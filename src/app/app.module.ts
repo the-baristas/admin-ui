@@ -11,10 +11,11 @@ import { AirplaneSearchComponent } from './airplanes/airplane-search/airplane-se
 import { AirplanesComponent } from './airplanes/airplanes.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BookingAddModalComponent } from './bookings/booking-add-modal/booking-add-modal.component';
+import { BookingCreateModalComponent } from './bookings/booking-create-modal/booking-create-modal.component';
 import { BookingEditModalComponent } from './bookings/booking-edit-modal/booking-edit-modal.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { PaymentRowComponent } from './bookings/payment-row/payment-row.component';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { DiscountListComponent } from './discount-list/discount-list.component';
 import { DiscountRowComponent } from './discount-list/discount-row/discount-row.component';
 import { FlightEmailButtonComponent } from './flight-list/flight-email-button/flight-email-button.component';
@@ -55,7 +56,7 @@ import { UsersListComponent } from './users-list/users-list.component';
         AirplaneEditModalComponent,
         AirplaneDeleteModalComponent,
         BookingsComponent,
-        BookingAddModalComponent,
+        BookingCreateModalComponent,
         BookingEditModalComponent,
         UsersListComponent,
         HeaderComponent,
@@ -78,7 +79,8 @@ import { UsersListComponent } from './users-list/users-list.component';
         FlightEmailButtonComponent,
         FlightUploadButtonComponent,
         PaymentRowComponent,
-        UserRowComponent
+        UserRowComponent,
+        DeleteModalComponent
     ],
     imports: [
         BrowserModule,

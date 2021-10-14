@@ -11,7 +11,7 @@
 </div>
 
 <div class="modal-body">
-    <form [formGroup]="addingForm">
+    <form class="form-group" [formGroup]="addingForm">
         <div class="form-group">
             <div class="form-group" formGroupName="bookingForm">
                 <label for="booking-confirmation-code">
@@ -45,6 +45,7 @@
                         Booking with Confirmation Code is not active.
                     </ng-container>
                 </div>
+
                 <label for="username">Username: </label>
                 <input
                     text="text"
@@ -52,6 +53,7 @@
                     id="username"
                     formControlName="username"
                 />
+
                 <label for="email">Email: </label>
                 <input
                     text="text"
@@ -59,6 +61,7 @@
                     id="email"
                     formControlName="email"
                 />
+
                 <label for="phone">Phone: </label>
                 <input
                     text="tel"
@@ -66,6 +69,7 @@
                     id="phone"
                     formControlName="phone"
                 />
+
                 <label for="layover-count">Layover Count: </label>
                 <input
                     type="number"
@@ -73,6 +77,7 @@
                     class="form-control"
                     formControlName="layoverCount"
                 />
+
                 <label for="booking-total-price">
                     Total Price of Booking:
                 </label>

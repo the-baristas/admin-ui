@@ -20,6 +20,7 @@ export class AirplaneSearchComponent implements OnInit {
     selectedAirplane: Airplane = {} as Airplane;
     @Output() searchResultsDisplay: EventEmitter<string> = new EventEmitter();
     @Output() allAirplanesDisplay: EventEmitter<void> = new EventEmitter();
+
     private searchTerms = new Subject<string>();
 
     constructor(private airplaneService: AirplaneService) {}

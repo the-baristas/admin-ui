@@ -29,9 +29,8 @@
         </div>
         <div class="col-6">
             <button
-                class="btn btn-primary float-right"
-                id="create-new-button"
                 type="button"
+                class="btn btn-primary float-right"
                 (click)="openAddModal()"
             >
                 New
@@ -61,7 +60,7 @@
                 ></ngb-highlight>
             </div>
         </div>
-        <div class="col-6 col-sm-1 p-1 text-center">
+        <div class="col-6 col-sm-2 p-1 text-center">
             <b>Layover Count</b>
             <div>
                 {{ booking.layoverCount }}
@@ -94,32 +93,19 @@
         <div class="col-6 col-sm-1 p-1 text-center">
             <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-outline-dark mx-auto my-0"
                 (click)="showFlights(booking.confirmationCode)"
             >
                 Flights
             </button>
         </div>
-        <div class="col-6 col-sm-1 p-1 text-center">
+        <div class="col-6 col-sm-2 p-1 text-center">
             <button
                 type="button"
-                class="btn btn-outline-dark"
+                class="btn btn-outline-dark mx-auto my-0"
                 (click)="toggleCollapsibleRow('PAYMENT', i)"
             >
                 Payment
-            </button>
-        </div>
-        <div class="col-6 col-sm-1 p-1 text-center">
-            <button
-                class="btn btn-primary mx-auto my-0"
-                (click)="openEditModal(booking)"
-            >
-                Edit
-            </button>
-        </div>
-        <div class="col-6 col-sm-1 p-1 text-center">
-            <button class="btn btn-danger" (click)="openDeleteModal(booking)">
-                Delete
             </button>
         </div>
         <div

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
     AbstractControl,
+    AbstractControlOptions,
     FormBuilder,
     FormControl,
     FormGroup,
@@ -42,7 +43,7 @@ export class PassengerAddModalComponent implements OnInit {
                             this.bookingService
                         ),
                         updateOn: 'change'
-                    }
+                    } as AbstractControlOptions
                 ],
                 layoverCount: [
                     { value: 0, disabled: true },

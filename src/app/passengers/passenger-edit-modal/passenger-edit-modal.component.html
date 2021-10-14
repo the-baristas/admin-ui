@@ -24,6 +24,7 @@
                 First Name is required.
             </ng-container>
         </div>
+
         <label for="family-name">Last Name: </label>
         <input
             type="text"
@@ -31,6 +32,7 @@
             id="family-name"
             formControlName="familyName"
         />
+
         <label for="date-of-birth">Date of Birth: </label>
         <input
             type="date"
@@ -43,12 +45,14 @@
                 Date of Birth must be in the past.
             </ng-container>
         </div>
+
         <label for="gender">Gender: </label>
         <select class="form-control" id="gender" formControlName="gender">
             <option *ngFor="let gender of genders" [ngValue]="gender">
                 {{ gender }}
             </option>
         </select>
+
         <label for="street-address">Street Address: </label>
         <input
             type="text"
@@ -56,6 +60,7 @@
             id="street-address"
             formControlName="streetAddress"
         />
+
         <label for="city">City: </label>
         <input
             text="text"
@@ -63,6 +68,7 @@
             id="city"
             formControlName="city"
         />
+
         <label for="state">State: </label>
         <input
             text="text"
@@ -80,6 +86,7 @@
                 State is required.
             </ng-container>
         </div>
+
         <label for="zip-code">ZIP Code: </label>
         <input
             type="text"
@@ -93,6 +100,7 @@
                 ZIP Code must be a valid ZIP code.
             </ng-container>
         </div>
+
         <label for="seat-class">Seat Class: </label>
         <select
             class="form-control"
@@ -103,6 +111,7 @@
                 {{ seatClass }}
             </option>
         </select>
+
         <label for="seat-number">Seat Number: </label>
         <input
             text="number"
@@ -110,6 +119,7 @@
             id="seat-number"
             formControlName="seatNumber"
         />
+
         <label for="check-in-group">Check-In Group: </label>
         <input
             text="number"

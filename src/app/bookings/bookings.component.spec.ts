@@ -13,7 +13,10 @@ fdescribe('BookingsComponent', () => {
     let bookingServiceSpy: jasmine.SpyObj<BookingService>;
 
     beforeEach(async () => {
-        bookingServiceSpy = jasmine.createSpyObj('BookingService', ['findAll']);
+        bookingServiceSpy = jasmine.createSpyObj('BookingService', [
+            'findAll',
+            'update'
+        ]);
 
         await TestBed.configureTestingModule({
             declarations: [BookingsComponent],
@@ -33,22 +36,36 @@ fdescribe('BookingsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    describe('#ngOnInit', () => {
-        it('initializes foundBookings and totalElements', () => {
-            const bookingsPage: Page<Booking> = {
-                content: [{} as Booking],
-                totalElements: 1
-            } as Page<Booking>;
-            bookingServiceSpy.findAll.and.returnValue(of(bookingsPage));
-            fixture.detectChanges();
+    it('#ngOnInit initializes foundBookings and totalElements', () => {
+        const bookingsPage: Page<Booking> = {
+            content: [{} as Booking],
+            totalElements: 1
+        } as Page<Booking>;
+        bookingServiceSpy.findAll.and.returnValue(of(bookingsPage));
+        fixture.detectChanges(); // ngOnInit
 
-            expect(component.foundBookings.length).toBe(1);
-            expect(component.foundBookings).toEqual(bookingsPage.content);
-            expect(component.totalElements).toBe(1);
-        });
+        expect(component.foundBookings.length).toBe(1);
+        expect(component.foundBookings).toEqual(bookingsPage.content);
+        expect(component.totalElements).toBe(1);
     });
 
-    describe('#toggleActive', () => {
-        it('toggles active property of booking and ', () => {});
+    it('#toggleActive toggles active property of booking and calls BookingService#update', () => {
+        const booking: Booking = { active: true } as Booking;
+        bookingServiceSpy.update.and.returnValue(of(booking));
+        component.toggleActive(booking);
+
+        expect(booking.active).toBe(false);
+        expect(bookingServiceSpy.update.calls.count()).toBe(1);
+    });
+
+    it('when New button is clicked, #openAddModal is called', () => {
+        spyOn(component, 'openAddModal').and.callThrough();
+
+        const nativeElement: HTMLElement = fixture.nativeElement;
+        const button: HTMLButtonElement | null =
+            nativeElement.querySelector('button');
+        button?.click();
+
+        expect(component.openAddModal).toHaveBeenCalledTimes(1);
     });
 });

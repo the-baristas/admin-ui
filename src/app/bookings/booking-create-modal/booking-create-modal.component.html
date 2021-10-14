@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Edit Booking</h4>
+    <h4 class="modal-title">Create New Booking</h4>
     <button
         type="button"
         class="close"
@@ -10,7 +10,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <form [formGroup]="editingForm">
+    <form [formGroup]="creatingForm">
         <label for="confirmation-code">Confirmation Code: </label>
         <input
             type="text"
@@ -35,9 +35,36 @@
             id="layover-count"
             formControlName="layoverCount"
         />
+        <div
+            *ngIf="
+                layoverCount?.invalid &&
+                (layoverCount?.dirty || layoverCount?.touched)
+            "
+            class="alert alert-danger"
+        >
+            <ng-container *ngIf="layoverCount?.errors?.required">
+                Layover Count is required.
+            </ng-container>
+        </div>
 
-        <label for="total-price">Total Price: </label>
-        <input type="number" id="total-price" formControlName="totalPrice" />
+        <label for="username">Username: </label>
+        <input
+            type="string"
+            class="form-control"
+            id="username"
+            formControlName="username"
+        />
+        <div
+            *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+            class="alert alert-danger"
+        >
+            <ng-container *ngIf="username?.errors?.required">
+                Username is required.
+            </ng-container>
+            <ng-container *ngIf="username?.errors?.notFoundUser">
+                User with Username couldn't be found.
+            </ng-container>
+        </div>
     </form>
 </div>
 
@@ -52,9 +79,9 @@
     <button
         type="button"
         class="btn btn-light"
-        [disabled]="editingForm.invalid"
-        (click)="save()"
+        [disabled]="creatingForm.invalid"
+        (click)="add()"
     >
-        Save
+        Add
     </button>
 </div>
