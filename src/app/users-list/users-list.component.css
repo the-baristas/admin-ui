@@ -20,10 +20,22 @@
   width: 300px;
 }
 
-@media screen and (max-width: 800px){
-    .hideUnder800px{
+@media screen and (max-width: 1200px){
+    .hideUnder1200px{
         display: none;
     }
+}
+
+@media screen and (max-width: 1000px) {
+  .hideUnder1000px {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .hideUnder800px {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 550px) {
